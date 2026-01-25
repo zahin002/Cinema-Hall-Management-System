@@ -2,6 +2,7 @@
 #include "FileManager.h"
 #include "Movie.h"
 #include "SeatMap.h"
+#include <fstream>
 #include <iostream>
 
 using namespace std;
@@ -38,13 +39,13 @@ void AdminService::adminMenu(const User&) {
 /* ================= MOVIE MANAGEMENT ================= */
 
 void AdminService::addMovie() {
-    int code, duration;
     string title, genre, language;
+    int duration;
 
-    cout << "Enter movie code (e.g. 101): ";
-    cin >> code;
+    int code = FileManager::getNextMovieCode();
+    cout << "Auto-generated movie code: " << code << endl;
+
     cin.ignore();
-
     cout << "Enter movie title: ";
     getline(cin, title);
     cout << "Enter genre: ";
@@ -58,6 +59,7 @@ void AdminService::addMovie() {
     FileManager::saveMovie(Movie(code, title, genre, duration, language));
     cout << "Movie added successfully!\n";
 }
+
 
 
 void AdminService::viewMovies() {
@@ -77,6 +79,46 @@ void AdminService::viewMovies() {
              << " | " << movies[i].getLanguage() << endl;
     }
 }
+
+void AdminService::deleteMovie() {
+    int code;
+    cout << "Enter movie code to delete: ";
+    cin >> code;
+
+    vector<Movie> movies = FileManager::loadMovies();
+    vector<Showtime> shows = FileManager::loadShowtimes();
+
+    for (const Showtime& s : shows) {
+        if (s.getMovieCode() == code) {
+            cout << "Cannot delete movie. Showtime exists.\n";
+            return;
+        }
+    }
+
+    ofstream file("../data/movies_temp.txt");
+    bool deleted = false;
+
+    for (const Movie& m : movies) {
+        if (m.getCode() != code)
+            file << m.getCode() << "|"
+                 << m.getTitle() << "|"
+                 << m.getGenre() << "|"
+                 << m.getDuration() << "|"
+                 << m.getLanguage() << endl;
+        else
+            deleted = true;
+    }
+    file.close();
+
+    remove("../data/movies.txt");
+    rename("../data/movies_temp.txt", "../data/movies.txt");
+
+    if (deleted)
+        cout << "Movie deleted successfully.\n";
+    else
+        cout << "Movie not found.\n";
+}
+
 
 
 /* ================= SHOWTIME MANAGEMENT ================= */

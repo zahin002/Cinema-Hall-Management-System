@@ -35,6 +35,10 @@ public:
      * Saves movie details such as title, genre, duration,
      * and language into persistent storage.
      */
+
+    static int getNextMovieCode();
+    static bool movieCodeExists(int code);
+
     static void saveMovie(const Movie& movie);
 
     /*

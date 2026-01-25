@@ -12,6 +12,7 @@ private:
     void viewMovies();
     void addShowtime();
     void viewShowtimes();
+    void deleteMovie();
     void createSeatMap();
     void viewSeatMap();
 };

@@ -63,6 +63,18 @@ void FileManager::saveMovie(const Movie& movie) {
     file.close();
 }
 
+//Auto-generated movie code//
+
+int FileManager::getNextMovieCode() {
+    vector<Movie> movies = loadMovies();
+
+    int maxCode = 100;
+    for (const Movie& m : movies) {
+        if (m.getCode() > maxCode)
+            maxCode = m.getCode();
+    }
+    return maxCode + 1;
+}
 
 /*
  * Week 3:
@@ -90,6 +102,16 @@ vector<Movie> FileManager::loadMovies() {
     return movies;
 }
 
+//Prevents duplicates during manual code//
+
+bool FileManager::movieCodeExists(int code) {
+    vector<Movie> movies = loadMovies();
+    for (const Movie& m : movies) {
+        if (m.getCode() == code)
+            return true;
+    }
+    return false;
+}
 
 /* ================= SHOWTIMES (WEEK 5) ================= */
 
