@@ -31,11 +31,12 @@ void CinemaSystem::run() {
         switch (choice) {
             case 1: login(); break;
             case 2: signup(); break;
-            case 3: cout << "Exiting CINE++...\n"; break;
+            case 3: guestLogin(); break;
+            case 4: cout << "Exiting CINE++...\n"; break;
             default: cout << "Invalid choice.\n";
         }
         cout << endl;
-    } while (choice != 3);
+    } while (choice != 4);
 }
 
 /*
@@ -57,8 +58,10 @@ void CinemaSystem::showWelcome() {
 void CinemaSystem::showMainMenu() {
     cout << "1. Login\n";
     cout << "2. Signup\n";
-    cout << "3. Exit\n";
+    cout << "3. Guest Booking\n";
+    cout << "4. Exit\n";
 }
+
 
 /*
  * Registers a new user by storing encrypted credentials.
@@ -108,6 +111,45 @@ void CinemaSystem::login() {
     }
     cout << "Invalid email or password.\n";
 }
+
+/* Guest login using Bangladeshi phone number validation.*/
+
+void CinemaSystem::guestLogin() {
+    string rest;
+    cout << "Enter phone number: +880";
+    cin >> rest;
+
+    string phone = "+880" + rest;
+
+    if (!isValidBangladeshPhone(phone)) {
+        cout << "Please input valid phone number.\n";
+        return;
+    }
+
+    cout << "Guest login successful!\n";
+
+    User guest(phone, "", "guest");
+    UserService userService;
+    userService.userMenu(guest);
+}
+
+
+bool CinemaSystem::isValidBangladeshPhone(const string& phone) {
+    if (phone.length() != 14) return false;
+
+    if (phone.substr(0, 4) != "+880") return false;
+    if (phone[4] != '1') return false;
+
+    char simDigit = phone[5];
+    if (simDigit < '3' || simDigit > '9') return false;
+
+    for (int i = 6; i < 14; i++) {
+        if (!isdigit(phone[i])) return false;
+    }
+
+    return true;
+}
+
 
 
 

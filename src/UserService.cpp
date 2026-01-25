@@ -9,7 +9,10 @@ using namespace std;
 
 /* ================= USER MENU ================= */
 
-void UserService::userMenu(const User&) {
+void UserService::userMenu(const User& user) {
+
+    bool isGuest = (user.getRole() == "guest");
+
     int choice;
     do {
         cout << "\n--- USER MENU ---\n";
@@ -18,6 +21,10 @@ void UserService::userMenu(const User&) {
         cout << "3. Book Seat\n";
         cout << "4. Recommend Best Seat\n";
         cout << "5. Logout\n";
+
+         if (isGuest)
+            cout << "(Guest Mode - Phone: " << user.getEmail() << ")\n";
+
         cout << "Enter choice: ";
         cin >> choice;
 
