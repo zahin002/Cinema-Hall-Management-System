@@ -1,5 +1,5 @@
 # 🎬 CINE++
-### Cinema Hall Management System (SPL-1)
+### Cinema Hall Management System
 
 CINE++ is a **console-based cinema hall management system** developed in **C++** using **Object-Oriented Programming (OOP)** and **file-based persistence**.  
 The project is built incrementally as part of the **Software Project**, following a weekly development approach.
