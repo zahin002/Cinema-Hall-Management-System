@@ -3,69 +3,46 @@
 
 #include "User.h"
 
-/*
- * CinemaSystem
- * -------------
- * Main controller class of the CINE++ Cinema Hall Management System.
- * This class manages program flow, authentication, role-based access,
- * and coordinates all major system features.
- *
- * Timeline follows the original SPL-1 development order strictly.
- * Weeks are NOT merged or re-mapped.
- */
 class CinemaSystem {
 public:
     /*
-     * Week 1:
-     * Starts the system execution.
-     * Controls welcome screen display, main menu navigation,
-     * and routes users to login or signup workflows.
+     Week 1:
+     Starts the system execution.
+     Controls welcome screen display, main menu navigation and routes users to login or signup workflows.
      */
+
     void run();
 
 private:
     /*
-     * Week 1:
-     * Displays the initial welcome banner.
-     * Purely responsible for user-facing introduction.
+     Week 1:
+     Displays the initial welcome banner. Purely responsible for user-facing introduction.
      */
+
     void showWelcome();
 
     /*
-     * Week 1:
-     * Displays the main menu before authentication.
-     * Keeps entry actions simple and isolated.
+     Week 1:
+     Displays the main menu before authentication. Keeps entry actions simple and isolated.
      */
+
     void showMainMenu();
 
     /*
-     * Week 1:
-     * Handles user authentication.
-     * Compares encrypted credentials and routes users
-     * based on their role (admin or user).
+     Week 1:
+     Handles user authentication.
+     Compares encrypted credentials and routes users based on their role (admin or user).
      */
+
     void login();
 
     /*
-     * Week 1:
-     * Handles user registration.
-     * Encrypts password before storing user data.
+     Week 1:
+     Handles user registration.
+     Encrypts password before storing user data.
      */
+    
     void signup();
-
-    /*
-     * Week 2:
-     * Displays admin-only operations.
-     * Provides access to system modification features.
-     */
-    void adminMenu(const User& admin);
-
-    /*
-     * Week 2:
-     * Displays user-only operations.
-     * Restricts access to browsing and booking features.
-     */
-    void userMenu(const User& user);
 
     /*
      * Week 3:

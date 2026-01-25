@@ -1,5 +1,5 @@
 9 3
-O O O 
+X O O 
 O O O 
 O O O 
 O O O 
