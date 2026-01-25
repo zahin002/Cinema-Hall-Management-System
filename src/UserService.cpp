@@ -54,6 +54,7 @@ void UserService::viewMovies() {
 }
 
 /* Displays all available showtimes */
+
 void UserService::viewShowtimes() {
     vector<Showtime> shows = FileManager::loadShowtimes();
 
@@ -122,11 +123,17 @@ void UserService::bookSeat() {
 
     FileManager::saveSeatMap(showId, map);
 
-    cout << "Seats booked: ";
+   /* Display updated seat map after booking */
+    cout << "\nUpdated Seat Map:\n";
+    SeatMap updatedMap = FileManager::loadSeatMap(showId);
+    updatedMap.display();
+
+    cout << "\nSeats booked successfully: ";
     for (auto &s : selected)
         cout << char('A' + s.first) << s.second + 1 << " ";
     cout << endl;
 }
+
 
 /* ================= SEAT RECOMMENDATION ================= */
 
