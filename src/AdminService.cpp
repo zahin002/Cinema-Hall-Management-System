@@ -38,10 +38,13 @@ void AdminService::adminMenu(const User&) {
 /* ================= MOVIE MANAGEMENT ================= */
 
 void AdminService::addMovie() {
+    int code, duration;
     string title, genre, language;
-    int duration;
 
+    cout << "Enter movie code (e.g. 101): ";
+    cin >> code;
     cin.ignore();
+
     cout << "Enter movie title: ";
     getline(cin, title);
     cout << "Enter genre: ";
@@ -52,9 +55,10 @@ void AdminService::addMovie() {
     cout << "Enter language: ";
     getline(cin, language);
 
-    FileManager::saveMovie(Movie(title, genre, duration, language));
+    FileManager::saveMovie(Movie(code, title, genre, duration, language));
     cout << "Movie added successfully!\n";
 }
+
 
 void AdminService::viewMovies() {
     vector<Movie> movies = FileManager::loadMovies();
@@ -78,12 +82,38 @@ void AdminService::viewMovies() {
 /* ================= SHOWTIME MANAGEMENT ================= */
 
 void AdminService::addShowtime() {
-    string movieTitle, date, time;
-    int hallNo;
+    int movieCode, hallNo;
+    string date, time;
 
+    vector<Movie> movies = FileManager::loadMovies();
+
+    if (movies.empty()) {
+        cout << "No movies available. Add movies first.\n";
+        return;
+    }
+
+    cout << "\nAvailable Movies:\n";
+    for (const Movie& m : movies) {
+        cout << m.getCode() << " - " << m.getTitle() << endl;
+    }
+
+    cout << "Enter movie code: ";
+    cin >> movieCode;
     cin.ignore();
-    cout << "Enter movie title: ";
-    getline(cin, movieTitle);
+
+    bool found = false;
+    for (const Movie& m : movies) {
+        if (m.getCode() == movieCode) {
+            found = true;
+            break;
+        }
+    }
+
+    if (!found) {
+        cout << "This movie is not available yet.\n";
+        return;
+    }
+
     cout << "Enter date (YYYY-MM-DD): ";
     getline(cin, date);
     cout << "Enter time (HH:MM): ";
@@ -91,12 +121,17 @@ void AdminService::addShowtime() {
     cout << "Enter hall number: ";
     cin >> hallNo;
 
-    FileManager::saveShowtime(Showtime(movieTitle, date, time, hallNo));
+    FileManager::saveShowtime(
+        Showtime(movieCode, date, time, hallNo)
+    );
+
     cout << "Showtime added successfully!\n";
 }
 
+
 void AdminService::viewShowtimes() {
     vector<Showtime> shows = FileManager::loadShowtimes();
+    vector<Movie> movies = FileManager::loadMovies();
 
     if (shows.empty()) {
         cout << "No showtimes available.\n";
@@ -105,14 +140,24 @@ void AdminService::viewShowtimes() {
 
     cout << "\n--- SHOWTIMES ---\n";
     for (size_t i = 0; i < shows.size(); i++) {
+
+        string title = "Unknown";
+        for (const Movie& m : movies) {
+            if (m.getCode() == shows[i].getMovieCode()) {
+                title = m.getTitle();
+                break;
+            }
+        }
+
         cout << i + 1 << ". "
-             << shows[i].getMovieTitle()
+             << title
              << " | " << shows[i].getDate()
              << " | " << shows[i].getTime()
              << " | Hall " << shows[i].getHallNo()
              << endl;
     }
 }
+
 
 /* ================= SEAT MAP & BOOKING ================= */
 

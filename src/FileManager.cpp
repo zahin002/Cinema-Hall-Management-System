@@ -51,40 +51,45 @@ vector<User> FileManager::loadUsers() {
 /*
  * Week 3:
  * Saves movie information into persistent storage.
- * Uses '|' as a delimiter to support movie titles with spaces.
  */
+
 void FileManager::saveMovie(const Movie& movie) {
     ofstream file("../data/movies.txt", ios::app);
-    file << movie.getTitle() << "|"
+    file << movie.getCode() << "|"
+         << movie.getTitle() << "|"
          << movie.getGenre() << "|"
          << movie.getDuration() << "|"
          << movie.getLanguage() << endl;
     file.close();
 }
 
+
 /*
  * Week 3:
  * Loads all movies from file.
- * Parsing logic carefully mixes getline and formatted input
- * to correctly read both strings and integers.
+ * Parsing logic carefully mixes getline and formatted input to correctly read both strings and integers.
  */
+
 vector<Movie> FileManager::loadMovies() {
     vector<Movie> movies;
     ifstream file("../data/movies.txt");
 
+    int code, duration;
     string title, genre, language;
-    int duration;
     char sep;
 
-    while (getline(file, title, '|')) {
+    while (file >> code >> sep) {
+        getline(file, title, '|');
         getline(file, genre, '|');
-        file >> duration >> sep;   // sep consumes the '|' delimiter
+        file >> duration >> sep;
         getline(file, language);
-        movies.push_back(Movie(title, genre, duration, language));
+
+        movies.push_back(Movie(code, title, genre, duration, language));
     }
     file.close();
     return movies;
 }
+
 
 /* ================= SHOWTIMES (WEEK 5) ================= */
 
@@ -95,36 +100,35 @@ vector<Movie> FileManager::loadMovies() {
  */
 void FileManager::saveShowtime(const Showtime& s) {
     ofstream file("../data/showtimes.txt", ios::app);
-    file << s.getMovieTitle() << "|"
+    file << s.getMovieCode() << "|"
          << s.getDate() << "|"
          << s.getTime() << "|"
          << s.getHallNo() << endl;
     file.close();
 }
 
-/*
- * Week 5:
- * Loads all stored showtimes.
- * Delimiter-based parsing allows flexible string values.
- */
 vector<Showtime> FileManager::loadShowtimes() {
     vector<Showtime> shows;
     ifstream file("../data/showtimes.txt");
 
-    string movieTitle, date, time;
-    int hallNo;
+    int movieCode, hallNo;
+    string date, time;
     char sep;
 
-    while (getline(file, movieTitle, '|')) {
+    while (file >> movieCode >> sep) {
         getline(file, date, '|');
         getline(file, time, '|');
         file >> hallNo;
-        file.ignore();   // clears newline before next getline
-        shows.push_back(Showtime(movieTitle, date, time, hallNo));
+        file.ignore();
+
+        shows.push_back(
+            Showtime(movieCode, date, time, hallNo)
+        );
     }
     file.close();
     return shows;
 }
+
 
 /* ========== SEAT MAP (WEEK 6) ========== */
 

@@ -30,7 +30,7 @@ int main() {
 
 
 /* Compile:  
-             g++ main.cpp CinemaSystem.cpp User.cpp FileManager.cpp Movie.cpp Showtime.cpp SeatMap.cpp -o cine
+             g++ main.cpp CinemaSystem.cpp AdminService.cpp UserService.cpp User.cpp FileManager.cpp Movie.cpp Showtime.cpp SeatMap.cpp -o cine
 
             ./cine
 */

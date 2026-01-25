@@ -57,6 +57,7 @@ void UserService::viewMovies() {
 
 void UserService::viewShowtimes() {
     vector<Showtime> shows = FileManager::loadShowtimes();
+    vector<Movie> movies = FileManager::loadMovies();
 
     if (shows.empty()) {
         cout << "No showtimes available.\n";
@@ -65,14 +66,24 @@ void UserService::viewShowtimes() {
 
     cout << "\n--- SHOWTIMES ---\n";
     for (size_t i = 0; i < shows.size(); i++) {
+
+        string title = "Unknown";
+        for (const Movie& m : movies) {
+            if (m.getCode() == shows[i].getMovieCode()) {
+                title = m.getTitle();
+                break;
+            }
+        }
+
         cout << i + 1 << ". "
-             << shows[i].getMovieTitle()
+             << title
              << " | " << shows[i].getDate()
              << " | " << shows[i].getTime()
              << " | Hall " << shows[i].getHallNo()
              << endl;
     }
 }
+
 
 /* Atomic multi-seat booking */
 
