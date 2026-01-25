@@ -47,4 +47,6 @@
 147|Her|Romance|126|English
 148|No Country for Old Men|Thriller|122|English
 149|The Matrix|Sci-Fi|136|English 
-150|The Lion King|Animation|88|English 
+150|The Lion King|Animation|88|English
+151|Mad Max: Fury Road|Action|120|English
+152|Demon Slayer: Mugen Train|Action|117|Japanese

@@ -4,6 +4,8 @@
 #include <iostream>
 #include <sstream>
 #include <set>
+#include <limits>
+
 
 using namespace std;
 
@@ -17,10 +19,11 @@ void UserService::userMenu(const User& user) {
     do {
         cout << "\n--- USER MENU ---\n";
         cout << "1. Browse Movies\n";
-        cout << "2. View Showtimes\n";
-        cout << "3. Book Seat\n";
-        cout << "4. Recommend Best Seat\n";
-        cout << "5. Logout\n";
+        cout << "2. Filter Movies (Genre/Language)\n";
+        cout << "3. View Showtimes\n";
+        cout << "4. Book Seat\n";
+        cout << "5. Recommend Best Seat\n";
+        cout << "6. Logout\n";
 
          if (isGuest)
             cout << "(Guest Mode - Phone: " << user.getEmail() << ")\n";
@@ -30,18 +33,18 @@ void UserService::userMenu(const User& user) {
 
         switch (choice) {
             case 1: viewMovies(); break;
-            case 2: viewShowtimes(); break;
-            case 3: bookSeat(); break;
-            case 4: recommendSeat(); break;
-            case 5: cout << "Logged out.\n"; break;
+            case 2: filterMovies(); break;
+            case 3: viewShowtimes(); break;
+            case 4: bookSeat(); break;
+            case 5: recommendSeat(); break;
+            case 6: cout << "Logged out.\n"; break;
             default: cout << "Invalid choice.\n";
         }
-    } while (choice != 5);
+    } while (choice != 6);
 }
 
-/*
- * Displays all available movies for users.
- */
+/* Displays all available movies for users.*/
+
 void UserService::viewMovies() {
     vector<Movie> movies = FileManager::loadMovies();
 
@@ -59,6 +62,39 @@ void UserService::viewMovies() {
              << " | " << movies[i].getLanguage() << endl;
     }
 }
+
+/* Displays all filtered movies based on genre/language */
+
+void UserService::filterMovies() {
+    string genre, language;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+
+    cout << "Enter genre (or * for any): ";
+    getline(cin, genre);
+    cout << "Enter language (or * for any): ";
+    getline(cin, language);
+
+    vector<Movie> movies = FileManager::loadMovies();
+    bool found = false;
+
+    cout << "\n--- FILTERED MOVIES ---\n";
+    for (const Movie& m : movies) {
+        if ((genre == "*" || m.getGenre() == genre) &&
+            (language == "*" || m.getLanguage() == language)) {
+
+            cout << m.getCode() << " | "
+                 << m.getTitle() << " | "
+                 << m.getGenre() << " | "
+                 << m.getLanguage() << endl;
+            found = true;
+        }
+    }
+
+    if (!found)
+        cout << "No movies found.\n";
+}
+
 
 /* Displays all available showtimes */
 

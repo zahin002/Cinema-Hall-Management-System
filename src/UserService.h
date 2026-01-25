@@ -9,6 +9,7 @@ public:
 
 private:
     void viewMovies();
+    void filterMovies();
     void viewShowtimes();
     void bookSeat();
     void recommendSeat();
