@@ -1,23 +1,3 @@
-/*************************************************************
- * Week 1:
- * - Application entry flow
- * - Welcome screen
- * - Login and signup system
- * - Role-based menu routing
-
- * Week 2:
- * - Movie and showtime management
- * - File-based persistence integration
- *
- * Week 3:
- * - Seat map creation and visualization
- * - Seat booking with full validation
- *
- * Week 4:
- * - Best seat recommendation logic
- * - Group booking consistency handling
- *************************************************************/
-
 #include <iostream>
 #include <vector>
 #include <sstream>     // Used for parsing multiple seat inputs

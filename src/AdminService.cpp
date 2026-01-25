@@ -6,6 +6,8 @@
 
 using namespace std;
 
+/* ================= ADMIN MENU ================= */
+
 void AdminService::adminMenu(const User&) {
     int choice;
     do {
