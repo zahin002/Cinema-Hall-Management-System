@@ -43,6 +43,13 @@ The project is built incrementally as part of the **Software Project**, followin
 
 ---
 
+### 🔎 Movie Filtering (User)
+- Filter movies by **Genre**
+- Filter movies by **Language**
+- Combined filtering supported
+
+---
+
 ### 💺 Seat Map Management
 - Create seat maps per showtime
 - View seat maps
@@ -72,13 +79,6 @@ The project is built incrementally as part of the **Software Project**, followin
 - Phone-based login
 - Bangladeshi phone number validation:
 - Guest can book seats like regular users
-
----
-
-### 🔎 Movie Filtering (User)
-- Filter movies by **Genre**
-- Filter movies by **Language**
-- Combined filtering supported
 
 ---
 
