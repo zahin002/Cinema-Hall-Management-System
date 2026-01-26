@@ -149,8 +149,3 @@ bool CinemaSystem::isValidBangladeshPhone(const string& phone) {
 
     return true;
 }
-
-
-
-
-

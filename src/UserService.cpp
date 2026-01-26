@@ -215,5 +215,3 @@ void UserService::recommendSeat() {
         cout << char('A' + s.first) << s.second + 1 << " ";
     cout << endl;
 }
-
-
