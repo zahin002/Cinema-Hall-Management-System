@@ -75,8 +75,17 @@ public:
      * Loads the seat map for a given show.
      * Reconstructs seat availability for booking operations.
      */
-    
+
     static SeatMap loadSeatMap(int showId);
+
+    static void saveTicket(
+        const string& userKey,
+        int showId,
+        int seatCount,
+        int totalPrice,
+        const vector<pair<int,int>>& seats
+    );
+    
 };
 
 #endif

@@ -189,3 +189,30 @@ SeatMap FileManager::loadSeatMap(int showId) {
     file.close();
     return map;
 }
+
+void FileManager::saveTicket(
+    const string& userKey,
+    int showId,
+    int seatCount,
+    int totalPrice,
+    const vector<pair<int,int>>& seats
+) {
+    ofstream file("../data/tickets.txt", ios::app);
+
+    file << userKey << "|"
+         << showId << "|"
+         << seatCount << "|"
+         << totalPrice << "|";
+
+    for (size_t i = 0; i < seats.size(); i++) {
+        char row = 'A' + seats[i].first;
+        int col = seats[i].second + 1;
+        file << row << col;
+        if (i != seats.size() - 1) file << ",";
+    }
+
+    file << endl;
+    file.close();
+}
+
+

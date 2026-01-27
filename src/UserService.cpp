@@ -163,7 +163,14 @@ void UserService::bookSeat(const User& user) {
         used.insert(seat);
 
         int row = seat[0] - 'A';
-        int col = stoi(seat.substr(1)) - 1;
+        int col;
+
+        try {
+            col = stoi(seat.substr(1)) - 1;
+        } catch (...) {
+            cout << "Invalid seat format: " << seat << endl;
+            return;
+        }
 
         if (!map.isSeatAvailable(row, col)) {
             cout << "Seat unavailable: " << seat << endl;
@@ -173,15 +180,24 @@ void UserService::bookSeat(const User& user) {
         selected.push_back({row, col});
     }
 
-    // ===== WEEK 8 PRICING =====
+    if (selected.empty()) {
+        cout << "No seats selected.\n";
+        return;
+    }
 
+    // ===== PRICING =====
     int seatCount = selected.size();
+    int finalPrice;
     string userKey = user.getEmail();
 
-    int finalPrice = PricingEngine::calculateFinalPrice(
-        seatCount,
-        userKey
-    );
+    if (user.getRole() == "guest") {
+        finalPrice = seatCount * 500; // no discount
+    } else {
+        finalPrice = PricingEngine::calculateFinalPrice(
+            seatCount,
+            userKey
+        );
+    }
 
     cout << "\n----- BILL -----\n";
     cout << "Tickets: " << seatCount << endl;
@@ -189,21 +205,38 @@ void UserService::bookSeat(const User& user) {
     cout << "Final price: " << finalPrice << " Tk\n";
 
     // ===== BOOK SEATS =====
-    
     for (auto &s : selected)
         map.bookSeat(s.first, s.second);
 
     FileManager::saveSeatMap(showId, map);
 
+    // ===== SAVE TICKET HISTORY =====
+    FileManager::saveTicket(
+        userKey,
+        showId,
+        seatCount,
+        finalPrice,
+        selected
+    );
+
+    // ===== DISPLAY UPDATED SEAT MAP =====
     cout << "\nUpdated Seat Map:\n";
     SeatMap updatedMap = FileManager::loadSeatMap(showId);
     updatedMap.display();
 
-    cout << "\nSeats booked successfully: ";
+    // ===== PRINT TICKET =====
+    cout << "\n================= CINE++ TICKET =================\n";
+    cout << "User       : " << user.getEmail() << endl;
+    cout << "Show ID    : " << showId << endl;
+    cout << "Seats      : ";
     for (auto &s : selected)
         cout << char('A' + s.first) << s.second + 1 << " ";
-    cout << endl;
+    cout << "\nTickets    : " << seatCount << endl;
+    cout << "Total Paid : " << finalPrice << " Tk\n";
+    cout << "Status     : CONFIRMED\n";
+    cout << "=================================================\n";
 }
+
 
 
 /* ================= SEAT RECOMMENDATION ================= */
