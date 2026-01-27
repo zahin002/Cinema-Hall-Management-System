@@ -1,11 +1,11 @@
 #include "UserService.h"
 #include "FileManager.h"
 #include "SeatMap.h"
+#include "PricingEngine.h"
 #include <iostream>
 #include <sstream>
 #include <set>
 #include <limits>
-
 
 using namespace std;
 
@@ -35,7 +35,7 @@ void UserService::userMenu(const User& user) {
             case 1: viewMovies(); break;
             case 2: filterMovies(); break;
             case 3: viewShowtimes(); break;
-            case 4: bookSeat(); break;
+            case 4: bookSeat(user); break;
             case 5: recommendSeat(); break;
             case 6: cout << "Logged out.\n"; break;
             default: cout << "Invalid choice.\n";
@@ -130,7 +130,8 @@ void UserService::viewShowtimes() {
 
 /* Atomic multi-seat booking */
 
-void UserService::bookSeat() {
+void UserService::bookSeat(const User& user) {
+
     int showId;
     string input;
 
@@ -162,7 +163,14 @@ void UserService::bookSeat() {
         used.insert(seat);
 
         int row = seat[0] - 'A';
-        int col = stoi(seat.substr(1)) - 1;
+        int col;
+
+        try {
+            col = stoi(seat.substr(1)) - 1;
+        } catch (...) {
+            cout << "Invalid seat format: " << seat << endl;
+            return;
+        }
 
         if (!map.isSeatAvailable(row, col)) {
             cout << "Seat unavailable: " << seat << endl;
@@ -172,21 +180,63 @@ void UserService::bookSeat() {
         selected.push_back({row, col});
     }
 
+    if (selected.empty()) {
+        cout << "No seats selected.\n";
+        return;
+    }
+
+    // ===== PRICING =====
+    int seatCount = selected.size();
+    int finalPrice;
+    string userKey = user.getEmail();
+
+    if (user.getRole() == "guest") {
+        finalPrice = seatCount * 500; // no discount
+    } else {
+        finalPrice = PricingEngine::calculateFinalPrice(
+            seatCount,
+            userKey
+        );
+    }
+
+    cout << "\n----- BILL -----\n";
+    cout << "Tickets: " << seatCount << endl;
+    cout << "Base price: " << seatCount * 500 << " Tk\n";
+    cout << "Final price: " << finalPrice << " Tk\n";
+
+    // ===== BOOK SEATS =====
     for (auto &s : selected)
         map.bookSeat(s.first, s.second);
 
     FileManager::saveSeatMap(showId, map);
 
-   /* Display updated seat map after booking */
+    // ===== SAVE TICKET HISTORY =====
+    FileManager::saveTicket(
+        userKey,
+        showId,
+        seatCount,
+        finalPrice,
+        selected
+    );
+
+    // ===== DISPLAY UPDATED SEAT MAP =====
     cout << "\nUpdated Seat Map:\n";
     SeatMap updatedMap = FileManager::loadSeatMap(showId);
     updatedMap.display();
 
-    cout << "\nSeats booked successfully: ";
+    // ===== PRINT TICKET =====
+    cout << "\n================= CINE++ TICKET =================\n";
+    cout << "User       : " << user.getEmail() << endl;
+    cout << "Show ID    : " << showId << endl;
+    cout << "Seats      : ";
     for (auto &s : selected)
         cout << char('A' + s.first) << s.second + 1 << " ";
-    cout << endl;
+    cout << "\nTickets    : " << seatCount << endl;
+    cout << "Total Paid : " << finalPrice << " Tk\n";
+    cout << "Status     : CONFIRMED\n";
+    cout << "=================================================\n";
 }
+
 
 
 /* ================= SEAT RECOMMENDATION ================= */

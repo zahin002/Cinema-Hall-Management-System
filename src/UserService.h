@@ -11,7 +11,7 @@ private:
     void viewMovies();
     void filterMovies();
     void viewShowtimes();
-    void bookSeat();
+    void bookSeat(const User& user);
     void recommendSeat();
 };
 
