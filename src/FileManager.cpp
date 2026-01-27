@@ -6,21 +6,13 @@
 
 using namespace std;
 
-/*
- * FileManager
- * -----------
- * Responsible for file-based persistence in the CINE++ system.
- * All read/write operations for users, movies, showtimes,
- * and seat maps are centralized here.
- */
-
-/* ================= USERS (WEEK 1) ================= */
+/* ================= USERS ================= */
 
 /*
- * Week 1:
  * Saves a user's credentials and role into persistent storage.
  * Data is appended so that existing users are not overwritten.
  */
+
 void FileManager::saveUser(const User& user) {
     ofstream file("../data/users.txt", ios::app);
     file << user.getEmail() << " "
@@ -30,10 +22,10 @@ void FileManager::saveUser(const User& user) {
 }
 
 /*
- * Week 1:
  * Loads all registered users from file.
  * Each line is parsed into email, encrypted password, and role.
  */
+
 vector<User> FileManager::loadUsers() {
     vector<User> users;
     ifstream file("../data/users.txt");
@@ -46,12 +38,9 @@ vector<User> FileManager::loadUsers() {
     return users;
 }
 
-/* ================= MOVIES (WEEK 3) ================= */
+/* ================= MOVIES ================= */
 
-/*
- * Week 3:
- * Saves movie information into persistent storage.
- */
+/* Saves movie information into persistent storage. */
 
 void FileManager::saveMovie(const Movie& movie) {
     ofstream file("../data/movies.txt", ios::app);
@@ -77,7 +66,6 @@ int FileManager::getNextMovieCode() {
 }
 
 /*
- * Week 3:
  * Loads all movies from file.
  * Parsing logic carefully mixes getline and formatted input to correctly read both strings and integers.
  */
@@ -113,13 +101,13 @@ bool FileManager::movieCodeExists(int code) {
     return false;
 }
 
-/* ================= SHOWTIMES (WEEK 5) ================= */
+/* ================= SHOWTIMES ================= */
 
 /*
- * Week 5:
  * Saves showtime information for a movie.
- * Each showtime links a movie with a date, time, and hall number.
+ * Each showtime links a movie with a date, time and hall number.
  */
+
 void FileManager::saveShowtime(const Showtime& s) {
     ofstream file("../data/showtimes.txt", ios::app);
     file << s.getMovieCode() << "|"
@@ -152,13 +140,13 @@ vector<Showtime> FileManager::loadShowtimes() {
 }
 
 
-/* ========== SEAT MAP (WEEK 6) ========== */
+/* ========== SEAT MAP ========== */
 
 /*
- * Week 6:
  * Saves the seat map of a specific show.
  * Each show has a dedicated file identified by show ID.
  */
+
 void FileManager::saveSeatMap(int showId, const SeatMap& map) {
     string filename = "../data/seats/show_" + to_string(showId) + ".txt";
     ofstream file(filename);
@@ -177,10 +165,10 @@ void FileManager::saveSeatMap(int showId, const SeatMap& map) {
 }
 
 /*
- * Week 6:
  * Loads the seat map for a given show.
  * Reconstructs the seating grid exactly as it was saved.
  */
+
 SeatMap FileManager::loadSeatMap(int showId) {
     string filename = "../data/seats/show_" + to_string(showId) + ".txt";
     ifstream file(filename);

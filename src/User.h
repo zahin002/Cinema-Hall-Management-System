@@ -24,9 +24,9 @@ public:
     string getRole() const;
 
     /*
-     Week 1:
      Encrypts a password using a simple character shift.
      Ensures passwords are not stored in plain text. */
+     
     static string encryptPassword(const string& password);
 
 };

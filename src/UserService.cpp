@@ -1,11 +1,11 @@
 #include "UserService.h"
 #include "FileManager.h"
 #include "SeatMap.h"
+#include "PricingEngine.h"
 #include <iostream>
 #include <sstream>
 #include <set>
 #include <limits>
-
 
 using namespace std;
 
@@ -35,7 +35,7 @@ void UserService::userMenu(const User& user) {
             case 1: viewMovies(); break;
             case 2: filterMovies(); break;
             case 3: viewShowtimes(); break;
-            case 4: bookSeat(); break;
+            case 4: bookSeat(user); break;
             case 5: recommendSeat(); break;
             case 6: cout << "Logged out.\n"; break;
             default: cout << "Invalid choice.\n";
@@ -130,7 +130,8 @@ void UserService::viewShowtimes() {
 
 /* Atomic multi-seat booking */
 
-void UserService::bookSeat() {
+void UserService::bookSeat(const User& user) {
+
     int showId;
     string input;
 
@@ -172,12 +173,28 @@ void UserService::bookSeat() {
         selected.push_back({row, col});
     }
 
+    // ===== WEEK 8 PRICING =====
+
+    int seatCount = selected.size();
+    string userKey = user.getEmail();
+
+    int finalPrice = PricingEngine::calculateFinalPrice(
+        seatCount,
+        userKey
+    );
+
+    cout << "\n----- BILL -----\n";
+    cout << "Tickets: " << seatCount << endl;
+    cout << "Base price: " << seatCount * 500 << " Tk\n";
+    cout << "Final price: " << finalPrice << " Tk\n";
+
+    // ===== BOOK SEATS =====
+    
     for (auto &s : selected)
         map.bookSeat(s.first, s.second);
 
     FileManager::saveSeatMap(showId, map);
 
-   /* Display updated seat map after booking */
     cout << "\nUpdated Seat Map:\n";
     SeatMap updatedMap = FileManager::loadSeatMap(showId);
     updatedMap.display();
