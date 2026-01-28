@@ -7,36 +7,39 @@ The project is built incrementally as part of the **Software Project**, followin
 ---
 
 ## 📂 Project Structure
+
+```
 Cinema-Hall-Management-System/
 │
 ├── data/
-│ ├── movies.txt
-│ ├── showtimes.txt
-│ ├── users.txt
-│ └── seats/
-│ ├── show_1.txt
-│ ├── show_2.txt
-│ └── show_3.txt
+│   ├── movies.txt
+│   ├── showtimes.txt
+│   ├── users.txt
+│   └── seats/
+│       ├── show_1.txt
+│       ├── show_2.txt
+│       └── show_3.txt
 │
 ├── src/
-│ ├── main.cpp
-│ ├── CinemaSystem.cpp
-│ ├── CinemaSystem.h
-│ ├── AdminPanel.cpp
-│ ├── AdminPanel.h
-│ ├── UserPanel.cpp
-│ ├── UserPanel.h
-│ ├── Movie.cpp
-│ ├── Movie.h
-│ ├── Showtime.cpp
-│ ├── Showtime.h
-│ ├── SeatMap.cpp
-│ ├── SeatMap.h
-│ ├── FileManager.cpp
-│ └── FileManager.h
+│   ├── main.cpp
+│   ├── CinemaSystem.cpp
+│   ├── CinemaSystem.h
+│   ├── AdminPanel.cpp
+│   ├── AdminPanel.h
+│   ├── UserPanel.cpp
+│   ├── UserPanel.h
+│   ├── Movie.cpp
+│   ├── Movie.h
+│   ├── Showtime.cpp
+│   ├── Showtime.h
+│   ├── SeatMap.cpp
+│   ├── SeatMap.h
+│   ├── FileManager.cpp
+│   └── FileManager.h
 │
 ├── README.md
 └── .gitignore
+```
 
 ## 🧠 Technologies & Concepts Used
 - C++
