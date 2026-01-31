@@ -1,4 +1,5 @@
 #include <iostream>
+#include <conio.h>
 #include <vector>
 #include <sstream>     // Used for parsing multiple seat inputs
 #include <set>         // Used to prevent duplicate seat selection
@@ -9,6 +10,9 @@
 #include "UserService.h"
 
 using namespace std;
+
+const string ADMIN_SECRET_CODE = "ADMIN2026";
+
 
 /*
  * Controls the overall application lifecycle.
@@ -62,23 +66,142 @@ void CinemaSystem::showMainMenu() {
     cout << "4. Exit\n";
 }
 
+/*
+ * Reads password from console while showing '*'
+ * Supports backspace and enter
+ */
+string getHiddenPassword() {
+    string password;
+    char ch;
+
+    while (true) {
+        ch = _getch();   // get character without echo
+
+        if (ch == '\r') {          // Enter key
+            cout << endl;
+            break;
+        }
+        else if (ch == '\b') {     // Backspace
+            if (!password.empty()) {
+                password.pop_back();
+                cout << "\b \b";
+            }
+        }
+        else {
+            password.push_back(ch);
+            cout << "*";
+        }
+    }
+    return password;
+}
+
+bool isValidEmail(const string& email) {
+    // no spaces
+    if (email.find(' ') != string::npos)
+        return false;
+
+    // exactly one '@'
+    size_t atPos = email.find('@');
+    if (atPos == string::npos || atPos == 0)
+        return false;
+
+    // last dot must be AFTER '@'
+    size_t lastDot = email.rfind('.');
+    if (lastDot == string::npos || lastDot < atPos + 2)
+        return false;
+
+    // must not end with dot
+    if (lastDot == email.length() - 1)
+        return false;
+
+    // extension length >= 2
+    size_t extLen = email.length() - lastDot - 1;
+    if (extLen < 2)
+        return false;
+
+    // extension must be alphabetic
+    for (size_t i = lastDot + 1; i < email.length(); i++) {
+        if (!isalpha(email[i]))
+            return false;
+    }
+
+    return true;
+}
+
+
+
+bool isValidPassword(const string& password) {
+    if (password.length() < 8)
+        return false;
+
+    bool hasLetter = false;
+    bool hasDigit = false;
+
+    for (char c : password) {
+        if (isalpha(c))
+            hasLetter = true;
+        else if (isdigit(c))
+            hasDigit = true;
+    }
+
+    return hasLetter && hasDigit;
+}
+
+
 
 /*
  * Registers a new user by storing encrypted credentials.
  * Password encryption ensures raw passwords are never saved.
  */
+
 void CinemaSystem::signup() {
-    string email, password;
+    string email, password, role;
+
     cout << "Enter email: ";
     cin >> email;
+
+    //  EMAIL VALIDATION (MUST BE FIRST)
+    if (!isValidEmail(email)) {
+        cout << "Invalid email format.\n";
+        return;   // 🔥 THIS RETURN IS CRITICAL
+    }
+
     cout << "Enter password: ";
-    cin >> password;
+    password = getHiddenPassword();
 
+    //  PASSWORD VALIDATION
+    if (!isValidPassword(password)) {
+        cout << "Password must be at least 8 characters long and contain letters and numbers.\n";
+        return;
+    }
+
+    cout << "Signup as (user/admin): ";
+    cin >> role;
+
+    if (role != "user" && role != "admin") {
+        cout << "Invalid role selection.\n";
+        return;
+    }
+
+    // ADMIN CHECK
+    if (role == "admin") {
+        string adminCode;
+        cout << "Enter admin secret code: ";
+        cin >> adminCode;
+
+        if (adminCode != ADMIN_SECRET_CODE) {
+            cout << "Unauthorized admin signup attempt!\n";
+            return;
+        }
+    }
+
+    //  SAVE USER ONLY IF EVERYTHING IS VALID
     string encrypted = User::encryptPassword(password);
-    FileManager::saveUser(User(email, encrypted, "user"));
+    FileManager::saveUser(User(email, encrypted, role));
 
-    cout << "Signup successful!\n";
+    cout << "Signup successful as " << role << "!\n";
 }
+
 
 /*
  * Authenticates user credentials by comparing encrypted values.
@@ -87,30 +210,39 @@ void CinemaSystem::signup() {
 
 void CinemaSystem::login() {
     string email, password;
+
     cout << "Enter email: ";
     cin >> email;
+
+    if (!isValidEmail(email)) {
+        cout << "Invalid email format.\n";
+        return;
+    }
+
     cout << "Enter password: ";
-    cin >> password;
+    password = getHiddenPassword();
 
     string encrypted = User::encryptPassword(password);
     vector<User> users = FileManager::loadUsers();
 
     for (const User& u : users) {
-        if (u.getEmail() == email && u.getPassword() == encrypted) {
+        if (u.getEmail() == email &&
+            u.getPassword() == encrypted) {
 
-            AdminService adminService;
-            UserService userService;
-
-            if (u.getRole() == "admin")
+            if (u.getRole() == "admin") {
+                AdminService adminService;
                 adminService.adminMenu(u);
-            else
+            } else {
+                UserService userService;
                 userService.userMenu(u);
-
+            }
             return;
         }
     }
+
     cout << "Invalid email or password.\n";
 }
+
 
 /* Guest login using Bangladeshi phone number validation.*/
 

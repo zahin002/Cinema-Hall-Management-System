@@ -2,6 +2,8 @@
 #define USER_H
 
 #include <string>
+#include <conio.h>
+
 using namespace std;
 
 class User {
