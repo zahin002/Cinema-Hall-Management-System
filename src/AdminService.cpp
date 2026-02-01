@@ -24,25 +24,27 @@ void AdminService::adminMenu(const User&) {
         cout << "\n--- ADMIN MENU ---\n";
         cout << "1. Add Movie\n";
         cout << "2. View Movies\n";
-        cout << "3. Add Showtime\n";
-        cout << "4. View Showtimes\n";
-        cout << "5. Create Seat Map\n";
-        cout << "6. View Seat Map\n";
-        cout << "7. Logout\n";
+        cout << "3. Delete Movie\n";
+        cout << "4. Add Showtime\n";
+        cout << "5. View Showtimes\n";
+        cout << "6. Create Seat Map\n";
+        cout << "7. View Seat Map\n";
+        cout << "8. Logout\n";
         cout << "Enter choice: ";
         cin >> choice;
 
         switch (choice) {
             case 1: addMovie(); break;
             case 2: viewMovies(); break;
-            case 3: addShowtime(); break;
-            case 4: viewShowtimes(); break;
-            case 5: createSeatMap(); break;
-            case 6: viewSeatMap(); break;
-            case 7: cout << "Logged out.\n"; break;
+            case 3: deleteMovie(); break;
+            case 4: addShowtime(); break;
+            case 5: viewShowtimes(); break;
+            case 6: createSeatMap(); break;
+            case 7: viewSeatMap(); break;
+            case 8: cout << "Logged out.\n"; break;
             default: cout << "Invalid choice.\n";
         }
-    } while (choice != 7);
+    } while (choice != 8);
 }
 
 /* ================= MOVIE MANAGEMENT ================= */
@@ -178,7 +180,7 @@ void AdminService::addShowtime() {
     cout << "\nChoose Time Slot:\n";
     for (size_t i = 0; i < TIME_SLOTS.size(); i++) {
         cout << i + 1 << ". " << TIME_SLOTS[i] << endl;
-        }
+    }
 
     int slotChoice;
     cout << "Enter option (1-5): ";
@@ -189,10 +191,30 @@ void AdminService::addShowtime() {
         return;
     }
 
-    string time = TIME_SLOTS[slotChoice - 1];
+    time = TIME_SLOTS[slotChoice - 1];
 
     cout << "Enter hall number: ";
     cin >> hallNo;
+
+    //3 Halls Fixed//
+
+    if (hallNo < 1 || hallNo > 3) {
+        cout << "Invalid hall number. Only halls 1–3 are available.\n";
+        return;
+    }
+
+
+    vector<Showtime> existingShows = FileManager::loadShowtimes();
+
+    for (const Showtime& s : existingShows) {
+        if (s.getHallNo() == hallNo && s.getDate() == date &&s.getTime() == time) {
+            cout << "Showtime conflict detected.\n";
+            cout << "Hall " << hallNo << " already has a showtime at this time.\n";
+            cout << "Please delete the existing showtime first.\n";
+            return;
+        }
+    }
+
 
     FileManager::saveShowtime(
         Showtime(movieCode, date, time, hallNo)
