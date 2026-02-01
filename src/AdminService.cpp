@@ -3,11 +3,61 @@
 #include "Movie.h"
 #include "SeatMap.h"
 #include <fstream>
+#include <ctime>
+#include <sstream>
 #include <iostream>
 
 using namespace std;
 
 /* ================= ADMIN MENU ================= */
+
+
+/*
+ * Validates date in DD-MM-YYYY format
+ * Allows only today to next 30 days
+ */
+bool isValidFutureDate(const string& dateStr) {
+    int d, m, y;
+    char dash1, dash2;
+
+    stringstream ss(dateStr);
+    ss >> d >> dash1 >> m >> dash2 >> y;
+
+    if (ss.fail() || dash1 != '-' || dash2 != '-')
+        return false;
+
+    // Basic range check
+    if (d < 1 || d > 31 || m < 1 || m > 12 || y < 2024)
+        return false;
+
+    tm inputDate = {};
+    inputDate.tm_mday = d;
+    inputDate.tm_mon  = m - 1;
+    inputDate.tm_year = y - 1900;
+    inputDate.tm_hour = 0;
+
+    time_t inputTime = mktime(&inputDate);
+    if (inputTime == -1)
+        return false;
+
+    // Get today's date
+    time_t now = time(nullptr);
+    tm today = *localtime(&now);
+    today.tm_hour = 0;
+    today.tm_min = 0;
+    today.tm_sec = 0;
+
+    time_t todayTime = mktime(&today);
+
+    // Difference in days
+    double diffDays = difftime(inputTime, todayTime) / (60 * 60 * 24);
+
+    // Allow only today to next 30 days
+    if (diffDays < 0 || diffDays > 30)
+        return false;
+
+    return true;
+}
 
 void AdminService::adminMenu(const User&) {
     int choice;
@@ -37,6 +87,7 @@ void AdminService::adminMenu(const User&) {
 }
 
 /* ================= MOVIE MANAGEMENT ================= */
+
 
 void AdminService::addMovie() {
     string title, genre, language;
@@ -156,8 +207,14 @@ void AdminService::addShowtime() {
         return;
     }
 
-    cout << "Enter date (YYYY-MM-DD): ";
+    cout << "Enter date (DD-MM-YYYY): ";
     getline(cin, date);
+
+    if (!isValidFutureDate(date)) {
+        cout << "Invalid date. You can only add showtimes for the next 30 days.\n";
+        return;
+    }
+
     cout << "Enter time (HH:MM): ";
     getline(cin, time);
     cout << "Enter hall number: ";

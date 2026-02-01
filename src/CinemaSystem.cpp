@@ -160,10 +160,10 @@ void CinemaSystem::signup() {
     cout << "Enter email: ";
     cin >> email;
 
-    //  EMAIL VALIDATION (MUST BE FIRST)
+    //  EMAIL VALIDATION 
     if (!isValidEmail(email)) {
         cout << "Invalid email format.\n";
-        return;   // 🔥 THIS RETURN IS CRITICAL
+        return;   // THIS RETURN IS CRITICAL
     }
 
     cout << "Enter password: ";
@@ -281,3 +281,4 @@ bool CinemaSystem::isValidBangladeshPhone(const string& phone) {
 
     return true;
 }
+
