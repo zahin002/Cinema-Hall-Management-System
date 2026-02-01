@@ -23,6 +23,8 @@ private:
     // Showtime management
     void addShowtime();
     void viewShowtimes();
+    void deleteShowtime();
+
 
     // Seat map management
     void createSeatMap();
