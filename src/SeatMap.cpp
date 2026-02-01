@@ -20,6 +20,30 @@ SeatMap::SeatMap(int rows, int cols) {
 }
 
 /*
+ * Creates a predefined seat layout based on hall number.
+ * Hall structures are fixed and reused for all showtimes.
+ */
+SeatMap SeatMap::createForHall(int hallNo) {
+    if (hallNo == 1) {
+        // Largest hall
+        return SeatMap(10, 12);
+    }
+    else if (hallNo == 2) {
+        // Medium hall
+        return SeatMap(8, 10);
+    }
+    else if (hallNo == 3) {
+        // Smallest hall
+        return SeatMap(6, 8);
+    }
+    else {
+        // Safety fallback
+        return SeatMap(0, 0);
+    }
+}
+
+
+/*
  * Initializes the seat grid.
  * All seats are marked 'O' to indicate availability.
  */
@@ -123,15 +147,15 @@ pair<int,int> SeatMap::recommendBestSeat() const {
      */
 
     for (int offset = 0; offset < rows; offset++) {
-        int r1 = centerRow + offset;
-        int r2 = centerRow - offset;
+        int r1 = centerRow - offset;
+        int r2 = centerRow + offset;
 
         for (int r : {r1, r2}) {
             if (r < 0 || r >= rows) continue;
 
             for (int cOffset = 0; cOffset < cols; cOffset++) {
-                int c1 = centerCol + cOffset;
-                int c2 = centerCol - cOffset;
+                int c1 = centerCol - cOffset;
+                int c2 = centerCol + cOffset;
 
                 for (int c : {c1, c2}) {
                     if (c < 0 || c >= cols) continue;
