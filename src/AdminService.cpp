@@ -3,61 +3,20 @@
 #include "Movie.h"
 #include "SeatMap.h"
 #include <fstream>
-#include <ctime>
-#include <sstream>
 #include <iostream>
 
 using namespace std;
 
+vector<string> TIME_SLOTS = {
+    "08:30 AM - 10:00 AM",
+    "11:00 AM - 01:00 PM",
+    "02:00 PM - 04:30 PM",
+    "05:00 PM - 07:30 PM",
+    "08:00 PM - 10:30 PM"
+};
+
+
 /* ================= ADMIN MENU ================= */
-
-
-/*
- * Validates date in DD-MM-YYYY format
- * Allows only today to next 30 days
- */
-bool isValidFutureDate(const string& dateStr) {
-    int d, m, y;
-    char dash1, dash2;
-
-    stringstream ss(dateStr);
-    ss >> d >> dash1 >> m >> dash2 >> y;
-
-    if (ss.fail() || dash1 != '-' || dash2 != '-')
-        return false;
-
-    // Basic range check
-    if (d < 1 || d > 31 || m < 1 || m > 12 || y < 2024)
-        return false;
-
-    tm inputDate = {};
-    inputDate.tm_mday = d;
-    inputDate.tm_mon  = m - 1;
-    inputDate.tm_year = y - 1900;
-    inputDate.tm_hour = 0;
-
-    time_t inputTime = mktime(&inputDate);
-    if (inputTime == -1)
-        return false;
-
-    // Get today's date
-    time_t now = time(nullptr);
-    tm today = *localtime(&now);
-    today.tm_hour = 0;
-    today.tm_min = 0;
-    today.tm_sec = 0;
-
-    time_t todayTime = mktime(&today);
-
-    // Difference in days
-    double diffDays = difftime(inputTime, todayTime) / (60 * 60 * 24);
-
-    // Allow only today to next 30 days
-    if (diffDays < 0 || diffDays > 30)
-        return false;
-
-    return true;
-}
 
 void AdminService::adminMenu(const User&) {
     int choice;
@@ -87,7 +46,6 @@ void AdminService::adminMenu(const User&) {
 }
 
 /* ================= MOVIE MANAGEMENT ================= */
-
 
 void AdminService::addMovie() {
     string title, genre, language;
@@ -174,6 +132,7 @@ void AdminService::deleteMovie() {
 
 /* ================= SHOWTIME MANAGEMENT ================= */
 
+
 void AdminService::addShowtime() {
     int movieCode, hallNo;
     string date, time;
@@ -215,8 +174,23 @@ void AdminService::addShowtime() {
         return;
     }
 
-    cout << "Enter time (HH:MM): ";
-    getline(cin, time);
+
+    cout << "\nChoose Time Slot:\n";
+    for (size_t i = 0; i < TIME_SLOTS.size(); i++) {
+        cout << i + 1 << ". " << TIME_SLOTS[i] << endl;
+        }
+
+    int slotChoice;
+    cout << "Enter option (1-5): ";
+    cin >> slotChoice;
+
+    if (slotChoice < 1 || slotChoice > TIME_SLOTS.size()) {
+        cout << "Invalid time slot selection.\n";
+        return;
+    }
+
+    string time = TIME_SLOTS[slotChoice - 1];
+
     cout << "Enter hall number: ";
     cin >> hallNo;
 
