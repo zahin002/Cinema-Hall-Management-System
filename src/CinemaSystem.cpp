@@ -1,35 +1,18 @@
-/*************************************************************
- * File: CinemaSystem.cpp
- * Project: CINE++ Cinema Hall Management System (SPL-1)
- *
- * Week 1:
- * - Application entry flow
- * - Welcome screen
- * - Login and signup system
- * - Role-based menu routing
- *
- * Week 2:
- * - Movie and showtime management
- * - File-based persistence integration
- *
- * Week 3:
- * - Seat map creation and visualization
- * - Seat booking with full validation
- *
- * Week 4:
- * - Best seat recommendation logic
- * - Group booking consistency handling
- *************************************************************/
-
 #include <iostream>
+#include <conio.h>
 #include <vector>
 #include <sstream>     // Used for parsing multiple seat inputs
 #include <set>         // Used to prevent duplicate seat selection
 #include "CinemaSystem.h"
 #include "FileManager.h"
 #include "Movie.h"
+#include "AdminService.h"
+#include "UserService.h"
 
 using namespace std;
+
+const string ADMIN_SECRET_CODE = "ADMIN2026";
+
 
 /*
  * Controls the overall application lifecycle.
@@ -52,11 +35,12 @@ void CinemaSystem::run() {
         switch (choice) {
             case 1: login(); break;
             case 2: signup(); break;
-            case 3: cout << "Exiting CINE++...\n"; break;
+            case 3: guestLogin(); break;
+            case 4: cout << "Exiting CINE++...\n"; break;
             default: cout << "Invalid choice.\n";
         }
         cout << endl;
-    } while (choice != 3);
+    } while (choice != 4);
 }
 
 /*
@@ -78,338 +62,223 @@ void CinemaSystem::showWelcome() {
 void CinemaSystem::showMainMenu() {
     cout << "1. Login\n";
     cout << "2. Signup\n";
-    cout << "3. Exit\n";
+    cout << "3. Guest Booking\n";
+    cout << "4. Exit\n";
 }
+
+/*
+ * Reads password from console while showing '*'
+ * Supports backspace and enter
+ */
+string getHiddenPassword() {
+    string password;
+    char ch;
+
+    while (true) {
+        ch = _getch();   // get character without echo
+
+        if (ch == '\r') {          // Enter key
+            cout << endl;
+            break;
+        }
+        else if (ch == '\b') {     // Backspace
+            if (!password.empty()) {
+                password.pop_back();
+                cout << "\b \b";
+            }
+        }
+        else {
+            password.push_back(ch);
+            cout << "*";
+        }
+    }
+    return password;
+}
+
+bool isValidEmail(const string& email) {
+    // no spaces
+    if (email.find(' ') != string::npos)
+        return false;
+
+    // exactly one '@'
+    size_t atPos = email.find('@');
+    if (atPos == string::npos || atPos == 0)
+        return false;
+
+    // last dot must be AFTER '@'
+    size_t lastDot = email.rfind('.');
+    if (lastDot == string::npos || lastDot < atPos + 2)
+        return false;
+
+    // must not end with dot
+    if (lastDot == email.length() - 1)
+        return false;
+
+    // extension length >= 2
+    size_t extLen = email.length() - lastDot - 1;
+    if (extLen < 2)
+        return false;
+
+    // extension must be alphabetic
+    for (size_t i = lastDot + 1; i < email.length(); i++) {
+        if (!isalpha(email[i]))
+            return false;
+    }
+
+    return true;
+}
+
+
+
+bool isValidPassword(const string& password) {
+    if (password.length() < 8)
+        return false;
+
+    bool hasLetter = false;
+    bool hasDigit = false;
+
+    for (char c : password) {
+        if (isalpha(c))
+            hasLetter = true;
+        else if (isdigit(c))
+            hasDigit = true;
+    }
+
+    return hasLetter && hasDigit;
+}
+
+
 
 /*
  * Registers a new user by storing encrypted credentials.
  * Password encryption ensures raw passwords are never saved.
  */
+
 void CinemaSystem::signup() {
-    string email, password;
+    string email, password, role;
+
     cout << "Enter email: ";
     cin >> email;
+
+    //  EMAIL VALIDATION 
+    if (!isValidEmail(email)) {
+        cout << "Invalid email format.\n";
+        return;   // THIS RETURN IS CRITICAL
+    }
+
     cout << "Enter password: ";
-    cin >> password;
+    password = getHiddenPassword();
 
+    //  PASSWORD VALIDATION
+    if (!isValidPassword(password)) {
+        cout << "Password must be at least 8 characters long and contain letters and numbers.\n";
+        return;
+    }
+
+    cout << "Signup as (user/admin): ";
+    cin >> role;
+
+    if (role != "user" && role != "admin") {
+        cout << "Invalid role selection.\n";
+        return;
+    }
+
+    // ADMIN CHECK
+    if (role == "admin") {
+        string adminCode;
+        cout << "Enter admin secret code: ";
+        cin >> adminCode;
+
+        if (adminCode != ADMIN_SECRET_CODE) {
+            cout << "Unauthorized admin signup attempt!\n";
+            return;
+        }
+    }
+
+    //  SAVE USER ONLY IF EVERYTHING IS VALID
     string encrypted = User::encryptPassword(password);
-    FileManager::saveUser(User(email, encrypted, "user"));
+    FileManager::saveUser(User(email, encrypted, role));
 
-    cout << "Signup successful!\n";
+    cout << "Signup successful as " << role << "!\n";
 }
+
 
 /*
  * Authenticates user credentials by comparing encrypted values.
  * Redirects user to admin or user menu based on role.
  */
+
 void CinemaSystem::login() {
     string email, password;
+
     cout << "Enter email: ";
     cin >> email;
+
+    if (!isValidEmail(email)) {
+        cout << "Invalid email format.\n";
+        return;
+    }
+
     cout << "Enter password: ";
-    cin >> password;
+    password = getHiddenPassword();
 
     string encrypted = User::encryptPassword(password);
     vector<User> users = FileManager::loadUsers();
 
-    /*
-     * Linear search is used since user data size
-     * is expected to be small for this system.
-     */
     for (const User& u : users) {
-        if (u.getEmail() == email && u.getPassword() == encrypted) {
-            if (u.getRole() == "admin")
-                adminMenu(u);
-            else
-                userMenu(u);
+        if (u.getEmail() == email &&
+            u.getPassword() == encrypted) {
+
+            if (u.getRole() == "admin") {
+                AdminService adminService;
+                adminService.adminMenu(u);
+            } else {
+                UserService userService;
+                userService.userMenu(u);
+            }
             return;
         }
     }
+
     cout << "Invalid email or password.\n";
 }
 
-/* ================= ADMIN MENU ================= */
 
-void CinemaSystem::adminMenu(const User&) {
-    int choice;
-    do {
-        cout << "\n--- ADMIN MENU ---\n";
-        cout << "1. Add Movie\n";
-        cout << "2. View Movies\n";
-        cout << "3. Add Showtime\n";
-        cout << "4. View Showtimes\n";
-        cout << "5. Create Seat Map\n";
-        cout << "6. View Seat Map\n";
-        cout << "7. Logout\n";
-        cout << "Enter choice: ";
-        cin >> choice;
+/* Guest login using Bangladeshi phone number validation.*/
 
-        switch (choice) {
-            case 1: addMovie(); break;
-            case 2: viewMovies(); break;
-            case 3: addShowtime(); break;
-            case 4: viewShowtimes(); break;
-            case 5: createSeatMap(); break;
-            case 6: viewSeatMap(); break;
-            case 7: cout << "Logged out.\n"; break;
-            default: cout << "Invalid choice.\n";
-        }
-    } while (choice != 7);
-}
+void CinemaSystem::guestLogin() {
+    string rest;
+    cout << "Enter phone number: +880";
+    cin >> rest;
 
-/* ================= USER MENU ================= */
+    string phone = "+880" + rest;
 
-void CinemaSystem::userMenu(const User&) {
-    int choice;
-    do {
-        cout << "\n--- USER MENU ---\n";
-        cout << "1. Browse Movies\n";
-        cout << "2. View Showtimes\n";
-        cout << "3. Book Seat\n";
-        cout << "4. Recommend Best Seat\n";
-        cout << "5. Logout\n";
-
-        cout << "Enter choice: ";
-        cin >> choice;
-
-        switch (choice) {
-            case 1: viewMovies(); break;
-            case 2: viewShowtimes(); break;
-            case 3: bookSeat(); break;
-            case 4: recommendSeat(); break;
-            case 5: cout << "Logged out.\n"; break;
-            default: cout << "Invalid choice.\n";
-        }
-    } while (choice != 5);
-}
-
-/* ================= MOVIE MANAGEMENT ================= */
-
-void CinemaSystem::addMovie() {
-    string title, genre, language;
-    int duration;
-
-    /*
-     * cin.ignore() is required to clear the input buffer
-     * before using getline to avoid skipped input.
-     */
-    cin.ignore();
-    cout << "Enter movie title: ";
-    getline(cin, title);
-    cout << "Enter genre: ";
-    getline(cin, genre);
-    cout << "Enter duration (minutes): ";
-    cin >> duration;
-    cin.ignore();
-    cout << "Enter language: ";
-    getline(cin, language);
-
-    FileManager::saveMovie(Movie(title, genre, duration, language));
-    cout << "Movie added successfully!\n";
-}
-
-void CinemaSystem::viewMovies() {
-    vector<Movie> movies = FileManager::loadMovies();
-
-    if (movies.empty()) {
-        cout << "No movies available.\n";
+    if (!isValidBangladeshPhone(phone)) {
+        cout << "Please input valid phone number.\n";
         return;
     }
 
-    cout << "\n--- MOVIE LIST ---\n";
-    for (size_t i = 0; i < movies.size(); i++) {
-        cout << i + 1 << ". "
-             << movies[i].getTitle()
-             << " | " << movies[i].getGenre()
-             << " | " << movies[i].getDuration() << " mins"
-             << " | " << movies[i].getLanguage() << endl;
-    }
+    cout << "Guest login successful!\n";
+
+    User guest(phone, "", "guest");
+    UserService userService;
+    userService.userMenu(guest);
 }
 
-/* ================= SHOWTIME MANAGEMENT ================= */
 
-void CinemaSystem::addShowtime() {
-    string movieTitle, date, time;
-    int hallNo;
+bool CinemaSystem::isValidBangladeshPhone(const string& phone) {
+    if (phone.length() != 14) return false;
 
-    cin.ignore();
-    cout << "Enter movie title: ";
-    getline(cin, movieTitle);
-    cout << "Enter date (YYYY-MM-DD): ";
-    getline(cin, date);
-    cout << "Enter time (HH:MM): ";
-    getline(cin, time);
-    cout << "Enter hall number: ";
-    cin >> hallNo;
+    if (phone.substr(0, 4) != "+880") return false;
+    if (phone[4] != '1') return false;
 
-    FileManager::saveShowtime(Showtime(movieTitle, date, time, hallNo));
-    cout << "Showtime added successfully!\n";
+    char simDigit = phone[5];
+    if (simDigit < '3' || simDigit > '9') return false;
+
+    for (int i = 6; i < 14; i++) {
+        if (!isdigit(phone[i])) return false;
+    }
+
+    return true;
 }
 
-void CinemaSystem::viewShowtimes() {
-    vector<Showtime> shows = FileManager::loadShowtimes();
-
-    if (shows.empty()) {
-        cout << "No showtimes available.\n";
-        return;
-    }
-
-    cout << "\n--- SHOWTIMES ---\n";
-    for (size_t i = 0; i < shows.size(); i++) {
-        cout << i + 1 << ". "
-             << shows[i].getMovieTitle()
-             << " | " << shows[i].getDate()
-             << " | " << shows[i].getTime()
-             << " | Hall " << shows[i].getHallNo()
-             << endl;
-    }
-}
-
-/* ================= SEAT MAP & BOOKING ================= */
-
-void CinemaSystem::createSeatMap() {
-    int showId, rows, cols;
-
-    cout << "Enter show ID: ";
-    cin >> showId;
-    cout << "Enter number of rows: ";
-    cin >> rows;
-    cout << "Enter number of columns: ";
-    cin >> cols;
-
-    SeatMap map(rows, cols);
-    FileManager::saveSeatMap(showId, map);
-
-    cout << "Seat map created successfully!\n";
-}
-
-void CinemaSystem::viewSeatMap() {
-    int showId;
-    cout << "Enter show ID: ";
-    cin >> showId;
-
-    SeatMap map = FileManager::loadSeatMap(showId);
-    map.display();
-}
-
-/*
- * Handles multi-seat booking with full validation.
- * Booking is atomic: either all seats are booked or none.
- */
-void CinemaSystem::bookSeat() {
-    int showId;
-    string input;
-
-    cout << "Enter show ID: ";
-    cin >> showId;
-    cin.ignore();
-
-    SeatMap map = FileManager::loadSeatMap(showId);
-    map.display();
-
-    cout << "\nEnter seats (e.g. A1 A2 B5 C7 or A1,B5,C7): ";
-    getline(cin, input);
-
-    /*
-     * Normalizing input allows flexible formatting
-     * while keeping parsing logic simple.
-     */
-    for (char &c : input) {
-        if (c == ',') c = ' ';
-    }
-
-    stringstream ss(input);
-    string seatCode;
-
-    vector<pair<int,int>> selectedSeats;
-    set<string> uniqueSeats;
-
-    /*
-     * Using a set ensures that the same seat
-     * cannot be booked more than once in a single request.
-     */
-    while (ss >> seatCode) {
-        seatCode[0] = toupper(seatCode[0]);
-
-        if (uniqueSeats.count(seatCode)) {
-            cout << "Duplicate seat detected: " << seatCode << endl;
-            return;
-        }
-        uniqueSeats.insert(seatCode);
-
-        char rowChar = seatCode[0];
-        int seatNumber;
-
-        try {
-            seatNumber = stoi(seatCode.substr(1));
-        } catch (...) {
-            cout << "Invalid seat format: " << seatCode << endl;
-            return;
-        }
-
-        int row = rowChar - 'A';
-        int col = seatNumber - 1;
-
-        if (row < 0 || row >= map.getRows() ||
-            col < 0 || col >= map.getCols()) {
-            cout << "Invalid seat: " << seatCode << endl;
-            return;
-        }
-
-        if (!map.isSeatAvailable(row, col)) {
-            cout << "Seat already booked: " << seatCode << endl;
-            return;
-        }
-
-        selectedSeats.push_back({row, col});
-    }
-
-    if (selectedSeats.empty()) {
-        cout << "No seats selected.\n";
-        return;
-    }
-
-    /*
-     * All validations are completed before booking.
-     * This guarantees consistency in case of failure.
-     */
-    for (auto &s : selectedSeats) {
-        map.bookSeat(s.first, s.second);
-    }
-
-    FileManager::saveSeatMap(showId, map);
-
-    cout << "\nSeats booked successfully: ";
-    for (auto &s : selectedSeats) {
-        char rowChar = 'A' + s.first;
-        cout << rowChar << (s.second + 1) << " ";
-    }
-    cout << endl;
-}
-
-/* ================= SEAT RECOMMENDATION ================= */
-
-void CinemaSystem::recommendSeat() {
-    int showId, count;
-
-    cout << "Enter show ID: ";
-    cin >> showId;
-    cout << "Enter number of seats: ";
-    cin >> count;
-
-    SeatMap map = FileManager::loadSeatMap(showId);
-    map.display();
-
-    auto seats = map.recommendBestSeats_Custom(count);
-
-    if (seats.empty()) {
-        cout << "Sorry, Try to find manually\n";
-        return;
-    }
-
-    cout << "Recommended seats: ";
-    for (auto &s : seats) {
-        cout << char('A' + s.first) << (s.second + 1) << " ";
-    }
-    cout << endl;
-}
