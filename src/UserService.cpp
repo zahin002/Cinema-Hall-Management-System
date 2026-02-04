@@ -132,14 +132,42 @@ void UserService::viewShowtimes() {
 
 void UserService::bookSeat(const User& user) {
 
-    int showId;
     string input;
 
-    cout << "Enter show ID: ";
-    cin >> showId;
+    vector<Showtime> shows = FileManager::loadShowtimes();
+
+    if (shows.empty()) {
+        cout << "No showtimes available.\n";
+        return;
+    }
+
+    cout << "\n--- AVAILABLE SHOWTIMES ---\n";
+    for (size_t i = 0; i < shows.size(); i++) {
+        cout << i + 1 << ". "
+        << shows[i].getDate() << " | "
+        << shows[i].getTime() << " | Hall "
+        << shows[i].getHallNo() << endl;
+    }
+
+    int choice;
+    cout << "Select showtime (1-" << shows.size() << "): ";
+    cin >> choice;
     cin.ignore();
 
-    SeatMap map = FileManager::loadSeatMap(showId);
+    if (choice < 1 || choice > shows.size()) {
+        cout << "Invalid showtime selection.\n";
+        return;
+    }
+
+    Showtime selectedShow = shows[choice - 1];
+
+
+    SeatMap map = FileManager::loadOrCreateSeatMap(
+    selectedShow.getHallNo(),
+    selectedShow.getDate(),
+    selectedShow.getTime()
+    );
+
     map.display();
 
     cout << "Enter seats (A1 A2 B5 or A1,B5): ";
@@ -185,6 +213,7 @@ void UserService::bookSeat(const User& user) {
         return;
     }
 
+    /*
     // ===== PRICING =====
     int seatCount = selected.size();
     int finalPrice;
@@ -198,32 +227,41 @@ void UserService::bookSeat(const User& user) {
             userKey
         );
     }
+        
 
     cout << "\n----- BILL -----\n";
     cout << "Tickets: " << seatCount << endl;
     cout << "Base price: " << seatCount * 500 << " Tk\n";
-    cout << "Final price: " << finalPrice << " Tk\n";
+    cout << "Final price: " << finalPrice << " Tk\n"; */
 
     // ===== BOOK SEATS =====
     for (auto &s : selected)
         map.bookSeat(s.first, s.second);
 
-    FileManager::saveSeatMap(showId, map);
+    FileManager::saveSeatMap(FileManager::getSeatMapFilename(
+        selectedShow.getHallNo(),
+        selectedShow.getDate(),
+        selectedShow.getTime()
+        ),
+        map
+    );
 
-    // ===== SAVE TICKET HISTORY =====
+
+   /* // ===== SAVE TICKET HISTORY =====
     FileManager::saveTicket(
         userKey,
-        showId,
         seatCount,
-        finalPrice,
-        selected
+        finalPrice
     );
+    
+    */
 
     // ===== DISPLAY UPDATED SEAT MAP =====
     cout << "\nUpdated Seat Map:\n";
-    SeatMap updatedMap = FileManager::loadSeatMap(showId);
-    updatedMap.display();
+    map.display();
 
+
+    /*
     // ===== PRINT TICKET =====
     cout << "\n================= CINE++ TICKET =================\n";
     cout << "User       : " << user.getEmail() << endl;
@@ -235,6 +273,7 @@ void UserService::bookSeat(const User& user) {
     cout << "Total Paid : " << finalPrice << " Tk\n";
     cout << "Status     : CONFIRMED\n";
     cout << "=================================================\n";
+    */
 }
 
 
