@@ -7,6 +7,15 @@
 
 using namespace std;
 
+vector<string> TIME_SLOTS = {
+    "08:30 AM - 10:00 AM",
+    "11:00 AM - 01:00 PM",
+    "02:00 PM - 04:30 PM",
+    "05:00 PM - 07:30 PM",
+    "08:00 PM - 10:30 PM"
+};
+
+
 /* ================= ADMIN MENU ================= */
 
 void AdminService::adminMenu(const User&) {
@@ -15,25 +24,29 @@ void AdminService::adminMenu(const User&) {
         cout << "\n--- ADMIN MENU ---\n";
         cout << "1. Add Movie\n";
         cout << "2. View Movies\n";
-        cout << "3. Add Showtime\n";
-        cout << "4. View Showtimes\n";
-        cout << "5. Create Seat Map\n";
-        cout << "6. View Seat Map\n";
-        cout << "7. Logout\n";
+        cout << "3. Delete Movie\n";
+        cout << "4. Add Showtime\n";
+        cout << "5. View Showtimes\n";
+        cout << "6. Delete Showtime\n";
+        cout << "7. Create Seat Map\n";
+        cout << "8. View Seat Map\n";
+        cout << "9. Logout\n";
         cout << "Enter choice: ";
         cin >> choice;
 
         switch (choice) {
             case 1: addMovie(); break;
             case 2: viewMovies(); break;
-            case 3: addShowtime(); break;
-            case 4: viewShowtimes(); break;
-            case 5: createSeatMap(); break;
-            case 6: viewSeatMap(); break;
-            case 7: cout << "Logged out.\n"; break;
+            case 3: deleteMovie(); break;
+            case 4: addShowtime(); break;
+            case 5: viewShowtimes(); break;
+            case 6: deleteShowtime(); break;
+            case 7: createSeatMap(); break;
+            case 8: viewSeatMap(); break;
+            case 9: cout << "Logged out.\n"; break;
             default: cout << "Invalid choice.\n";
         }
-    } while (choice != 7);
+    } while (choice != 9);
 }
 
 /* ================= MOVIE MANAGEMENT ================= */
@@ -123,6 +136,7 @@ void AdminService::deleteMovie() {
 
 /* ================= SHOWTIME MANAGEMENT ================= */
 
+
 void AdminService::addShowtime() {
     int movieCode, hallNo;
     string date, time;
@@ -156,12 +170,53 @@ void AdminService::addShowtime() {
         return;
     }
 
-    cout << "Enter date (YYYY-MM-DD): ";
+    cout << "Enter date (DD-MM-YYYY): ";
     getline(cin, date);
-    cout << "Enter time (HH:MM): ";
-    getline(cin, time);
+
+    if (!isValidFutureDate(date)) {
+        cout << "Invalid date. You can only add showtimes for the next 30 days.\n";
+        return;
+    }
+
+
+    cout << "\nChoose Time Slot:\n";
+    for (size_t i = 0; i < TIME_SLOTS.size(); i++) {
+        cout << i + 1 << ". " << TIME_SLOTS[i] << endl;
+    }
+
+    int slotChoice;
+    cout << "Enter option (1-5): ";
+    cin >> slotChoice;
+
+    if (slotChoice < 1 || slotChoice > TIME_SLOTS.size()) {
+        cout << "Invalid time slot selection.\n";
+        return;
+    }
+
+    time = TIME_SLOTS[slotChoice - 1];
+
     cout << "Enter hall number: ";
     cin >> hallNo;
+
+    //3 Halls Fixed//
+
+    if (hallNo < 1 || hallNo > 3) {
+        cout << "Invalid hall number. Only halls 1–3 are available.\n";
+        return;
+    }
+
+
+    vector<Showtime> existingShows = FileManager::loadShowtimes();
+
+    for (const Showtime& s : existingShows) {
+        if (s.getHallNo() == hallNo && s.getDate() == date &&s.getTime() == time) {
+            cout << "Showtime conflict detected.\n";
+            cout << "Hall " << hallNo << " already has a showtime at this time.\n";
+            cout << "Please delete the existing showtime first.\n";
+            return;
+        }
+    }
+
 
     FileManager::saveShowtime(
         Showtime(movieCode, date, time, hallNo)
@@ -198,6 +253,52 @@ void AdminService::viewShowtimes() {
              << " | Hall " << shows[i].getHallNo()
              << endl;
     }
+}
+
+void AdminService::deleteShowtime() {
+    vector<Showtime> shows = FileManager::loadShowtimes();
+
+    if (shows.empty()) {
+        cout << "No showtimes available to delete.\n";
+        return;
+    }
+
+    cout << "\n--- SHOWTIMES ---\n";
+    for (size_t i = 0; i < shows.size(); i++) {
+        cout << i + 1 << ". "
+             << "Movie Code: " << shows[i].getMovieCode()
+             << " | Date: " << shows[i].getDate()
+             << " | Time: " << shows[i].getTime()
+             << " | Hall " << shows[i].getHallNo()
+             << endl;
+    }
+
+    int choice;
+    cout << "Enter showtime number to delete: ";
+    cin >> choice;
+
+    if (choice < 1 || choice > shows.size()) {
+        cout << "Invalid selection.\n";
+        return;
+    }
+
+    ofstream file("../data/showtimes_temp.txt");
+
+    for (size_t i = 0; i < shows.size(); i++) {
+        if (i != choice - 1) {
+            file << shows[i].getMovieCode() << "|"
+                 << shows[i].getDate() << "|"
+                 << shows[i].getTime() << "|"
+                 << shows[i].getHallNo() << endl;
+        }
+    }
+
+    file.close();
+
+    remove("../data/showtimes.txt");
+    rename("../data/showtimes_temp.txt", "../data/showtimes.txt");
+
+    cout << "Showtime deleted successfully.\n";
 }
 
 

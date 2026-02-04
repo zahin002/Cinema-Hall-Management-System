@@ -147,6 +147,42 @@ vector<Showtime> FileManager::loadShowtimes() {
  * Each show has a dedicated file identified by show ID.
  */
 
+string FileManager::getSeatMapFilename(int hallNo, const string& date, const string& time) {
+    string t = time;
+    for (char& c : t) {
+        if (c == ' ' || c == ':' || c == '-') c = '_';
+    }
+
+    return "../data/seats/hall_" + to_string(hallNo) + "_" + date + "_" + t + ".txt";
+}
+
+    SeatMap FileManager::loadOrCreateSeatMap(int hallNo, const string& date, const string& time) {
+        string filename = getSeatMapFilename(hallNo, date, time);
+
+    ifstream file(filename);
+    if (!file.is_open()) {
+        // Seat map doesn't exist yet → create new from hall layout
+        SeatMap map = SeatMap::createForHall(hallNo);
+        saveSeatMap(filename, map);
+        return map;
+    }
+
+    int rows, cols;
+    file >> rows >> cols;
+
+    SeatMap map(rows, cols);
+    vector<vector<char>> seats(rows, vector<char>(cols));
+
+    for (int i = 0; i < rows; i++)
+        for (int j = 0; j < cols; j++)
+            file >> seats[i][j];
+
+    map.setSeats(seats);
+    return map;
+}
+
+//Old One//
+
 void FileManager::saveSeatMap(int showId, const SeatMap& map) {
     string filename = "../data/seats/show_" + to_string(showId) + ".txt";
     ofstream file(filename);
@@ -163,6 +199,21 @@ void FileManager::saveSeatMap(int showId, const SeatMap& map) {
     }
     file.close();
 }
+
+//New One//
+
+void FileManager::saveSeatMap(const string& filename, const SeatMap& map) {
+    ofstream file(filename);
+
+    file << map.getRows() << " " << map.getCols() << endl;
+
+    for (auto& row : map.getSeats()) {
+        for (char seat : row)
+            file << seat << " ";
+        file << endl;
+    }
+}
+
 
 /*
  * Loads the seat map for a given show.

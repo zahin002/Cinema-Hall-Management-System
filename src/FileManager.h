@@ -69,7 +69,15 @@ public:
      * Seat layout is persisted separately per show ID.
      */
 
-    static void saveSeatMap(int showId, const SeatMap& map);
+    static string getSeatMapFilename(int hallNo, const string& date, const string& time);
+
+    static SeatMap loadOrCreateSeatMap(int hallNo, const string& date, const string& time);
+
+
+    static void saveSeatMap(int showId, const SeatMap& map);  //Old
+
+    static void saveSeatMap(const string& filename, const SeatMap& map);  //New
+
 
     /*
      * Loads the seat map for a given show.
@@ -78,6 +86,7 @@ public:
 
     static SeatMap loadSeatMap(int showId);
 
+    
     static void saveTicket(
         const string& userKey,
         int showId,
