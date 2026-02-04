@@ -6,6 +6,41 @@ The project is built incrementally as part of the **Software Project**, followin
 
 ---
 
+## 📂 Project Structure
+
+```
+Cinema-Hall-Management-System/
+│
+├── data/
+│   ├── movies.txt
+│   ├── showtimes.txt
+│   ├── users.txt
+│   └── seats/
+│       ├── show_1.txt
+│       ├── show_2.txt
+│       └── show_3.txt
+│
+├── src/
+│   ├── main.cpp
+│   ├── CinemaSystem.cpp
+│   ├── CinemaSystem.h
+│   ├── AdminPanel.cpp
+│   ├── AdminPanel.h
+│   ├── UserPanel.cpp
+│   ├── UserPanel.h
+│   ├── Movie.cpp
+│   ├── Movie.h
+│   ├── Showtime.cpp
+│   ├── Showtime.h
+│   ├── SeatMap.cpp
+│   ├── SeatMap.h
+│   ├── FileManager.cpp
+│   └── FileManager.h
+│
+├── README.md
+└── .gitignore
+```
+
 ## 🧠 Technologies & Concepts Used
 - C++
 - Object-Oriented Programming (OOP)
@@ -18,67 +53,30 @@ The project is built incrementally as part of the **Software Project**, followin
 
 ## ✅ Implemented Features
 
-### 🔐 Authentication System
-- User signup and login
-- Password encryption
-- Role-based access (`admin`, `user`)
-- File-based user storage
+## ⚙️ Core Functionalities
+
+### 👨‍💼 Admin Functionalities
+- Add new movies
+- Remove existing movies
+- View all available movies
+- Manage showtimes
+- Control seat availability data
 
 ---
 
-### 🎥 Movie Management (Admin)
-- Add movies
-- Auto-generated unique movie codes
-- Prevent duplicate movie codes
-- View movie list
-- Safe movie deletion (blocked if showtimes exist)
+### 👤 User Functionalities
+- View available movies and showtimes
+- Select seats for booking
+- Book tickets
+- Apply **discount-based ticket pricing**
+- Generate and view **ticket invoices**
 
 ---
 
-### ⏰ Showtime Management (Admin)
-- Add showtimes using movie codes
-- Prevent showtime creation for non-existing movies
-- View all showtimes
-- Movie title resolved using movie code
-
----
-
-### 🔎 Movie Filtering (User)
-- Filter movies by **Genre**
-- Filter movies by **Language**
-- Combined filtering supported
-
----
-
-### 💺 Seat Map Management
-- Create seat maps per showtime
-- View seat maps
-- Persistent seat storage
-- Updated seat map shown after booking
-
----
-
-### 🎟 Seat Booking (User & Guest)
-- Single and multiple seat booking
-- Atomic booking (all-or-nothing)
-- Seat availability validation
-- Booking confirmation with updated seat map
-
----
-
-### ⭐ Best Seat Recommendation
-- Center-priority seat selection
-- Group seat recommendation
-- Row traversal strategy
-- Fallback handling when seats unavailable
-
----
-
-### 👤 Guest Mode
-- Guest booking without account
-- Phone-based login
-- Bangladeshi phone number validation:
-- Guest can book seats like regular users
+### 💰 Ticket Pricing & Invoice
+- Supports **discount-based ticket pricing**
+- Automatically calculates final ticket price after applying discounts
+- Generates a **ticket invoice** 
 
 ---
 
@@ -86,7 +84,7 @@ The project is built incrementally as part of the **Software Project**, followin
 
 From the `src` directory:
 
-`g++ main.cpp CinemaSystem.cpp AdminService.cpp UserService.cpp User.cpp FileManager.cpp Movie.cpp Showtime.cpp SeatMap.cpp -o cine`
+`g++ main.cpp CinemaSystem.cpp AdminService.cpp UserService.cpp User.cpp FileManager.cpp Movie.cpp Showtime.cpp SeatMap.cpp PricingEngine.cpp -o cine`
 
 Run the program:
 

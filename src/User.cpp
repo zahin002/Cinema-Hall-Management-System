@@ -1,5 +1,8 @@
 #include "User.h"
+#include <functional>   // for std::hash
+#include <string>
 
+using namespace std;
 
 User::User() {}
 
@@ -23,13 +26,15 @@ string User::getRole() const {
 }
 
 /*
- * Performs a very simple character-based encryption.
- * Each character is shifted forward by 2 positions. */
+ * Password hashing using std::hash
+ * Ensures passwords are not reversible
+ */ 
 
 string User::encryptPassword(const string& password) {
-    string encrypted = password;
-    for (char &c : encrypted) {
-        c = c + 2;
-    }
-    return encrypted;
+    hash<string> hasher;
+    return to_string(hasher(password));
 }
+
+
+
+
