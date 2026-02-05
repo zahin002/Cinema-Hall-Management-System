@@ -28,12 +28,9 @@ int PricingEngine::getGroupDiscountPercent(int seatCount) {
  * Calculates final price after applying group discount.
  */
 int PricingEngine::calculateFinalPrice(int seatCount) {
-
     int baseTotal = seatCount * BASE_PRICE;
     int discountPercent = getGroupDiscountPercent(seatCount);
 
-    int discountAmount = (baseTotal * discountPercent) / 100;
-    int finalPrice = baseTotal - discountAmount;
-
-    return finalPrice;
+    int discountTk = (baseTotal * discountPercent) / 100;
+    return baseTotal - discountTk;
 }

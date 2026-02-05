@@ -2,11 +2,13 @@
 #include "FileManager.h"
 #include "SeatMap.h"
 #include "PricingEngine.h"
+#include "TerminalColors.h"
 #include <iostream>
 #include <sstream>
 #include <set>
 #include <limits>
 #include <algorithm>   // for transform
+#include <ctime>
 
 using namespace std;
 
@@ -234,6 +236,12 @@ void UserService::viewShowtimes() {
     }
 }
 
+//Unique Ticket ID Generator//
+
+string generateTicketId() {
+    return "TCK" + to_string(time(nullptr)) + "_" + to_string(rand() % 1000);
+}
+
 
 /* Atomic multi-seat booking */
 
@@ -248,7 +256,6 @@ void UserService::bookSeat(const User& user) {
     }
 
     // ===== SHOWTIME SELECTION =====
-
     cout << "\n--- AVAILABLE SHOWTIMES ---\n";
     for (size_t i = 0; i < shows.size(); i++) {
         string title = "Unknown";
@@ -278,8 +285,7 @@ void UserService::bookSeat(const User& user) {
 
     Showtime selectedShow = shows[choice - 1];
 
-    // ===== LOAD SEAT MAP (hall + date + time) =====
-
+    // ===== LOAD SEAT MAP =====
     SeatMap map = FileManager::loadOrCreateSeatMap(
         selectedShow.getHallNo(),
         selectedShow.getDate(),
@@ -289,12 +295,11 @@ void UserService::bookSeat(const User& user) {
     map.display();
 
     // ===== SEAT INPUT =====
-
     cout << "Enter seats (A1 A2 B5 or A1,B5): ";
     string input;
     getline(cin, input);
 
-    for (char &c : input)
+    for (char& c : input)
         if (c == ',') c = ' ';
 
     stringstream ss(input);
@@ -312,14 +317,7 @@ void UserService::bookSeat(const User& user) {
         used.insert(seat);
 
         int row = seat[0] - 'A';
-        int col;
-
-        try {
-            col = stoi(seat.substr(1)) - 1;
-        } catch (...) {
-            cout << "Invalid seat format: " << seat << endl;
-            return;
-        }
+        int col = stoi(seat.substr(1)) - 1;
 
         if (!map.isSeatAvailable(row, col)) {
             cout << "Seat unavailable: " << seat << endl;
@@ -334,25 +332,16 @@ void UserService::bookSeat(const User& user) {
         return;
     }
 
-    // ===== WEEK 9: GROUP DISCOUNT ONLY =====
-
+    // ===== GROUP DISCOUNT =====
     int seatCount = selectedSeats.size();
-
     int discountPercent = PricingEngine::getGroupDiscountPercent(seatCount);
     int finalPrice = PricingEngine::calculateFinalPrice(seatCount);
+    int basePrice = seatCount * 500;
+    int discountTk = basePrice - finalPrice;
 
-    cout << "\n----- BILL -----\n";
-    cout << "Tickets      : " << seatCount << endl;
-    cout << "Base price   : " << seatCount * 500 << " Tk\n";
-    cout << "Discount     : " << discountPercent << "%\n";
-    cout << "Final price  : " << finalPrice << " Tk\n";
-
-    // ===== CONFIRM & BOOK SEATS =====
-
-    for (auto &s : selectedSeats)
+    // ===== BOOK SEATS =====
+    for (auto& s : selectedSeats)
         map.bookSeat(s.first, s.second);
-
-    // ===== SAVE SEAT MAP =====
 
     string filename = FileManager::getSeatMapFilename(
         selectedShow.getHallNo(),
@@ -362,17 +351,40 @@ void UserService::bookSeat(const User& user) {
 
     FileManager::saveSeatMap(filename, map);
 
-    // ===== CONFIRMATION =====
+    // ===== COLORED TICKET =====
+    cout << endl;
+    cout << BOLD << CYAN << "============================================\n" << RESET;
+    cout << BOLD << YELLOW << "          🎟  CINE++ MOVIE TICKET\n" << RESET;
+    cout << BOLD << CYAN << "============================================\n" << RESET;
 
-    cout << "\nUpdated Seat Map:\n";
-    map.display();
+    cout << BOLD << "Name      : " << RESET << user.getEmail() << endl;
+    cout << BOLD << "Movie     : " << RESET;
 
-    cout << "\nSeats booked successfully: ";
-    for (auto &s : selectedSeats)
+    for (const Movie& m : movies)
+        if (m.getCode() == selectedShow.getMovieCode())
+            cout << m.getTitle();
+
+    cout << endl;
+    cout << BOLD << "Showtime  : " << RESET
+         << selectedShow.getDate() << " | "
+         << selectedShow.getTime() << endl;
+
+    cout << BOLD << "Hall No   : " << RESET << selectedShow.getHallNo() << endl;
+
+    cout << BOLD << "Seats     : " << RESET;
+    for (auto& s : selectedSeats)
         cout << char('A' + s.first) << s.second + 1 << " ";
     cout << endl;
-}
 
+    cout << BOLD << "Base Price: " << RESET << basePrice << " Tk\n";
+    cout << GREEN << "Discount  : -" << discountTk << " Tk (" 
+         << discountPercent << "%)\n" << RESET;
+    cout << BOLD << RED << "Total Paid: " << finalPrice << " Tk\n" << RESET;
+
+    cout << BOLD << CYAN << "============================================\n" << RESET;
+    cout << GREEN << "Status    : CONFIRMED ✔\n" << RESET;
+    cout << BOLD << CYAN << "============================================\n" << RESET;
+}
 
 
 /* ================= SEAT RECOMMENDATION ================= */
@@ -432,3 +444,45 @@ void UserService::recommendSeat() {
     cout << endl;
 }
 
+void printTicket(
+    const string& customerName,
+    const string& movieName,
+    const Showtime& show,
+    const vector<pair<int,int>>& seats,
+    int basePrice,
+    int discountPercent,
+    int finalPrice,
+    const string& ticketId
+) {
+    cout << endl;
+    cout << BOLD << CYAN;
+    cout << "============================================================\n";
+    cout << "                      CINE++ MOVIE TICKET                   \n";
+    cout << "============================================================\n";
+    cout << RESET;
+
+    cout << BOLD << " Ticket ID   : " << RESET << ticketId << endl;
+    cout << BOLD << " Name        : " << RESET << customerName << endl;
+    cout << BOLD << " Movie       : " << RESET << movieName << endl;
+    cout << BOLD << " Showtime    : " << RESET
+         << show.getDate() << " | " << show.getTime() << endl;
+    cout << BOLD << " Hall No     : " << RESET << show.getHallNo() << endl;
+
+    cout << BOLD << " Seats       : " << RESET;
+    for (auto& s : seats)
+        cout << char('A' + s.first) << s.second + 1 << " ";
+    cout << endl;
+
+    cout << "------------------------------------------------------------\n";
+
+    cout << " Base Price  : " << basePrice << " Tk\n";
+    cout << " Discount    : " << discountPercent << "%\n";
+
+    cout << BOLD << GREEN;
+    cout << " Total Paid  : " << finalPrice << " Tk\n";
+    cout << RESET;
+
+    cout << "============================================================\n";
+    cout << YELLOW << "      🎬 Enjoy Your Movie at CINE++ 🎬\n" << RESET;
+    cout << "============================================================\n\n";
+}
