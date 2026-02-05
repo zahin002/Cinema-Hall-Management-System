@@ -4,6 +4,8 @@
 #include "SeatMap.h"
 #include <fstream>
 #include <iostream>
+#include <ctime>
+#include <sstream>
 
 using namespace std;
 
@@ -133,6 +135,29 @@ void AdminService::deleteMovie() {
 
 
 /* ================= SHOWTIME MANAGEMENT ================= */
+
+bool AdminService::isValidFutureDate(const string& dateStr) {
+    int d, m, y;
+    char dash1, dash2;
+
+    stringstream ss(dateStr);
+    ss >> d >> dash1 >> m >> dash2 >> y;
+
+    if (ss.fail() || dash1 != '-' || dash2 != '-')
+        return false;
+
+    tm inputDate = {};
+    inputDate.tm_mday = d;
+    inputDate.tm_mon = m - 1;
+    inputDate.tm_year = y - 1900;
+
+    time_t inputTime = mktime(&inputDate);
+    time_t now = time(nullptr);
+
+    double diffDays = difftime(inputTime, now) / (60 * 60 * 24);
+
+    return diffDays >= 0 && diffDays <= 30;
+}
 
 
 void AdminService::addShowtime() {
@@ -303,7 +328,6 @@ void AdminService::deleteShowtime() {
 /* ================= SEAT MAP & BOOKING ================= */
 
 void AdminService::viewSeatMap() {
-
     vector<Showtime> shows = FileManager::loadShowtimes();
 
     if (shows.empty()) {
@@ -328,14 +352,15 @@ void AdminService::viewSeatMap() {
         return;
     }
 
-    Showtime selectedShow = shows[choice - 1];
+    Showtime s = shows[choice - 1];
 
     SeatMap map = FileManager::loadOrCreateSeatMap(
-        selectedShow.getHallNo(),
-        selectedShow.getDate(),
-        selectedShow.getTime()
+        s.getHallNo(),
+        s.getDate(),
+        s.getTime()
     );
 
     map.display();
 }
+
 

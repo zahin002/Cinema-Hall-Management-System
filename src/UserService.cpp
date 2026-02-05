@@ -66,23 +66,69 @@ void UserService::viewMovies() {
 /* Displays all filtered movies based on genre/language */
 
 void UserService::filterMovies() {
-    string genre, language;
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
-
-    cout << "Enter genre (or * for any): ";
-    getline(cin, genre);
-    cout << "Enter language (or * for any): ";
-    getline(cin, language);
 
     vector<Movie> movies = FileManager::loadMovies();
-    bool found = false;
+    if (movies.empty()) {
+        cout << "No movies available.\n";
+        return;
+    }
 
-    cout << "\n--- FILTERED MOVIES ---\n";
+    // ===== COLLECT UNIQUE GENRES & LANGUAGES =====
+    set<string> genreSet, languageSet;
+
     for (const Movie& m : movies) {
-        if ((genre == "*" || m.getGenre() == genre) &&
-            (language == "*" || m.getLanguage() == language)) {
+        genreSet.insert(m.getGenre());
+        languageSet.insert(m.getLanguage());
+    }
 
+    // Convert sets to vectors (for indexed access)
+    vector<string> genres(genreSet.begin(), genreSet.end());
+    vector<string> languages(languageSet.begin(), languageSet.end());
+
+    // ===== GENRE MENU =====
+    cout << "\nChoose Genre:\n";
+    cout << "0. All Genres\n";
+    for (size_t i = 0; i < genres.size(); i++) {
+        cout << i + 1 << ". " << genres[i] << endl;
+    }
+
+    int genreChoice;
+    cout << "Enter choice: ";
+    cin >> genreChoice;
+
+    string selectedGenre = "*";
+    if (genreChoice > 0 && genreChoice <= genres.size()) {
+        selectedGenre = genres[genreChoice - 1];
+    }
+
+    // ===== LANGUAGE MENU =====
+    cout << "\nChoose Language:\n";
+    cout << "0. All Languages\n";
+    for (size_t i = 0; i < languages.size(); i++) {
+        cout << i + 1 << ". " << languages[i] << endl;
+    }
+
+    int langChoice;
+    cout << "Enter choice: ";
+    cin >> langChoice;
+
+    string selectedLanguage = "*";
+    if (langChoice > 0 && langChoice <= languages.size()) {
+        selectedLanguage = languages[langChoice - 1];
+    }
+
+    // ===== FILTER & DISPLAY MOVIES =====
+    bool found = false;
+    cout << "\n--- FILTERED MOVIES ---\n";
+
+    for (const Movie& m : movies) {
+        bool genreMatch =
+            (selectedGenre == "*" || m.getGenre() == selectedGenre);
+
+        bool languageMatch =
+            (selectedLanguage == "*" || m.getLanguage() == selectedLanguage);
+
+        if (genreMatch && languageMatch) {
             cout << m.getCode() << " | "
                  << m.getTitle() << " | "
                  << m.getGenre() << " | "
@@ -91,9 +137,11 @@ void UserService::filterMovies() {
         }
     }
 
-    if (!found)
-        cout << "No movies found.\n";
+    if (!found) {
+        cout << "No movies found for selected filters.\n";
+    }
 }
+
 
 
 /* Displays all available showtimes */
@@ -141,7 +189,7 @@ void UserService::bookSeat(const User& user) {
     }
 
     // ===== SHOWTIME SELECTION =====
-    
+
     cout << "\n--- AVAILABLE SHOWTIMES ---\n";
     for (size_t i = 0; i < shows.size(); i++) {
         string title = "Unknown";

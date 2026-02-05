@@ -17,7 +17,13 @@ private:
     // Showtime management
     void addShowtime();
     void viewShowtimes();
-    void deleteShowtime();   // only once
+    void deleteShowtime();
+
+    // Seat map viewing 
+    void viewSeatMap();
+
+    // Date validation helper
+    bool isValidFutureDate(const std::string& dateStr);
 };
 
 #endif
