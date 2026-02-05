@@ -278,7 +278,7 @@ void UserService::bookSeat(const User& user) {
 
     Showtime selectedShow = shows[choice - 1];
 
-    // ===== LOAD SEAT MAP USING HALL + DATE + TIME =====
+    // ===== LOAD SEAT MAP (hall + date + time) =====
 
     SeatMap map = FileManager::loadOrCreateSeatMap(
         selectedShow.getHallNo(),
@@ -334,12 +334,25 @@ void UserService::bookSeat(const User& user) {
         return;
     }
 
-    // ===== BOOK SEATS =====
+    // ===== WEEK 9: GROUP DISCOUNT ONLY =====
+
+    int seatCount = selectedSeats.size();
+
+    int discountPercent = PricingEngine::getGroupDiscountPercent(seatCount);
+    int finalPrice = PricingEngine::calculateFinalPrice(seatCount);
+
+    cout << "\n----- BILL -----\n";
+    cout << "Tickets      : " << seatCount << endl;
+    cout << "Base price   : " << seatCount * 500 << " Tk\n";
+    cout << "Discount     : " << discountPercent << "%\n";
+    cout << "Final price  : " << finalPrice << " Tk\n";
+
+    // ===== CONFIRM & BOOK SEATS =====
 
     for (auto &s : selectedSeats)
         map.bookSeat(s.first, s.second);
 
-    // ===== SAVE SEAT MAP (hall+date+time based) =====
+    // ===== SAVE SEAT MAP =====
 
     string filename = FileManager::getSeatMapFilename(
         selectedShow.getHallNo(),
@@ -359,7 +372,6 @@ void UserService::bookSeat(const User& user) {
         cout << char('A' + s.first) << s.second + 1 << " ";
     cout << endl;
 }
-
 
 
 

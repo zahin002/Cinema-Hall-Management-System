@@ -1,46 +1,39 @@
 #include "PricingEngine.h"
-#include <unordered_map>
-#include <algorithm>
 
-using namespace std;
+/*
+ * Returns discount percentage based on group size.
+ */
+int PricingEngine::getGroupDiscountPercent(int seatCount) {
 
-static const int BASE_PRICE = 500;
+    if (seatCount < 2)
+        return 0;
 
-// in-memory tracking (Week 8 only)
-static unordered_map<string, int> ticketsBought;
-static unordered_map<string, int> lastGroupDiscount;
+    if (seatCount == 2)
+        return 10;
 
-int PricingEngine::calculateFinalPrice(int seatCount, const string& userKey) {
+    if (seatCount == 3)
+        return 15;
 
-    int baseTotal = seatCount * BASE_PRICE;
-
-    // ===== GROUP DISCOUNT (PRIORITY) =====
-    if (seatCount >= 2) {
-        int discount = 0;
-
-        if (seatCount == 2) discount = 10;
-        else if (seatCount == 3) discount = 15;
-        else discount = min(seatCount * 5, 50);
-
-        // double only for group 2 or 3
-        if (seatCount <= 3 && lastGroupDiscount[userKey] == discount) {
-            discount = min(discount * 2, 50);
-        }
-
-        lastGroupDiscount[userKey] = discount;
-        ticketsBought[userKey] += seatCount;
-
-        return baseTotal - (baseTotal * discount / 100);
+    if (seatCount >= 4) {
+        int discount = seatCount * 5;   // 4→20, 5→25, ...
+        if (discount > 50)
+            discount = 50;              // Cap at 50%
+        return discount;
     }
 
-    // ===== INDIVIDUAL DISCOUNT =====
-    int bought = ticketsBought[userKey];
-    int price = BASE_PRICE;
+    return 0;
+}
 
-    if (bought == 2) price = BASE_PRICE / 2;        // 50%
-    else if (bought == 3) price = BASE_PRICE / 4;   // 75%
-    else if (bought >= 4) price = 0;                // FREE
+/*
+ * Calculates final price after applying group discount.
+ */
+int PricingEngine::calculateFinalPrice(int seatCount) {
 
-    ticketsBought[userKey] += 1;
-    return price;
+    int baseTotal = seatCount * BASE_PRICE;
+    int discountPercent = getGroupDiscountPercent(seatCount);
+
+    int discountAmount = (baseTotal * discountPercent) / 100;
+    int finalPrice = baseTotal - discountAmount;
+
+    return finalPrice;
 }
