@@ -10,6 +10,7 @@ public:
 private:
     void viewMovies();
     void filterMovies();
+    void searchMovieByName();
     void viewShowtimes();
     void bookSeat(const User& user);
     void recommendSeat();

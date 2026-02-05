@@ -6,6 +6,7 @@
 #include <sstream>
 #include <set>
 #include <limits>
+#include <algorithm>   // for transform
 
 using namespace std;
 
@@ -20,10 +21,12 @@ void UserService::userMenu(const User& user) {
         cout << "\n--- USER MENU ---\n";
         cout << "1. Browse Movies\n";
         cout << "2. Filter Movies (Genre/Language)\n";
-        cout << "3. View Showtimes\n";
-        cout << "4. Book Seat\n";
-        cout << "5. Recommend Best Seat\n";
-        cout << "6. Logout\n";
+        cout << "3. Search Movie by Name\n";
+        cout << "4. View Showtimes\n";
+        cout << "5. Book Seat\n";
+        cout << "6. Recommend Best Seat\n";
+        cout << "7. Logout\n";
+
 
          if (isGuest)
             cout << "(Guest Mode - Phone: " << user.getEmail() << ")\n";
@@ -34,15 +37,20 @@ void UserService::userMenu(const User& user) {
         switch (choice) {
             case 1: viewMovies(); break;
             case 2: filterMovies(); break;
-            case 3: viewShowtimes(); break;
-            case 4: bookSeat(user); break;
-            case 5: recommendSeat(); break;
-            case 6: cout << "Logged out.\n"; break;
+            case 3: searchMovieByName(); break;
+            case 4: viewShowtimes(); break;
+            case 5: bookSeat(user); break;
+            case 6: recommendSeat(); break;
+            case 7: cout << "Logged out.\n"; break;
             default: cout << "Invalid choice.\n";
         }
-    } while (choice != 6);
+    } while (choice != 7);
 }
 
+string toLower(string s) {
+    transform(s.begin(), s.end(), s.begin(), ::tolower);
+    return s;
+}
 /* Displays all available movies for users.*/
 
 void UserService::viewMovies() {
@@ -142,6 +150,57 @@ void UserService::filterMovies() {
     }
 }
 
+void UserService::searchMovieByName() {
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+    string query;
+    cout << "Enter movie name to search: ";
+    getline(cin, query);
+
+    query = toLower(query);
+
+    vector<Movie> movies = FileManager::loadMovies();
+    vector<Showtime> shows = FileManager::loadShowtimes();
+
+    bool foundAny = false;
+
+    cout << "\n--- SEARCH RESULTS ---\n";
+
+    for (const Movie& m : movies) {
+        string titleLower = toLower(m.getTitle());
+
+        if (titleLower.find(query) != string::npos) {
+            foundAny = true;
+
+            cout << "\n🎬 " << m.getTitle()
+                 << " | " << m.getGenre()
+                 << " | " << m.getLanguage() << endl;
+
+            bool hasShowtime = false;
+
+            for (const Showtime& s : shows) {
+                if (s.getMovieCode() == m.getCode()) {
+                    if (!hasShowtime) {
+                        cout << "   ▶ Showtimes:\n";
+                        hasShowtime = true;
+                    }
+                    cout << "     - "
+                         << s.getDate()
+                         << " | " << s.getTime()
+                         << " | Hall " << s.getHallNo() << endl;
+                }
+            }
+
+            if (!hasShowtime) {
+                cout << "   ⚠ Available in database but currently not on showtime\n";
+            }
+        }
+    }
+
+    if (!foundAny) {
+        cout << "No matching movies found.\n";
+    }
+}
 
 
 /* Displays all available showtimes */
