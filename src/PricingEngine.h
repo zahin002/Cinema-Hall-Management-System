@@ -25,6 +25,10 @@ public:
 
     static int calculateFinalPrice(int seatCount);
 
+    static bool hasGlobalDiscount();
+    static int getGlobalDiscountPercent();
+    static string getGlobalDiscountMessage();
+
    
 };
 

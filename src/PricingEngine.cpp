@@ -1,36 +1,45 @@
 #include "PricingEngine.h"
+#include <fstream>
 
-/*
- * Returns discount percentage based on group size.
- */
+/* ================= GROUP DISCOUNT ================= */
+
 int PricingEngine::getGroupDiscountPercent(int seatCount) {
-
-    if (seatCount < 2)
-        return 0;
-
-    if (seatCount == 2)
-        return 10;
-
-    if (seatCount == 3)
-        return 15;
-
-    if (seatCount >= 4) {
-        int discount = seatCount * 5;   // 4→20, 5→25, ...
-        if (discount > 50)
-            discount = 50;              // Cap at 50%
-        return discount;
-    }
-
+    if (seatCount == 2) return 10;
+    if (seatCount == 3) return 15;
+    if (seatCount >= 4) return min(20 + (seatCount - 4) * 5, 50);
     return 0;
 }
 
-/*
- * Calculates final price after applying group discount.
- */
 int PricingEngine::calculateFinalPrice(int seatCount) {
-    int baseTotal = seatCount * BASE_PRICE;
-    int discountPercent = getGroupDiscountPercent(seatCount);
+    int base = seatCount * BASE_PRICE;
+    int percent = getGroupDiscountPercent(seatCount);
+    return base - (base * percent / 100);
+}
 
-    int discountTk = (baseTotal * discountPercent) / 100;
-    return baseTotal - discountTk;
+/* ================= GLOBAL DISCOUNT ================= */
+
+bool PricingEngine::hasGlobalDiscount() {
+    ifstream file("../data/global_discount.txt");
+    return file.good();
+}
+
+int PricingEngine::getGlobalDiscountPercent() {
+    ifstream file("../data/global_discount.txt");
+    int percent;
+    char sep;
+    if (file >> percent >> sep)
+        return percent;
+    return 0;
+}
+
+string PricingEngine::getGlobalDiscountMessage() {
+    ifstream file("../data/global_discount.txt");
+    int percent;
+    char sep;
+    string msg;
+    if (file >> percent >> sep) {
+        getline(file, msg);
+        return msg;
+    }
+    return "";
 }

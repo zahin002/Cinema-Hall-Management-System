@@ -9,6 +9,8 @@
 #include <limits>
 #include <algorithm>   // for transform
 #include <ctime>
+#include <iomanip>
+
 
 using namespace std;
 
@@ -53,6 +55,7 @@ string toLower(string s) {
     transform(s.begin(), s.end(), s.begin(), ::tolower);
     return s;
 }
+
 /* Displays all available movies for users.*/
 
 void UserService::viewMovies() {
@@ -84,6 +87,7 @@ void UserService::filterMovies() {
     }
 
     // ===== COLLECT UNIQUE GENRES & LANGUAGES =====
+
     set<string> genreSet, languageSet;
 
     for (const Movie& m : movies) {
@@ -255,7 +259,16 @@ void UserService::bookSeat(const User& user) {
         return;
     }
 
+    // ===== ASK CUSTOMER NAME =====
+
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    string customerName;
+    cout << "Enter your full name: ";
+    getline(cin, customerName);
+
+
     // ===== SHOWTIME SELECTION =====
+
     cout << "\n--- AVAILABLE SHOWTIMES ---\n";
     for (size_t i = 0; i < shows.size(); i++) {
         string title = "Unknown";
@@ -265,7 +278,6 @@ void UserService::bookSeat(const User& user) {
                 break;
             }
         }
-
         cout << i + 1 << ". "
              << title << " | "
              << shows[i].getDate() << " | "
@@ -286,6 +298,7 @@ void UserService::bookSeat(const User& user) {
     Showtime selectedShow = shows[choice - 1];
 
     // ===== LOAD SEAT MAP =====
+
     SeatMap map = FileManager::loadOrCreateSeatMap(
         selectedShow.getHallNo(),
         selectedShow.getDate(),
@@ -295,6 +308,7 @@ void UserService::bookSeat(const User& user) {
     map.display();
 
     // ===== SEAT INPUT =====
+
     cout << "Enter seats (A1 A2 B5 or A1,B5): ";
     string input;
     getline(cin, input);
@@ -309,7 +323,6 @@ void UserService::bookSeat(const User& user) {
     string seat;
     while (ss >> seat) {
         seat[0] = toupper(seat[0]);
-
         if (used.count(seat)) {
             cout << "Duplicate seat: " << seat << endl;
             return;
@@ -323,7 +336,6 @@ void UserService::bookSeat(const User& user) {
             cout << "Seat unavailable: " << seat << endl;
             return;
         }
-
         selectedSeats.push_back({row, col});
     }
 
@@ -332,58 +344,129 @@ void UserService::bookSeat(const User& user) {
         return;
     }
 
-    // ===== GROUP DISCOUNT =====
+    // ===== PRICING =====
+
     int seatCount = selectedSeats.size();
-    int discountPercent = PricingEngine::getGroupDiscountPercent(seatCount);
-    int finalPrice = PricingEngine::calculateFinalPrice(seatCount);
     int basePrice = seatCount * 500;
-    int discountTk = basePrice - finalPrice;
+    int finalPrice = basePrice;
+    int discountTk = 0;
+    string discountLabel = "None";
+
+    // GLOBAL DISCOUNT (TOP PRIORITY)
+
+    if (PricingEngine::hasGlobalDiscount()) {
+        int percent = PricingEngine::getGlobalDiscountPercent();
+        string msg = PricingEngine::getGlobalDiscountMessage();
+
+        cout << "\n" << BOLD << YELLOW << "🎉 GLOBAL OFFER 🎉\n"
+             << msg << "\n"
+             << percent << "% discount applied automatically!\n"
+             << RESET;
+
+        finalPrice = basePrice - (basePrice * percent / 100);
+        discountTk = basePrice - finalPrice;
+        discountLabel = "Global Discount";
+
+    } else {
+
+        // GROUP DISCOUNT (ASK USER)
+
+        int groupPercent = PricingEngine::getGroupDiscountPercent(seatCount);
+        if (groupPercent > 0) {
+            char ch;
+            cout << "You are eligible for "
+                 << groupPercent << "% group discount. Apply? (y/n): ";
+            cin >> ch;
+            if (ch == 'y' || ch == 'Y') {
+                finalPrice = basePrice - (basePrice * groupPercent / 100);
+                discountTk = basePrice - finalPrice;
+                discountLabel = "Group Discount";
+            }
+        }
+    }
 
     // ===== BOOK SEATS =====
+
     for (auto& s : selectedSeats)
         map.bookSeat(s.first, s.second);
 
-    string filename = FileManager::getSeatMapFilename(
+    string seatFile = FileManager::getSeatMapFilename(
         selectedShow.getHallNo(),
         selectedShow.getDate(),
         selectedShow.getTime()
     );
+    FileManager::saveSeatMap(seatFile, map);
 
-    FileManager::saveSeatMap(filename, map);
+    // ===== TICKET ID =====
 
-    // ===== COLORED TICKET =====
-    cout << endl;
-    cout << BOLD << CYAN << "============================================\n" << RESET;
-    cout << BOLD << YELLOW << "          🎟  CINE++ MOVIE TICKET\n" << RESET;
-    cout << BOLD << CYAN << "============================================\n" << RESET;
+    string ticketId = generateTicketId();
 
-    cout << BOLD << "Name      : " << RESET << user.getEmail() << endl;
-    cout << BOLD << "Movie     : " << RESET;
+    string movieName;
+    for (const Movie& m : movies) {
+        if (m.getCode() == selectedShow.getMovieCode()) {
+            movieName = m.getTitle();
+            break;
+        }
+    }
 
+    int seatsCount = selectedSeats.size();
+
+
+    // ===== COLORED TICKET OUTPUT =====
+    
+    cout << "\n";
+    cout << BOLD << CYAN << "====================================================\n" << RESET;
+    cout << BOLD << YELLOW << "                 🎟  CINE++ TICKET\n" << RESET;
+    cout << BOLD << CYAN << "====================================================\n" << RESET;
+
+    cout << left;
+    cout << BOLD << setw(15) << "Ticket ID" << ": " << RESET << ticketId << endl;
+    cout << BOLD << setw(15) << "Name"      << ": " << RESET << customerName << endl;
+
+    cout << BOLD << setw(15) << "Movie" << ": " << RESET;
     for (const Movie& m : movies)
         if (m.getCode() == selectedShow.getMovieCode())
             cout << m.getTitle();
-
     cout << endl;
-    cout << BOLD << "Showtime  : " << RESET
-         << selectedShow.getDate() << " | "
-         << selectedShow.getTime() << endl;
 
-    cout << BOLD << "Hall No   : " << RESET << selectedShow.getHallNo() << endl;
+    cout << BOLD << setw(15) << "Showtime" << ": " << RESET
+         << selectedShow.getDate() << " | " << selectedShow.getTime() << endl;
 
-    cout << BOLD << "Seats     : " << RESET;
+    cout << BOLD << setw(15) << "Hall No" << ": " << RESET
+         << selectedShow.getHallNo() << endl;
+
+    cout << BOLD << setw(15) << "Seats" << ": " << RESET;
     for (auto& s : selectedSeats)
         cout << char('A' + s.first) << s.second + 1 << " ";
     cout << endl;
 
-    cout << BOLD << "Base Price: " << RESET << basePrice << " Tk\n";
-    cout << GREEN << "Discount  : -" << discountTk << " Tk (" 
-         << discountPercent << "%)\n" << RESET;
-    cout << BOLD << RED << "Total Paid: " << finalPrice << " Tk\n" << RESET;
+    cout << "----------------------------------------------------\n";
+    cout << setw(15) << "Base Price" << ": " << basePrice << " Tk\n";
 
-    cout << BOLD << CYAN << "============================================\n" << RESET;
-    cout << GREEN << "Status    : CONFIRMED ✔\n" << RESET;
-    cout << BOLD << CYAN << "============================================\n" << RESET;
+    if (discountTk > 0)
+        cout << setw(15) << discountLabel << ": -" << discountTk << " Tk\n";
+
+    cout << BOLD << RED << setw(15) << "Total Paid" << ": "
+         << finalPrice << " Tk\n" << RESET;
+
+    cout << BOLD << CYAN << "====================================================\n" << RESET;
+    cout << GREEN << "Status: CONFIRMED ✔\n" << RESET;
+    cout << BOLD << CYAN << "====================================================\n" << RESET;
+
+    // ===== SAVE TICKET =====
+    FileManager::saveTicket(
+    ticketId,
+    customerName,
+    movieName,
+    selectedShow.getDate(),
+    selectedShow.getTime(),
+    selectedShow.getHallNo(),
+    seatsCount,
+    basePrice,
+    discountTk,
+    finalPrice
+    );
+
 }
 
 

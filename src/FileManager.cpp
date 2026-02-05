@@ -171,6 +171,49 @@ void FileManager::deleteSeatMapFile(
     remove(filename.c_str());
 }
 
+void FileManager::saveGlobalDiscount(int percent, const string& message) {
+    ofstream file("../data/global_discount.txt");
+    file << percent << endl;
+    file << message << endl;
+}
+
+bool FileManager::loadGlobalDiscount(int& percent, string& message) {
+    ifstream file("../data/global_discount.txt");
+    if (!file.is_open()) return false;
+
+    file >> percent;
+    file.ignore();
+    getline(file, message);
+    return true;
+}
+
+/* Save Ticket */
+
+void FileManager::saveTicket(
+    const string& ticketId,
+    const string& customerName,
+    const string& movie,
+    const string& date,
+    const string& time,
+    int hallNo,
+    int seats,
+    int basePrice,
+    int discountTk,
+    int finalPrice
+) {
+    ofstream file("../data/tickets.txt", ios::app);
+    file << ticketId << "|"
+         << customerName << "|"
+         << movie << "|"
+         << date << "|"
+         << time << "|"
+         << hallNo << "|"
+         << seats << "|"
+         << basePrice << "|"
+         << discountTk << "|"
+         << finalPrice << endl;
+}
+
 
 
 
