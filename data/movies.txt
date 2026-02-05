@@ -1,2 +1,79 @@
-Inception|Sci-Fi|148|English
-Graves of the Fireflies|Tragedy|89|Japanese
+101|Inception|Sci-Fi|148|English
+102|Graves of the Fireflies|Tragedy|89|Japanese 
+103|The Dark Knight|Action|152|English
+104|Monpura|Romance|135|Bangla
+105|Parasite|Thriller|132|Korean
+106|Spirited Away|Fantasy|125|Japanese
+107|Avengers: Endgame|Action|181|English
+108|Aynabaji|Thriller|147|Bangla
+109|Interstellar|Sci-Fi|169|English
+110|Forrest Gump|Drama|142|English
+111|Joker|Psychological|122|English
+112|Daruchini Dwip|Adventure|120|Bangla
+113|Titanic|Romance|195|English
+114|The Godfather|Crime|175|English
+115|The Shawshank Redemption|Drama|142|English
+116|Pather Panchali|Drama|125|Bangla
+117|Pulp Fiction|Crime|154|English
+118|Your Name|Romance|106|Japanese
+119|Coco|Animation|105|English
+120|Gladiator|Action|155|English
+121|Hirak Rajar Deshe|Fantasy|118|Bangla
+122|Fight Club|Drama|139|English
+123|The Prestige|Mystery|130|English
+124|A Silent Voice|Drama|130|Japanese
+125|Demon Slayer: Infinity Castle Part 1|Action|125|Japanese
+126|Weathering With You|Romance|112|Japanese
+127|Whiplash|Drama|107|English
+128|La La Land|Musical|128|English
+129|Iron Man|Action|126|English
+130|Doctor Strange|Fantasy|115|English
+131|Up|Animation|96|English
+132|Chainsaw Man: Reze Arc|Action|110|Japanese
+133|1917|War|119|English
+134|Dunkirk|War|106|English
+135|Baishe Srabon|Thriller|138|Bangla
+136|The Imitation Game|Biography|114|English
+137|Shutter Island|Mystery|138|English
+138|The Departed|Crime|151|English
+139|The Pianist|Biography|150|English
+140|Life of Pi|Adventure|127|English
+141|Slumdog Millionaire|Drama|120|English
+142|Arrival|Sci-Fi|116|English
+143|Blade Runner 2049|Sci-Fi|164|English
+144|Logan|Action|137|English
+145|Oldboy|Thriller|120|Korean
+146|The Grand Budapest Hotel|Comedy|99|English
+147|Her|Romance|126|English
+148|No Country for Old Men|Thriller|122|English
+149|The Matrix|Sci-Fi|136|English 
+150|The Lion King|Animation|88|English
+151|Mad Max: Fury Road|Action|120|English
+152|Demon Slayer: Mugen Train|Action|117|Japanese
+153|The Lighthouse|Thriller|109|English
+154|Everything Everywhere All at Once|Sci-Fi|139|English
+155|Memories of Murder|Crime|131|Korean
+156|The Social Network|Drama|120|English
+158|Edge of Tomorrow|Sci-Fi|113|English
+159|Prisoners|Thriller|153|English
+160|Snowpiercer|Sci-Fi|126|Korean
+161|Paprika|Sci-Fi|90|Japanese
+162|Perfect Blue|Thriller|81|Japanese
+163|Tokyo Godfathers|Drama|92|Japanese
+164|The Wind Rises|Biography|126|Japanese
+165|Erased The Movie|Mystery|121|Japanese
+166|Dragon Ball Super Broly|Action|100|Japanese
+167|One Piece Stampede|Action|101|Japanese
+168|Burning|Drama|148|Korean
+169|The Wailing|Horror|156|Korean
+170|Mother|Crime|129|Korean
+171|A Taxi Driver|Drama|137|Korean
+172|The Chaser|Thriller|125|Korean
+173|Silenced|Drama|125|Korean
+174|Extreme Job|Comedy|111|Korean
+175|Akira|Sci-Fi|124|Japanese
+176|Ghost in the Shell|Sci-Fi|83|Japanese
+177|Vinland Saga The Movie|Action|130|Japanese
+178|Blue Lock Episode Nagi|Sports|95|Japanese
+179|Suzume no Tojimari|Adventure|122|Japanese
+180|The Girl Who Leapt Through Time|Romance|98|Japanese
