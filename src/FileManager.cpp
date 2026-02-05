@@ -162,5 +162,15 @@ void FileManager::saveSeatMap(
     }
 }
 
+void FileManager::deleteSeatMapFile(
+    int hallNo,
+    const string& date,
+    const string& time
+) {
+    string filename = getSeatMapFilename(hallNo, date, time);
+    remove(filename.c_str());
+}
+
+
 
 

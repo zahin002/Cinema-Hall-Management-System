@@ -48,8 +48,6 @@ public:
     
     static vector<Movie> loadMovies();
 
-    // Week 5
-
     /*
      * Saves showtime information linked to a movie.
      * Each showtime stores date, time, and hall number.
@@ -64,6 +62,7 @@ public:
 
     static vector<Showtime> loadShowtimes();
 
+   
     /*
      * Saves the seat map for a specific show.
      * Seat layout is persisted separately per show ID.
@@ -73,8 +72,10 @@ public:
 
     static SeatMap loadOrCreateSeatMap(int hallNo, const string& date, const string& time);
 
-    static void saveSeatMap(const string& filename, const SeatMap& map);  //New
-    
+    static void saveSeatMap(const string& filename, const SeatMap& map);  
+
+    static void deleteSeatMapFile(int hallNo, const string& date, const string& time);
+   
 };
 
 #endif

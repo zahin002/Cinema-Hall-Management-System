@@ -29,6 +29,8 @@ private:
     // Seat map management
     void createSeatMap();
     void viewSeatMap();
+    void deleteShowtime();
+
 };
 
 #endif
