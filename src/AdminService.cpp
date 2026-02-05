@@ -28,9 +28,8 @@ void AdminService::adminMenu(const User&) {
         cout << "4. Add Showtime\n";
         cout << "5. View Showtimes\n";
         cout << "6. Delete Showtime\n";
-        cout << "7. Create Seat Map\n";
-        cout << "8. View Seat Map\n";
-        cout << "9. Logout\n";
+        cout << "7. View Seat Map\n";
+        cout << "8. Logout\n";
         cout << "Enter choice: ";
         cin >> choice;
 
@@ -41,9 +40,8 @@ void AdminService::adminMenu(const User&) {
             case 4: addShowtime(); break;
             case 5: viewShowtimes(); break;
             case 6: deleteShowtime(); break;
-            case 7: createSeatMap(); break;
-            case 8: viewSeatMap(); break;
-            case 9: cout << "Logged out.\n"; break;
+            case 7: viewSeatMap(); break;
+            case 8: cout << "Logged out.\n"; break;
             default: cout << "Invalid choice.\n";
         }
     } while (choice != 9);
@@ -304,26 +302,40 @@ void AdminService::deleteShowtime() {
 
 /* ================= SEAT MAP & BOOKING ================= */
 
-void AdminService::createSeatMap() {
-    int showId, rows, cols;
-
-    cout << "Enter show ID: ";
-    cin >> showId;
-    cout << "Enter number of rows: ";
-    cin >> rows;
-    cout << "Enter number of columns: ";
-    cin >> cols;
-
-    SeatMap map(rows, cols);
-    FileManager::saveSeatMap(showId, map);
-    cout << "Seat map created successfully!\n";
-}
-
 void AdminService::viewSeatMap() {
-    int showId;
-    cout << "Enter show ID: ";
-    cin >> showId;
 
-    SeatMap map = FileManager::loadSeatMap(showId);
+    vector<Showtime> shows = FileManager::loadShowtimes();
+
+    if (shows.empty()) {
+        cout << "No showtimes available.\n";
+        return;
+    }
+
+    cout << "\n--- SHOWTIMES ---\n";
+    for (size_t i = 0; i < shows.size(); i++) {
+        cout << i + 1 << ". "
+             << shows[i].getDate() << " | "
+             << shows[i].getTime() << " | Hall "
+             << shows[i].getHallNo() << endl;
+    }
+
+    int choice;
+    cout << "Select showtime: ";
+    cin >> choice;
+
+    if (choice < 1 || choice > shows.size()) {
+        cout << "Invalid selection.\n";
+        return;
+    }
+
+    Showtime selectedShow = shows[choice - 1];
+
+    SeatMap map = FileManager::loadOrCreateSeatMap(
+        selectedShow.getHallNo(),
+        selectedShow.getDate(),
+        selectedShow.getTime()
+    );
+
     map.display();
 }
+
