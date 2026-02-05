@@ -50,4 +50,30 @@
 150|The Lion King|Animation|88|English
 151|Mad Max: Fury Road|Action|120|English
 152|Demon Slayer: Mugen Train|Action|117|Japanese
-
+153|The Lighthouse|Thriller|109|English
+154|Everything Everywhere All at Once|Sci-Fi|139|English
+155|Memories of Murder|Crime|131|Korean
+156|The Social Network|Drama|120|English
+158|Edge of Tomorrow|Sci-Fi|113|English
+159|Prisoners|Thriller|153|English
+160|Snowpiercer|Sci-Fi|126|Korean
+161|Paprika|Sci-Fi|90|Japanese
+162|Perfect Blue|Thriller|81|Japanese
+163|Tokyo Godfathers|Drama|92|Japanese
+164|The Wind Rises|Biography|126|Japanese
+165|Erased The Movie|Mystery|121|Japanese
+166|Dragon Ball Super Broly|Action|100|Japanese
+167|One Piece Stampede|Action|101|Japanese
+168|Burning|Drama|148|Korean
+169|The Wailing|Horror|156|Korean
+170|Mother|Crime|129|Korean
+171|A Taxi Driver|Drama|137|Korean
+172|The Chaser|Thriller|125|Korean
+173|Silenced|Drama|125|Korean
+174|Extreme Job|Comedy|111|Korean
+175|Akira|Sci-Fi|124|Japanese
+176|Ghost in the Shell|Sci-Fi|83|Japanese
+177|Vinland Saga The Movie|Action|130|Japanese
+178|Blue Lock Episode Nagi|Sports|95|Japanese
+179|Suzume no Tojimari|Adventure|122|Japanese
+180|The Girl Who Leapt Through Time|Romance|98|Japanese
