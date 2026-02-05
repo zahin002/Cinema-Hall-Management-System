@@ -4,15 +4,9 @@
 #include "User.h"
 #include <string>
 
-using namespace std;
-
 class AdminService {
 public:
-    // Main admin menu
     void adminMenu(const User& admin);
-
-    // Date validation for showtime (DD-MM-YYYY, today → next 30 days)
-    bool isValidFutureDate(const string& dateStr);
 
 private:
     // Movie management
@@ -23,14 +17,7 @@ private:
     // Showtime management
     void addShowtime();
     void viewShowtimes();
-    void deleteShowtime();
-
-
-    // Seat map management
-    void createSeatMap();
-    void viewSeatMap();
-    void deleteShowtime();
-
+    void deleteShowtime();   // only once
 };
 
 #endif
