@@ -1,6 +1,7 @@
 #include "FileManager.h"
 #include "SeatMap.h"
 #include <fstream>
+#include<iostream>
 #include <vector>
 #include <string>
 
@@ -170,6 +171,35 @@ void FileManager::deleteSeatMapFile(
     string filename = getSeatMapFilename(hallNo, date, time);
     remove(filename.c_str());
 }
+
+void FileManager::saveGlobalDiscount(int percent, const string& message) {
+    ofstream file("../data/global_discount.txt");
+    file << percent << endl;
+    file << message << endl;
+}
+
+bool FileManager::loadGlobalDiscount(int& percent, string& message) {
+    ifstream file("../data/global_discount.txt");
+    if (!file.is_open()) return false;
+
+    file >> percent;
+    file.ignore();
+    getline(file, message);
+    return true;
+}
+
+/* Save Ticket */
+
+void FileManager::saveTicketToFile(const string& record) {
+    ofstream out("tickets.txt", ios::app);
+    if (!out) {
+        cout << "Error saving ticket.\n";
+        return;
+    }
+    out << record << endl;
+    out.close();
+}
+
 
 
 

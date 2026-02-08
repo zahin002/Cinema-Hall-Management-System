@@ -2,11 +2,17 @@
 #include "FileManager.h"
 #include "SeatMap.h"
 #include "PricingEngine.h"
+#include "TerminalColors.h"
+#include "SnackShop.h"
+#include "TicketService.h"
+
 #include <iostream>
 #include <sstream>
 #include <set>
 #include <limits>
-#include <algorithm>   // for transform
+#include <algorithm>
+#include <ctime>
+#include <iomanip>
 
 using namespace std;
 
@@ -15,8 +21,8 @@ using namespace std;
 void UserService::userMenu(const User& user) {
 
     bool isGuest = (user.getRole() == "guest");
-
     int choice;
+
     do {
         cout << "\n--- USER MENU ---\n";
         cout << "1. Browse Movies\n";
@@ -27,8 +33,7 @@ void UserService::userMenu(const User& user) {
         cout << "6. Recommend Best Seat\n";
         cout << "7. Logout\n";
 
-
-         if (isGuest)
+        if (isGuest)
             cout << "(Guest Mode - Phone: " << user.getEmail() << ")\n";
 
         cout << "Enter choice: ";
@@ -47,11 +52,14 @@ void UserService::userMenu(const User& user) {
     } while (choice != 7);
 }
 
-string toLower(string s) {
+/* ================= UTIL ================= */
+
+static string toLower(string s) {
     transform(s.begin(), s.end(), s.begin(), ::tolower);
     return s;
 }
-/* Displays all available movies for users.*/
+
+/* ================= MOVIES ================= */
 
 void UserService::viewMovies() {
     vector<Movie> movies = FileManager::loadMovies();
@@ -64,14 +72,12 @@ void UserService::viewMovies() {
     cout << "\n--- MOVIE LIST ---\n";
     for (size_t i = 0; i < movies.size(); i++) {
         cout << i + 1 << ". "
-             << movies[i].getTitle()
-             << " | " << movies[i].getGenre()
-             << " | " << movies[i].getDuration() << " mins"
-             << " | " << movies[i].getLanguage() << endl;
+             << movies[i].getTitle() << " | "
+             << movies[i].getGenre() << " | "
+             << movies[i].getDuration() << " mins | "
+             << movies[i].getLanguage() << endl;
     }
 }
-
-/* Displays all filtered movies based on genre/language */
 
 void UserService::filterMovies() {
 
@@ -81,62 +87,38 @@ void UserService::filterMovies() {
         return;
     }
 
-    // ===== COLLECT UNIQUE GENRES & LANGUAGES =====
     set<string> genreSet, languageSet;
-
     for (const Movie& m : movies) {
         genreSet.insert(m.getGenre());
         languageSet.insert(m.getLanguage());
     }
 
-    // Convert sets to vectors (for indexed access)
     vector<string> genres(genreSet.begin(), genreSet.end());
     vector<string> languages(languageSet.begin(), languageSet.end());
 
-    // ===== GENRE MENU =====
-    cout << "\nChoose Genre:\n";
-    cout << "0. All Genres\n";
-    for (size_t i = 0; i < genres.size(); i++) {
+    cout << "\nChoose Genre:\n0. All\n";
+    for (size_t i = 0; i < genres.size(); i++)
         cout << i + 1 << ". " << genres[i] << endl;
-    }
 
-    int genreChoice;
-    cout << "Enter choice: ";
-    cin >> genreChoice;
+    int g;
+    cin >> g;
+    string selectedGenre = (g > 0 && g <= genres.size()) ? genres[g - 1] : "*";
 
-    string selectedGenre = "*";
-    if (genreChoice > 0 && genreChoice <= genres.size()) {
-        selectedGenre = genres[genreChoice - 1];
-    }
-
-    // ===== LANGUAGE MENU =====
-    cout << "\nChoose Language:\n";
-    cout << "0. All Languages\n";
-    for (size_t i = 0; i < languages.size(); i++) {
+    cout << "\nChoose Language:\n0. All\n";
+    for (size_t i = 0; i < languages.size(); i++)
         cout << i + 1 << ". " << languages[i] << endl;
-    }
 
-    int langChoice;
-    cout << "Enter choice: ";
-    cin >> langChoice;
+    int l;
+    cin >> l;
+    string selectedLang = (l > 0 && l <= languages.size()) ? languages[l - 1] : "*";
 
-    string selectedLanguage = "*";
-    if (langChoice > 0 && langChoice <= languages.size()) {
-        selectedLanguage = languages[langChoice - 1];
-    }
-
-    // ===== FILTER & DISPLAY MOVIES =====
-    bool found = false;
     cout << "\n--- FILTERED MOVIES ---\n";
+    bool found = false;
 
     for (const Movie& m : movies) {
-        bool genreMatch =
-            (selectedGenre == "*" || m.getGenre() == selectedGenre);
+        if ((selectedGenre == "*" || m.getGenre() == selectedGenre) &&
+            (selectedLang == "*" || m.getLanguage() == selectedLang)) {
 
-        bool languageMatch =
-            (selectedLanguage == "*" || m.getLanguage() == selectedLanguage);
-
-        if (genreMatch && languageMatch) {
             cout << m.getCode() << " | "
                  << m.getTitle() << " | "
                  << m.getGenre() << " | "
@@ -145,67 +127,53 @@ void UserService::filterMovies() {
         }
     }
 
-    if (!found) {
-        cout << "No movies found for selected filters.\n";
-    }
+    if (!found)
+        cout << "No movies found.\n";
 }
 
 void UserService::searchMovieByName() {
+
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
     string query;
-    cout << "Enter movie name to search: ";
+    cout << "Enter movie name: ";
     getline(cin, query);
-
     query = toLower(query);
 
     vector<Movie> movies = FileManager::loadMovies();
     vector<Showtime> shows = FileManager::loadShowtimes();
 
     bool foundAny = false;
-
     cout << "\n--- SEARCH RESULTS ---\n";
 
     for (const Movie& m : movies) {
-        string titleLower = toLower(m.getTitle());
-
-        if (titleLower.find(query) != string::npos) {
+        if (toLower(m.getTitle()).find(query) != string::npos) {
             foundAny = true;
+            cout << "\n🎬 " << m.getTitle() << " (" << m.getLanguage() << ")\n";
 
-            cout << "\n🎬 " << m.getTitle()
-                 << " | " << m.getGenre()
-                 << " | " << m.getLanguage() << endl;
-
-            bool hasShowtime = false;
-
+            bool hasShow = false;
             for (const Showtime& s : shows) {
                 if (s.getMovieCode() == m.getCode()) {
-                    if (!hasShowtime) {
-                        cout << "   ▶ Showtimes:\n";
-                        hasShowtime = true;
-                    }
-                    cout << "     - "
-                         << s.getDate()
+                    if (!hasShow) cout << "   ▶ Showtimes:\n";
+                    hasShow = true;
+                    cout << "     - " << s.getDate()
                          << " | " << s.getTime()
                          << " | Hall " << s.getHallNo() << endl;
                 }
             }
 
-            if (!hasShowtime) {
-                cout << "   ⚠ Available in database but currently not on showtime\n";
-            }
+            if (!hasShow)
+                cout << "   ⚠ Not currently scheduled\n";
         }
     }
 
-    if (!foundAny) {
+    if (!foundAny)
         cout << "No matching movies found.\n";
-    }
 }
 
-
-/* Displays all available showtimes */
+/* ================= SHOWTIMES ================= */
 
 void UserService::viewShowtimes() {
+
     vector<Showtime> shows = FileManager::loadShowtimes();
     vector<Movie> movies = FileManager::loadMovies();
 
@@ -218,24 +186,19 @@ void UserService::viewShowtimes() {
     for (size_t i = 0; i < shows.size(); i++) {
 
         string title = "Unknown";
-        for (const Movie& m : movies) {
-            if (m.getCode() == shows[i].getMovieCode()) {
+        for (const Movie& m : movies)
+            if (m.getCode() == shows[i].getMovieCode())
                 title = m.getTitle();
-                break;
-            }
-        }
 
         cout << i + 1 << ". "
-             << title
-             << " | " << shows[i].getDate()
-             << " | " << shows[i].getTime()
-             << " | Hall " << shows[i].getHallNo()
-             << endl;
+             << title << " | "
+             << shows[i].getDate() << " | "
+             << shows[i].getTime() << " | Hall "
+             << shows[i].getHallNo() << endl;
     }
 }
 
-
-/* Atomic multi-seat booking */
+/* ================= BOOK SEAT ================= */
 
 void UserService::bookSeat(const User& user) {
 
@@ -247,17 +210,17 @@ void UserService::bookSeat(const User& user) {
         return;
     }
 
-    // ===== SHOWTIME SELECTION =====
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    string customerName;
+    cout << "Enter your full name: ";
+    getline(cin, customerName);
 
     cout << "\n--- AVAILABLE SHOWTIMES ---\n";
     for (size_t i = 0; i < shows.size(); i++) {
         string title = "Unknown";
-        for (const Movie& m : movies) {
-            if (m.getCode() == shows[i].getMovieCode()) {
+        for (const Movie& m : movies)
+            if (m.getCode() == shows[i].getMovieCode())
                 title = m.getTitle();
-                break;
-            }
-        }
 
         cout << i + 1 << ". "
              << title << " | "
@@ -267,34 +230,29 @@ void UserService::bookSeat(const User& user) {
     }
 
     int choice;
-    cout << "Select showtime (number): ";
+    cout << "Select showtime: ";
     cin >> choice;
     cin.ignore();
 
     if (choice < 1 || choice > shows.size()) {
-        cout << "Invalid showtime selection.\n";
+        cout << "Invalid selection.\n";
         return;
     }
 
     Showtime selectedShow = shows[choice - 1];
-
-    // ===== LOAD SEAT MAP USING HALL + DATE + TIME =====
 
     SeatMap map = FileManager::loadOrCreateSeatMap(
         selectedShow.getHallNo(),
         selectedShow.getDate(),
         selectedShow.getTime()
     );
-
     map.display();
-
-    // ===== SEAT INPUT =====
 
     cout << "Enter seats (A1 A2 B5 or A1,B5): ";
     string input;
     getline(cin, input);
 
-    for (char &c : input)
+    for (char& c : input)
         if (c == ',') c = ' ';
 
     stringstream ss(input);
@@ -304,119 +262,133 @@ void UserService::bookSeat(const User& user) {
     string seat;
     while (ss >> seat) {
         seat[0] = toupper(seat[0]);
-
-        if (used.count(seat)) {
-            cout << "Duplicate seat: " << seat << endl;
-            return;
-        }
+        if (used.count(seat)) return;
         used.insert(seat);
 
-        int row = seat[0] - 'A';
-        int col;
+        int r = seat[0] - 'A';
+        int c = stoi(seat.substr(1)) - 1;
 
-        try {
-            col = stoi(seat.substr(1)) - 1;
-        } catch (...) {
-            cout << "Invalid seat format: " << seat << endl;
-            return;
-        }
-
-        if (!map.isSeatAvailable(row, col)) {
-            cout << "Seat unavailable: " << seat << endl;
-            return;
-        }
-
-        selectedSeats.push_back({row, col});
+        if (!map.isSeatAvailable(r, c)) return;
+        selectedSeats.push_back({r, c});
     }
 
-    if (selectedSeats.empty()) {
-        cout << "No seats selected.\n";
-        return;
+    if (selectedSeats.empty()) return;
+
+    int basePrice = selectedSeats.size() * 500;
+    int finalPrice = basePrice;
+    int discountTk = 0;
+    string discountLabel = "None";
+
+    if (PricingEngine::hasGlobalDiscount()) {
+        int p = PricingEngine::getGlobalDiscountPercent();
+        finalPrice -= basePrice * p / 100;
+        discountTk = basePrice - finalPrice;
+        discountLabel = "Global Discount";
+    } else {
+        int p = PricingEngine::getGroupDiscountPercent(selectedSeats.size());
+        if (p > 0) {
+            char ch;
+            cout << "Apply group discount? (y/n): ";
+            cin >> ch;
+            if (ch == 'y' || ch == 'Y') {
+                finalPrice -= basePrice * p / 100;
+                discountTk = basePrice - finalPrice;
+                discountLabel = "Group Discount";
+            }
+        }
     }
 
-    // ===== BOOK SEATS =====
-
-    for (auto &s : selectedSeats)
+    for (auto& s : selectedSeats)
         map.bookSeat(s.first, s.second);
 
-    // ===== SAVE SEAT MAP (hall+date+time based) =====
-
-    string filename = FileManager::getSeatMapFilename(
-        selectedShow.getHallNo(),
-        selectedShow.getDate(),
-        selectedShow.getTime()
+    FileManager::saveSeatMap(
+        FileManager::getSeatMapFilename(
+            selectedShow.getHallNo(),
+            selectedShow.getDate(),
+            selectedShow.getTime()
+        ),
+        map
     );
 
-    FileManager::saveSeatMap(filename, map);
+    string movieName = "Unknown";
+    for (const Movie& m : movies)
+        if (m.getCode() == selectedShow.getMovieCode())
+            movieName = m.getTitle();
 
-    // ===== CONFIRMATION =====
+    string ticketId = TicketService::generateTicketId();
 
-    cout << "\nUpdated Seat Map:\n";
-    map.display();
+    TicketService::printTicket(
+        ticketId,
+        customerName,
+        movieName,
+        selectedShow.getDate(),
+        selectedShow.getTime(),
+        selectedShow.getHallNo(),
+        selectedSeats,
+        basePrice,
+        discountTk,
+        discountLabel,
+        finalPrice
+    );
 
-    cout << "\nSeats booked successfully: ";
-    for (auto &s : selectedSeats)
-        cout << char('A' + s.first) << s.second + 1 << " ";
-    cout << endl;
+    TicketService::saveTicket(
+        ticketId,
+        customerName,
+        movieName,
+        selectedShow.getDate(),
+        selectedShow.getTime(),
+        selectedShow.getHallNo(),
+        selectedSeats,
+        finalPrice
+    );
+
+    char snack;
+    cout << "\nWould you like to order snacks? (y/n): ";
+    cin >> snack;
+    if (snack == 'y' || snack == 'Y')
+        SnackShop::start();
 }
 
-
-
-
-/* ================= SEAT RECOMMENDATION ================= */
-
-/* Suggests best seat(s) using center-priority algorithm */
+/* ================= SEAT RECOMMEND ================= */
 
 void UserService::recommendSeat() {
 
     vector<Showtime> shows = FileManager::loadShowtimes();
+    if (shows.empty()) return;
 
-    if (shows.empty()) {
-        cout << "No showtimes available.\n";
-        return;
-    }
-
-    cout << "\n--- AVAILABLE SHOWTIMES ---\n";
-    for (size_t i = 0; i < shows.size(); i++) {
+    cout << "\n--- SHOWTIMES ---\n";
+    for (size_t i = 0; i < shows.size(); i++)
         cout << i + 1 << ". "
              << shows[i].getDate() << " | "
-             << shows[i].getTime() << " | Hall "
-             << shows[i].getHallNo() << endl;
-    }
+             << shows[i].getTime()
+             << " | Hall " << shows[i].getHallNo() << endl;
 
     int choice;
     cout << "Select showtime: ";
     cin >> choice;
 
-    if (choice < 1 || choice > shows.size()) {
-        cout << "Invalid showtime selection.\n";
-        return;
-    }
+    if (choice < 1 || choice > shows.size()) return;
 
-    Showtime selectedShow = shows[choice - 1];
+    Showtime s = shows[choice - 1];
 
     int count;
-    cout << "Enter number of seats: ";
+    cout << "Enter seat count: ";
     cin >> count;
 
     SeatMap map = FileManager::loadOrCreateSeatMap(
-        selectedShow.getHallNo(),
-        selectedShow.getDate(),
-        selectedShow.getTime()
+        s.getHallNo(), s.getDate(), s.getTime()
     );
 
     map.display();
-
     auto seats = map.recommendBestSeats_Custom(count);
 
     if (seats.empty()) {
-        cout << "Sorry, Try to find manually\n";
+        cout << "No recommended seats.\n";
         return;
     }
 
     cout << "Recommended seats: ";
-    for (auto &s : seats)
-        cout << char('A' + s.first) << s.second + 1 << " ";
+    for (auto& p : seats)
+        cout << char('A' + p.first) << p.second + 1 << " ";
     cout << endl;
 }
-

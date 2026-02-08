@@ -1,46 +1,45 @@
 #include "PricingEngine.h"
-#include <unordered_map>
-#include <algorithm>
+#include <fstream>
 
-using namespace std;
+/* ================= GROUP DISCOUNT ================= */
 
-static const int BASE_PRICE = 500;
+int PricingEngine::getGroupDiscountPercent(int seatCount) {
+    if (seatCount == 2) return 10;
+    if (seatCount == 3) return 15;
+    if (seatCount >= 4) return min(20 + (seatCount - 4) * 5, 50);
+    return 0;
+}
 
-// in-memory tracking (Week 8 only)
-static unordered_map<string, int> ticketsBought;
-static unordered_map<string, int> lastGroupDiscount;
+int PricingEngine::calculateFinalPrice(int seatCount) {
+    int base = seatCount * BASE_PRICE;
+    int percent = getGroupDiscountPercent(seatCount);
+    return base - (base * percent / 100);
+}
 
-int PricingEngine::calculateFinalPrice(int seatCount, const string& userKey) {
+/* ================= GLOBAL DISCOUNT ================= */
 
-    int baseTotal = seatCount * BASE_PRICE;
+bool PricingEngine::hasGlobalDiscount() {
+    ifstream file("../data/global_discount.txt");
+    return file.good();
+}
 
-    // ===== GROUP DISCOUNT (PRIORITY) =====
-    if (seatCount >= 2) {
-        int discount = 0;
+int PricingEngine::getGlobalDiscountPercent() {
+    ifstream file("../data/global_discount.txt");
+    int percent;
+    char sep;
+    if (file >> percent >> sep)
+        return percent;
+    return 0;
+}
 
-        if (seatCount == 2) discount = 10;
-        else if (seatCount == 3) discount = 15;
-        else discount = min(seatCount * 5, 50);
-
-        // double only for group 2 or 3
-        if (seatCount <= 3 && lastGroupDiscount[userKey] == discount) {
-            discount = min(discount * 2, 50);
-        }
-
-        lastGroupDiscount[userKey] = discount;
-        ticketsBought[userKey] += seatCount;
-
-        return baseTotal - (baseTotal * discount / 100);
+string PricingEngine::getGlobalDiscountMessage() {
+    ifstream file("../data/global_discount.txt");
+    int percent;
+    char sep;
+    string msg;
+    if (file >> percent >> sep) {
+        getline(file, msg);
+        return msg;
     }
-
-    // ===== INDIVIDUAL DISCOUNT =====
-    int bought = ticketsBought[userKey];
-    int price = BASE_PRICE;
-
-    if (bought == 2) price = BASE_PRICE / 2;        // 50%
-    else if (bought == 3) price = BASE_PRICE / 4;   // 75%
-    else if (bought >= 4) price = 0;                // FREE
-
-    ticketsBought[userKey] += 1;
-    return price;
+    return "";
 }

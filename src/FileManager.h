@@ -75,6 +75,16 @@ public:
     static void saveSeatMap(const string& filename, const SeatMap& map);  
 
     static void deleteSeatMapFile(int hallNo, const string& date, const string& time);
+
+    /*Global Discount*/
+
+    static void saveGlobalDiscount(int percent, const string& message);
+
+    static bool loadGlobalDiscount(int& percent, string& message);
+
+    /* Save Ticket */
+    
+    static void saveTicketToFile(const string& record);
    
 };
 
