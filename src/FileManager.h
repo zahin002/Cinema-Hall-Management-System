@@ -84,20 +84,7 @@ public:
 
     /* Save Ticket */
     
-    static void saveTicket(
-    const string& ticketId,
-    const string& customerName,
-    const string& movie,
-    const string& date,
-    const string& time,
-    int hallNo,
-    int seats,
-    int basePrice,
-    int discountTk,
-    int finalPrice
-    );
-
-
+    static void saveTicketToFile(const string& record);
    
 };
 

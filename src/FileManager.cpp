@@ -1,6 +1,7 @@
 #include "FileManager.h"
 #include "SeatMap.h"
 #include <fstream>
+#include<iostream>
 #include <vector>
 #include <string>
 
@@ -189,30 +190,16 @@ bool FileManager::loadGlobalDiscount(int& percent, string& message) {
 
 /* Save Ticket */
 
-void FileManager::saveTicket(
-    const string& ticketId,
-    const string& customerName,
-    const string& movie,
-    const string& date,
-    const string& time,
-    int hallNo,
-    int seats,
-    int basePrice,
-    int discountTk,
-    int finalPrice
-) {
-    ofstream file("../data/tickets.txt", ios::app);
-    file << ticketId << "|"
-         << customerName << "|"
-         << movie << "|"
-         << date << "|"
-         << time << "|"
-         << hallNo << "|"
-         << seats << "|"
-         << basePrice << "|"
-         << discountTk << "|"
-         << finalPrice << endl;
+void FileManager::saveTicketToFile(const string& record) {
+    ofstream out("tickets.txt", ios::app);
+    if (!out) {
+        cout << "Error saving ticket.\n";
+        return;
+    }
+    out << record << endl;
+    out.close();
 }
+
 
 
 
