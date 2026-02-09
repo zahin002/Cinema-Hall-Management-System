@@ -200,6 +200,37 @@ void FileManager::saveTicketToFile(const string& record) {
     out.close();
 }
 
+vector<string> FileManager::loadAllTickets() {
+    vector<string> records;
+    ifstream in("../data/tickets.txt");
+    string line;
+
+    while (getline(in, line)) {
+        records.push_back(line);
+    }
+
+    in.close();
+    return records;
+}
+
+void FileManager::overwriteAllTickets(const vector<string>& records) {
+    // IMPORTANT: no ios::app here
+    ofstream out("../data/tickets.txt");
+
+    for (const string& r : records) {
+        out << r << endl;
+    }
+
+    out.close();
+}
+
+void FileManager::logRefund(const string& record) {
+    ofstream out("../data/refunds.txt", ios::app);
+    out << record << endl;
+    out.close();
+}
+
+
 
 
 
