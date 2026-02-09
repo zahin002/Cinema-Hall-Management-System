@@ -26,7 +26,8 @@ void CinemaSystem::run() {
     showWelcome();
 
     int choice;
-    User currentUser;   
+    User currentUser;  
+    cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
 
     do {
         showMainMenu();
@@ -176,44 +177,66 @@ bool isValidPassword(const string& password) {
 
 void CinemaSystem::signup(User& user) {
 
-    string fullName, email, password, role;
+    string fullName, email, password;
+    int roleChoice;
 
-    // FULL NAME FIRST
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    // FULL NAME
     cout << "Enter full name: ";
     getline(cin, fullName);
 
-    cout << "Enter email: ";
-    cin >> email;
-
-    // EMAIL VALIDATION
-    if (!isValidEmail(email)) {
-        cout << "Invalid email format.\n";
+    if (fullName.empty()) {
+        cout << "Full name cannot be empty.\n";
         return;
     }
 
+    // EMAIL
+    cout << "Enter email: ";
+    cin >> email;
+
+    if (!isValidEmail(email)) {
+        cout << "Invalid email format.\n";
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        return;
+    }
+
+    // PASSWORD (HIDDEN)
     cout << "Enter password: ";
     password = getHiddenPassword();
 
-    // PASSWORD VALIDATION
     if (!isValidPassword(password)) {
         cout << "Password must be at least 8 characters long and contain letters and numbers.\n";
         return;
     }
 
-    cout << "Signup as (user/admin): ";
-    cin >> role;
+    // ROLE SELECTION (NUMERIC)
+    cout << "\nSignup as:\n";
+    cout << "1. Admin\n";
+    cout << "2. User\n";
+    cout << "Enter choice: ";
 
-    if (role != "user" && role != "admin") {
-        cout << "Invalid role selection.\n";
-        return;
+    while (true) {
+        cin >> roleChoice;
+
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(1000, '\n');
+            cout << "Invalid input. Enter 1 or 2: ";
+        }
+        else if (roleChoice == 1 || roleChoice == 2) {
+            break;
+        }
+        else {
+            cout << "Please enter 1 (Admin) or 2 (User): ";
+        }
     }
 
-    //  ADMIN CHECK
+    string role = (roleChoice == 1) ? "admin" : "user";
+
+    // ADMIN SECRET CODE (HIDDEN)
     if (role == "admin") {
         string adminCode;
         cout << "Enter admin secret code: ";
-        cin >> adminCode;
+        adminCode = getHiddenPassword();
 
         if (adminCode != ADMIN_SECRET_CODE) {
             cout << "Unauthorized admin signup attempt!\n";
@@ -221,16 +244,17 @@ void CinemaSystem::signup(User& user) {
         }
     }
 
-    // SAVE USER (WITH FULL NAME)
+    // SAVE USER
     string encrypted = User::encryptPassword(password);
-
     User newUser(fullName, email, encrypted, role);
     FileManager::saveUser(newUser);
 
-    user = newUser;   // 
+    user = newUser;
 
     cout << "Signup successful as " << role << "!\n";
 }
+
+
 
 
 
@@ -264,16 +288,16 @@ void CinemaSystem::login(User& user) {
                 AdminService adminService;
                 adminService.adminMenu(u);
             } else {
-                UserService userService;
-                userService.userMenu(u);
+                user = u;
+                MenuService menu;
+                menu.showUserMenu(user);
+                return;
             }
-            return;
         }
-    }
 
     cout << "Invalid email or password.\n";
+    }   
 }
-
 
 /* Guest login using Bangladeshi phone number validation.*/
 
