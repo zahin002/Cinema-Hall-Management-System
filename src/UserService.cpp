@@ -207,6 +207,58 @@ void UserService::showTrendingMovies() {
     cout << BOLD << CYAN << "----------------------------------\n" << RESET;
 }
 
+/* ================= GENRE RECOMMENDATION ================= */
+
+void UserService::showGenreRecommendations(int currentMovieCode, const string& genre) {
+
+    vector<Movie> movies = FileManager::loadMovies();
+    vector<pair<Movie, double>> candidates;
+
+    for (const Movie& m : movies) {
+        if (m.getGenre() == genre && m.getCode() != currentMovieCode) {
+
+            int count = 0;
+            double avg = getAverageRating(m.getCode(), count);
+
+            // Even if no rating, include with 0
+            candidates.push_back({ m, avg });
+        }
+    }
+
+    if (candidates.empty()) {
+        cout << YELLOW
+             << "\n⚠ No similar movies found in this genre.\n"
+             << RESET;
+        return;
+    }
+
+    // Sort by rating (descending)
+    sort(candidates.begin(), candidates.end(),
+        [](auto& a, auto& b) {
+            return a.second > b.second;
+        }
+    );
+
+    cout << BOLD << CYAN
+         << "\n🎬 You may also like (Same Genre)\n"
+         << "---------------------------------\n"
+         << RESET;
+
+    int shown = 0;
+    for (auto& item : candidates) {
+        cout << "• "
+             << item.first.getCode()
+             << " | " << item.first.getTitle();
+
+        if (item.second > 0)
+            cout << " ⭐ " << fixed << setprecision(1) << item.second;
+
+        cout << endl;
+
+        if (++shown == 5) break;
+    }
+}
+
 
 /* ================= AVERAGE RATING ================= */
 

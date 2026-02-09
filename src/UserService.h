@@ -10,6 +10,7 @@ public:
     void showMovieDetails(int movieCode);
     void showTrendingMovies();
     void showMovieDetails(int movieCode, const User& user);
+    void showGenreRecommendations(int currentMovieCode, const string& genre);
     void giveOrUpdateRating(int movieCode, const User& user);
      void addOrUpdateReview(int movieCode, const User& user);
 
