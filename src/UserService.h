@@ -7,6 +7,7 @@ class UserService {
 public:
     void userMenu(const User& user);
     void viewMovies();
+    void showMovieDetails(int movieCode);
     void filterMovies();
     void searchMovieByName();
     void viewShowtimes();

@@ -43,6 +43,60 @@ void UserService::viewMovies() {
     }
 }
 
+void UserService::showMovieDetails(int movieCode) {
+    vector<Movie> movies = FileManager::loadMovies();
+    vector<Showtime> shows = FileManager::loadShowtimes();
+
+    // ---- find movie ----
+    Movie selected;
+    bool found = false;
+
+    for (const Movie& m : movies) {
+        if (m.getCode() == movieCode) {
+            selected = m;
+            found = true;
+            break;
+        }
+    }
+
+    if (!found) {
+        cout << RED << "❌ Invalid movie code.\n" << RESET;
+        return;
+    }
+
+    // ---- header ----
+    cout << "\n";
+    cout << BOLD << CYAN << "========== MOVIE DETAILS ==========\n" << RESET;
+    cout << BOLD << YELLOW << selected.getTitle() << RESET << "\n";
+    cout << BOLD << CYAN << "===================================\n" << RESET;
+
+    // ---- basic info ----
+    cout << BOLD << "Duration : " << RESET << selected.getDuration() << " minutes\n";
+    cout << BOLD << "Language : " << RESET << selected.getLanguage() << "\n";
+    cout << BOLD << "Genre    : " << RESET << selected.getGenre() << "\n";
+
+    // ---- showtimes ----
+    bool hasShow = false;
+    cout << "\n" << BOLD << CYAN << "Showtimes:\n" << RESET;
+
+    for (const Showtime& s : shows) {
+        if (s.getMovieCode() == movieCode) {
+            if (!hasShow) hasShow = true;
+            cout << " • "
+                 << s.getDate()
+                 << " | " << s.getTime()
+                 << " | Hall " << s.getHallNo() << "\n";
+        }
+    }
+
+    if (!hasShow) {
+        cout << YELLOW << "⚠ Currently not in showtime\n" << RESET;
+    }
+
+    cout << BOLD << CYAN << "===================================\n" << RESET;
+}
+
+
 void UserService::filterMovies() {
 
     vector<Movie> movies = FileManager::loadMovies();

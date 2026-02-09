@@ -18,11 +18,11 @@ void MenuService::showUserMenu(const User& user) {
         cout << "\n";
         cout << BOLD << CYAN << "=========== USER MENU ===========" << RESET << "\n";
         cout << "1. Browse Movies\n";
-        cout << "4. View Showtimes\n";
-        cout << "5. Book Seat\n";
-        cout << "6. Recommend Best Seat\n";
-        cout << "7. Cancel Ticket\n";
-        cout << "8. Logout\n";
+        cout << "2. View Showtimes\n";
+        cout << "3. Book Seat\n";
+        cout << "4. Recommend Best Seat\n";
+        cout << "5. Cancel Ticket\n";
+        cout << "6. Logout\n";
 
         if (isGuest)
             cout << YELLOW << "(Guest Mode - Email: " << user.getEmail() << ")\n" << RESET;
@@ -35,23 +35,23 @@ void MenuService::showUserMenu(const User& user) {
                 browseMoviesMenu(user);
                 break;
 
-            case 4:
+            case 2:
                 userService.viewShowtimes();
                 break;
 
-            case 5:
+            case 3:
                 userService.bookSeat(user);
                 break;
 
-            case 6:
+            case 4:
                 userService.recommendSeat();
                 break;
 
-            case 7:
+            case 5:
                 userService.cancelTicket();
                 break;
 
-            case 8:
+            case 6:
                 cout << GREEN << "Logged out.\n" << RESET;
                 break;
 
@@ -59,7 +59,7 @@ void MenuService::showUserMenu(const User& user) {
                 cout << RED << "Invalid choice.\n" << RESET;
         }
 
-    } while (choice != 8);
+    } while (choice != 6);
 }
 
 /* ================= BROWSE MOVIES ================= */
@@ -116,7 +116,6 @@ void MenuService::browseMoviesMenu(const User& user) {
 /* ================= MOVIE CODE ENTRY ================= */
 
 void MenuService::selectMovieForDetails(const User& user) {
-
     int movieCode;
     cout << "\nEnter Movie Code to view details (0 to go back): ";
     cin >> movieCode;
@@ -124,10 +123,7 @@ void MenuService::selectMovieForDetails(const User& user) {
     if (movieCode == 0)
         return;
 
-    cout << GREEN
-         << "Movie Details page will open here (next step).\n"
-         << RESET;
-
-    // NEXT STEP:
-    // userService.showMovieDetails(movieCode, user);
+    UserService userService;
+    userService.showMovieDetails(movieCode);
 }
+
