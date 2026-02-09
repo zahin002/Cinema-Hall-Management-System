@@ -11,6 +11,8 @@
 #include "AdminService.h"
 #include "UserService.h"
 #include "MenuService.h"
+#include "TerminalColors.h"
+
 
 using namespace std;
 
@@ -27,39 +29,44 @@ void CinemaSystem::run() {
 
     int choice;
     User currentUser;  
-    cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
 
     do {
-        showMainMenu();
-        cout << "Enter choice: ";
-        cin >> choice;
+    showMainMenu();
+    cout << YELLOW << "Enter choice: " << RESET;
+    cin >> choice;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-        switch (choice) {
-            case 1:
-                login(currentUser);
-                break;
-            case 2:
-                signup(currentUser);
-                break;
-            case 3:
-                guestLogin(currentUser);
-                break;
-            case 4:
-                cout << "Exiting CINE++...\n";
-                break;
-            default:
-                cout << "Invalid choice.\n";
-        }
+    switch (choice) {
+        case 1:
+            login(currentUser);
+            break;
+
+        case 2:
+            signup(currentUser);
+            break;
+
+        case 3:
+            guestLogin(currentUser);
+            break;
+
+        case 4:
+            cout << GREEN << "Exiting CINE++...\n" << RESET;
+            break;
+
+        default:
+            cout << RED << "Invalid choice.\n" << RESET;
+    }
+
+    if (choice >= 1 && choice <= 3) {
+        MenuService menu;
+        menu.showUserMenu(currentUser);
+    }
+
+    cout << endl;
+
+} while (choice != 4);
 
 
-        if (choice >= 1 && choice <= 3) {
-            MenuService menu;
-            menu.showUserMenu(currentUser);
-        }
-
-        cout << endl;
-
-    } while (choice != 4);
 }
 
 
@@ -69,22 +76,28 @@ void CinemaSystem::run() {
  * interact with any application state.
  */
 void CinemaSystem::showWelcome() {
+    cout << BOLD << CYAN;
     cout << "=====================================\n";
     cout << "        WELCOME TO CINE++             \n";
     cout << "   Cinema Hall Management System      \n";
     cout << "=====================================\n\n";
+    cout << RESET;
 }
+
 
 /*
  * Displays the main menu options available
  * before authentication.
  */
 void CinemaSystem::showMainMenu() {
+    cout << BOLD << BLUE;
     cout << "1. Login\n";
     cout << "2. Signup\n";
     cout << "3. Guest Booking\n";
     cout << "4. Exit\n";
+    cout << RESET;
 }
+
 
 /*
  * Reads password from console while showing '*'
@@ -180,39 +193,36 @@ void CinemaSystem::signup(User& user) {
     string fullName, email, password;
     int roleChoice;
 
-    // FULL NAME
-    cout << "Enter full name: ";
+    cout << CYAN << "Enter full name: " << RESET;
     getline(cin, fullName);
 
     if (fullName.empty()) {
-        cout << "Full name cannot be empty.\n";
+        cout << RED << "Full name cannot be empty.\n" << RESET;
         return;
     }
 
-    // EMAIL
-    cout << "Enter email: ";
+    cout << CYAN << "Enter email: " << RESET;
     cin >> email;
 
     if (!isValidEmail(email)) {
-        cout << "Invalid email format.\n";
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << RED << "Invalid email format.\n" << RESET;
         return;
     }
 
-    // PASSWORD (HIDDEN)
-    cout << "Enter password: ";
+    cout << CYAN << "Enter password: " << RESET;
     password = getHiddenPassword();
 
     if (!isValidPassword(password)) {
-        cout << "Password must be at least 8 characters long and contain letters and numbers.\n";
+        cout << RED
+             << "Password must be at least 8 characters long and contain letters and numbers.\n"
+             << RESET;
         return;
     }
 
-    // ROLE SELECTION (NUMERIC)
-    cout << "\nSignup as:\n";
+    cout << BOLD << "\nSignup as:\n" << RESET;
     cout << "1. Admin\n";
     cout << "2. User\n";
-    cout << "Enter choice: ";
+    cout << YELLOW << "Enter choice: " << RESET;
 
     while (true) {
         cin >> roleChoice;
@@ -220,41 +230,37 @@ void CinemaSystem::signup(User& user) {
         if (cin.fail()) {
             cin.clear();
             cin.ignore(1000, '\n');
-            cout << "Invalid input. Enter 1 or 2: ";
+            cout << RED << "Invalid input. Enter 1 or 2: " << RESET;
         }
         else if (roleChoice == 1 || roleChoice == 2) {
             break;
         }
         else {
-            cout << "Please enter 1 (Admin) or 2 (User): ";
+            cout << RED << "Please enter 1 or 2: " << RESET;
         }
     }
 
     string role = (roleChoice == 1) ? "admin" : "user";
 
-    // ADMIN SECRET CODE (HIDDEN)
     if (role == "admin") {
         string adminCode;
-        cout << "Enter admin secret code: ";
+        cout << YELLOW << "Enter admin secret code: " << RESET;
         adminCode = getHiddenPassword();
 
         if (adminCode != ADMIN_SECRET_CODE) {
-            cout << "Unauthorized admin signup attempt!\n";
+            cout << RED << "Unauthorized admin signup attempt!\n" << RESET;
             return;
         }
     }
 
-    // SAVE USER
     string encrypted = User::encryptPassword(password);
     User newUser(fullName, email, encrypted, role);
     FileManager::saveUser(newUser);
 
     user = newUser;
 
-    cout << "Signup successful as " << role << "!\n";
+    cout << GREEN << "Signup successful as " << role << "!\n" << RESET;
 }
-
-
 
 
 
@@ -266,23 +272,24 @@ void CinemaSystem::signup(User& user) {
 void CinemaSystem::login(User& user) {
     string email, password;
 
-    cout << "Enter email: ";
+    cout << CYAN << "Enter email: " << RESET;
     cin >> email;
 
     if (!isValidEmail(email)) {
-        cout << "Invalid email format.\n";
+        cout << RED << "Invalid email format.\n" << RESET;
         return;
     }
 
-    cout << "Enter password: ";
+    cout << CYAN << "Enter password: " << RESET;
     password = getHiddenPassword();
 
     string encrypted = User::encryptPassword(password);
     vector<User> users = FileManager::loadUsers();
 
     for (const User& u : users) {
-        if (u.getEmail() == email &&
-            u.getPassword() == encrypted) {
+        if (u.getEmail() == email && u.getPassword() == encrypted) {
+
+            cout << GREEN << "Login successful!\n" << RESET;
 
             if (u.getRole() == "admin") {
                 AdminService adminService;
@@ -291,13 +298,14 @@ void CinemaSystem::login(User& user) {
                 user = u;
                 MenuService menu;
                 menu.showUserMenu(user);
-                return;
             }
+            return;
         }
+    }
 
-    cout << "Invalid email or password.\n";
-    }   
+    cout << RED << "Invalid email or password.\n" << RESET;
 }
+
 
 /* Guest login using Bangladeshi phone number validation.*/
 

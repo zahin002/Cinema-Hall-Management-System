@@ -7,7 +7,7 @@
 #include <iostream>
 #include <vector>
 #include <iomanip>
-
+#include <limits>
 
 using namespace std;
 
@@ -29,11 +29,21 @@ void MenuService::showUserMenu(const User& user) {
         cout << "5. Cancel Ticket\n";
         cout << "6. Logout\n";
 
-        if (isGuest)
-            cout << YELLOW << "(Guest Mode - Email: " << user.getEmail() << ")\n" << RESET;
+        if (isGuest) {
+            cout << YELLOW << "(Guest Mode - ID: " << user.getEmail() << ")\n" << RESET;
+        }
 
-        cout << "Enter choice: ";
+        cout << YELLOW << "Enter choice: " << RESET;
         cin >> choice;
+
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << RED << "Invalid input. Please enter a number.\n" << RESET;
+            continue;
+        }
+
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
         switch (choice) {
             case 1:
@@ -57,7 +67,7 @@ void MenuService::showUserMenu(const User& user) {
                 break;
 
             case 6:
-                cout << GREEN << "Logged out.\n" << RESET;
+                cout << GREEN << "Logged out successfully.\n" << RESET;
                 break;
 
             default:
@@ -71,6 +81,7 @@ void MenuService::showUserMenu(const User& user) {
 /* ================= BROWSE MOVIES ================= */
 
 void MenuService::browseMoviesMenu(const User& user) {
+
     UserService userService;
     int choice;
 
@@ -83,28 +94,42 @@ void MenuService::browseMoviesMenu(const User& user) {
         cout << "4. Search by Keyword\n";
         cout << "5. Back\n";
 
-        cout << "Enter choice: ";
+        cout << YELLOW << "Enter choice: " << RESET;
         cin >> choice;
+
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << RED << "Invalid input. Please enter a number.\n" << RESET;
+            continue;
+        }
+
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
         switch (choice) {
             case 1:
                 userService.showTrendingMovies();
                 selectMovieForDetails(user);
                 break;
+
             case 2:
                 userService.viewMovies();
                 selectMovieForDetails(user);
                 break;
+
             case 3:
                 userService.filterMovies();
                 selectMovieForDetails(user);
                 break;
+
             case 4:
                 userService.searchMovieByName();
                 selectMovieForDetails(user);
                 break;
+
             case 5:
                 break;
+
             default:
                 cout << RED << "Invalid choice.\n" << RESET;
         }
@@ -112,18 +137,28 @@ void MenuService::browseMoviesMenu(const User& user) {
     } while (choice != 5);
 }
 
+
 /* ================= MOVIE CODE SELECTION ================= */
 
 void MenuService::selectMovieForDetails(const User& user) {
+
     int movieCode;
-    cout << "\nEnter Movie Code to view details (0 to go back): ";
+
+    cout << YELLOW << "\nEnter Movie Code to view details (0 to go back): " << RESET;
     cin >> movieCode;
+
+    if (cin.fail()) {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << RED << "Invalid movie code.\n" << RESET;
+        return;
+    }
+
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
     if (movieCode == 0)
         return;
 
     UserService userService;
-    userService.showMovieDetails(movieCode, user); 
+    userService.showMovieDetails(movieCode, user);
 }
-
-
