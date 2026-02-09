@@ -11,6 +11,8 @@ public:
     void showTrendingMovies();
     void showMovieDetails(int movieCode, const User& user);
     void giveOrUpdateRating(int movieCode, const User& user);
+     void addOrUpdateReview(int movieCode, const User& user);
+
     void filterMovies();
     void searchMovieByName();
     void viewShowtimes();
@@ -19,6 +21,8 @@ public:
     static void cancelTicket();
 private:
     double getAverageRating(int movieCode, int& count);
+    void showReviews(int movieCode);
+
 };
 
 #endif

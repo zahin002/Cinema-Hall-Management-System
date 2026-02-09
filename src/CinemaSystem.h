@@ -20,6 +20,8 @@ private:
 
     void guestLogin(User& user);
 
+    int getNextGuestNumber();
+
     bool isValidBangladeshPhone(const string& phone);
 
     void addMovie();

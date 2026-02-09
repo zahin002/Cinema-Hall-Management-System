@@ -323,6 +323,132 @@ void UserService::giveOrUpdateRating(int movieCode, const User& user) {
 }
 
 
+/* ================= DISPLAY REVIEWS ================= */
+
+void UserService::showReviews(int movieCode) {
+
+    ifstream file("../data/reviews.txt");
+    if (!file.is_open()) {
+        cout << YELLOW << "📝 No reviews yet.\n" << RESET;
+        return;
+    }
+
+    struct Review {
+        string name;
+        string text;
+        string datetime;
+    };
+
+    vector<Review> reviews;
+    string line;
+
+    while (getline(file, line)) {
+        stringstream ss(line);
+        string codeStr, movieName, reviewer, reviewText, dt;
+
+        getline(ss, codeStr, '|');
+        getline(ss, movieName, '|');
+        getline(ss, reviewer, '|');
+        getline(ss, reviewText, '|');
+        getline(ss, dt);
+
+        if (stoi(codeStr) == movieCode) {
+            reviews.push_back({reviewer, reviewText, dt});
+        }
+    }
+    file.close();
+
+    if (reviews.empty()) {
+        cout << YELLOW << "📝 No reviews yet.\n" << RESET;
+        return;
+    }
+
+    // newest → oldest (string datetime works since format is consistent)
+
+    sort(reviews.begin(), reviews.end(),
+         [](const Review& a, const Review& b) {
+             return a.datetime > b.datetime;
+         });
+
+    cout << "\n" << BOLD << CYAN << "📝 REVIEWS\n" << RESET;
+
+    for (auto& r : reviews) {
+        cout << "[" << r.datetime << "] "
+             << BOLD << r.name << RESET << ":\n";
+        cout << r.text << "\n\n";
+    }
+}
+
+
+/* ================= ADD / UPDATE REVIEWS ================= */
+
+
+void UserService::addOrUpdateReview(int movieCode, const User& user) {
+
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+    cout << "Write your review:\n> ";
+    string review;
+    getline(cin, review);
+
+    if (review.empty()) {
+        cout << RED << "Review cannot be empty.\n" << RESET;
+        return;
+    }
+
+    vector<string> lines;
+    ifstream in("../data/reviews.txt");
+    string line;
+    bool updated = false;
+
+    vector<Movie> movies = FileManager::loadMovies();
+    string movieName;
+
+    for (const Movie& m : movies)
+        if (m.getCode() == movieCode)
+            movieName = m.getTitle();
+
+    time_t now = time(nullptr);
+    string dt = ctime(&now);
+    dt.pop_back();
+
+    while (getline(in, line)) {
+        stringstream ss(line);
+        string codeStr, mName, reviewer, text, oldDt;
+
+        getline(ss, codeStr, '|');
+        getline(ss, mName, '|');
+        getline(ss, reviewer, '|');
+        getline(ss, text, '|');
+        getline(ss, oldDt);
+
+        if (stoi(codeStr) == movieCode && reviewer == user.getFullName()) {
+            line = codeStr + "|" + movieName + "|" +
+                   user.getFullName() + "|" + review + "|" + dt;
+            updated = true;
+        }
+
+        lines.push_back(line);
+    }
+    in.close();
+
+    if (!updated) {
+        lines.push_back(
+            to_string(movieCode) + "|" +
+            movieName + "|" +
+            user.getFullName() + "|" +
+            review + "|" + dt
+        );
+    }
+
+    ofstream out("../data/reviews.txt");
+    for (auto& l : lines)
+        out << l << "\n";
+    out.close();
+
+    cout << GREEN << "✔ Review saved successfully.\n" << RESET;
+}
+
 
 /* ================= FILTER MOVIES ================= */
 
@@ -508,10 +634,7 @@ void UserService::bookSeat(const User& user) {
         return;
     }
 
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    string customerName;
-    cout << "Enter your full name: ";
-    getline(cin, customerName);
+    string customerName = user.getFullName();
 
     cout << "\n--- AVAILABLE SHOWTIMES ---\n";
     for (size_t i = 0; i < shows.size(); i++) {

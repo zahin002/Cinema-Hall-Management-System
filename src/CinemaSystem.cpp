@@ -1,6 +1,8 @@
 #include <iostream>
 #include <conio.h>
 #include <vector>
+#include <limits>
+#include <fstream>
 #include <sstream>     // Used for parsing multiple seat inputs
 #include <set>         // Used to prevent duplicate seat selection
 #include "CinemaSystem.h"
@@ -87,6 +89,7 @@ void CinemaSystem::showMainMenu() {
  * Reads password from console while showing '*'
  * Supports backspace and enter
  */
+
 string getHiddenPassword() {
     string password;
     char ch;
@@ -172,21 +175,27 @@ bool isValidPassword(const string& password) {
  */
 
 void CinemaSystem::signup(User& user) {
-    string email, password, role;
+
+    string fullName, email, password, role;
+
+    // FULL NAME FIRST
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    cout << "Enter full name: ";
+    getline(cin, fullName);
 
     cout << "Enter email: ";
     cin >> email;
 
-    //  EMAIL VALIDATION 
+    // EMAIL VALIDATION
     if (!isValidEmail(email)) {
         cout << "Invalid email format.\n";
-        return;   // THIS RETURN IS CRITICAL
+        return;
     }
 
     cout << "Enter password: ";
     password = getHiddenPassword();
 
-    //  PASSWORD VALIDATION
+    // PASSWORD VALIDATION
     if (!isValidPassword(password)) {
         cout << "Password must be at least 8 characters long and contain letters and numbers.\n";
         return;
@@ -200,7 +209,7 @@ void CinemaSystem::signup(User& user) {
         return;
     }
 
-    // ADMIN CHECK
+    //  ADMIN CHECK
     if (role == "admin") {
         string adminCode;
         cout << "Enter admin secret code: ";
@@ -212,12 +221,17 @@ void CinemaSystem::signup(User& user) {
         }
     }
 
-    //  SAVE USER ONLY IF EVERYTHING IS VALID
+    // SAVE USER (WITH FULL NAME)
     string encrypted = User::encryptPassword(password);
-    FileManager::saveUser(User(email, encrypted, role));
+
+    User newUser(fullName, email, encrypted, role);
+    FileManager::saveUser(newUser);
+
+    user = newUser;   // 
 
     cout << "Signup successful as " << role << "!\n";
 }
+
 
 
 /*
@@ -264,6 +278,7 @@ void CinemaSystem::login(User& user) {
 /* Guest login using Bangladeshi phone number validation.*/
 
 void CinemaSystem::guestLogin(User& user) {
+
     string rest;
     cout << "Enter phone number: +880";
     cin >> rest;
@@ -275,11 +290,32 @@ void CinemaSystem::guestLogin(User& user) {
         return;
     }
 
-    cout << "Guest login successful!\n";
+    int guestNo = getNextGuestNumber();
+    string guestName = "Guest " + to_string(guestNo);
 
-    User guest(phone, "", "guest");
-    UserService userService;
-    userService.userMenu(guest);
+    User guest(guestName, phone, "", "guest");
+    user = guest;
+
+    cout << "Guest login successful as " << guestName << ".\n";
+}
+
+
+int CinemaSystem::getNextGuestNumber() {
+    ifstream in("../data/guest_counter.txt");
+    int count = 0;
+
+    if (in.is_open()) {
+        in >> count;
+        in.close();
+    }
+
+    count++; // next guest
+
+    ofstream out("../data/guest_counter.txt");
+    out << count;
+    out.close();
+
+    return count;
 }
 
 

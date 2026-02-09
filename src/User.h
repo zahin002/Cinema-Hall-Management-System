@@ -8,29 +8,28 @@ using namespace std;
 
 class User {
 private:
-
+    string fullName;   
     string email;
-    string password; // stored encrypted
-    string role;     // "admin" or "user"
+    string password;   // stored encrypted
+    string role;       // "admin" or "user"
 
 public:
-
     User();
 
-    User(string email, string password, string role);
+    
+    User(string fullName, string email, string password, string role);
 
+    string getFullName() const;   
     string getEmail() const;
-
     string getPassword() const;
-
     string getRole() const;
 
     /*
      Encrypts a password using a simple character shift.
-     Ensures passwords are not stored in plain text. */
-     
+     Ensures passwords are not stored in plain text.
+    */
     static string encryptPassword(const string& password);
-
 };
 
 #endif
+
