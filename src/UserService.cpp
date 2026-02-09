@@ -46,11 +46,15 @@ void UserService::viewMovies() {
     }
 }
 
-void UserService::showMovieDetails(int movieCode) {
+
+/* ================= MOVIE DETAILS ================= */
+
+
+void UserService::showMovieDetails(int movieCode, const User& user) {
+
     vector<Movie> movies = FileManager::loadMovies();
     vector<Showtime> shows = FileManager::loadShowtimes();
 
-    // ---- find movie ----
     Movie selected;
     bool found = false;
 
@@ -67,26 +71,38 @@ void UserService::showMovieDetails(int movieCode) {
         return;
     }
 
-    // ---- header ----
     cout << "\n";
     cout << BOLD << CYAN << "========== MOVIE DETAILS ==========\n" << RESET;
     cout << BOLD << YELLOW << selected.getTitle() << RESET << "\n";
     cout << BOLD << CYAN << "===================================\n" << RESET;
 
-    // ---- basic info ----
-    cout << BOLD << "Duration : " << RESET << selected.getDuration() << " minutes\n";
-    cout << BOLD << "Language : " << RESET << selected.getLanguage() << "\n";
-    cout << BOLD << "Genre    : " << RESET << selected.getGenre() << "\n";
+    cout << "Duration : " << selected.getDuration() << " minutes\n";
+    cout << "Language : " << selected.getLanguage() << "\n";
+    cout << "Genre    : " << selected.getGenre() << "\n";
 
-    // ---- showtimes ----
+    // ⭐ RATINGS
+    int ratingCount = 0;
+    double avg = getAverageRating(movieCode, ratingCount);
+
+    cout << "\n";
+    if (ratingCount > 0) {
+        cout << BOLD << GREEN
+             << "⭐ Average Rating: "
+             << fixed << setprecision(1) << avg
+             << " / 5 (" << ratingCount << " ratings)\n"
+             << RESET;
+    } else {
+        cout << YELLOW << "⭐ No ratings yet\n" << RESET;
+    }
+
+    // 🎬 SHOWTIMES
     bool hasShow = false;
     cout << "\n" << BOLD << CYAN << "Showtimes:\n" << RESET;
 
     for (const Showtime& s : shows) {
         if (s.getMovieCode() == movieCode) {
-            if (!hasShow) hasShow = true;
-            cout << " • "
-                 << s.getDate()
+            hasShow = true;
+            cout << " • " << s.getDate()
                  << " | " << s.getTime()
                  << " | Hall " << s.getHallNo() << "\n";
         }
@@ -96,8 +112,21 @@ void UserService::showMovieDetails(int movieCode) {
         cout << YELLOW << "⚠ Currently not in showtime\n" << RESET;
     }
 
+    if (user.getRole() != "guest") {
+        cout << "\n1. Give / Update Rating\n2. Back\nEnter choice: ";
+        int ch;
+        cin >> ch;
+        if (ch == 1)
+            giveOrUpdateRating(movieCode, user);
+    }
+
     cout << BOLD << CYAN << "===================================\n" << RESET;
 }
+
+
+
+/* ================= TRENDING MOVIES ================= */
+
 
 void UserService::showTrendingMovies() {
 
@@ -178,6 +207,115 @@ void UserService::showTrendingMovies() {
     cout << BOLD << CYAN << "----------------------------------\n" << RESET;
 }
 
+
+/* ================= AVERAGE RATING ================= */
+
+
+double UserService::getAverageRating(int movieCode, int& count) {
+    ifstream file("../data/ratings.txt");
+    count = 0;
+    double total = 0;
+
+    if (!file.is_open())
+        return 0;
+
+    string line;
+    while (getline(file, line)) {
+        stringstream ss(line);
+        string codeStr, movieName, email, ratingStr, dt;
+
+        getline(ss, codeStr, '|');
+        getline(ss, movieName, '|');
+        getline(ss, email, '|');
+        getline(ss, ratingStr, '|');
+        getline(ss, dt);
+
+        if (stoi(codeStr) == movieCode) {
+            total += stoi(ratingStr);
+            count++;
+        }
+    }
+    file.close();
+
+    return (count == 0) ? 0 : total / count;
+}
+
+
+/* ================= GIVE / UPDATE RATING  ================= */
+
+
+void UserService::giveOrUpdateRating(int movieCode, const User& user) {
+
+    int rating;
+    cout << "Enter rating (1–5): ";
+    cin >> rating;
+
+    if (rating < 1 || rating > 5) {
+        cout << RED << "Invalid rating.\n" << RESET;
+        return;
+    }
+
+    vector<string> lines;
+    ifstream in("../data/ratings.txt");
+    string line;
+    bool updated = false;
+
+    while (getline(in, line)) {
+        stringstream ss(line);
+        string codeStr, movieName, email, rateStr, dt;
+
+        getline(ss, codeStr, '|');
+        getline(ss, movieName, '|');
+        getline(ss, email, '|');
+        getline(ss, rateStr, '|');
+        getline(ss, dt);
+
+        if (stoi(codeStr) == movieCode && email == user.getEmail()) {
+            time_t now = time(nullptr);
+            string t = ctime(&now);
+            t.pop_back();
+
+            line = codeStr + "|" + movieName + "|" +
+                   email + "|" + to_string(rating) + "|" + t;
+
+            updated = true;
+        }
+
+        lines.push_back(line);
+    }
+    in.close();
+
+    if (!updated) {
+        vector<Movie> movies = FileManager::loadMovies();
+        string movieName;
+
+        for (auto& m : movies)
+            if (m.getCode() == movieCode)
+                movieName = m.getTitle();
+
+        time_t now = time(nullptr);
+        string t = ctime(&now);
+        t.pop_back();
+
+        string newLine = to_string(movieCode) + "|" +
+                         movieName + "|" +
+                         user.getEmail() + "|" +
+                         to_string(rating) + "|" + t;
+
+        lines.push_back(newLine);
+    }
+
+    ofstream out("../data/ratings.txt");
+    for (auto& l : lines)
+        out << l << "\n";
+    out.close();
+
+    cout << GREEN << "✔ Rating saved successfully.\n" << RESET;
+}
+
+
+/* ================= FILTER MOVIES ================= */
+
 void UserService::filterMovies() {
 
     vector<Movie> movies = FileManager::loadMovies();
@@ -229,6 +367,8 @@ void UserService::filterMovies() {
     if (!found)
         cout << "No movies found.\n";
 }
+
+/* ================= SEARCH BY KEYWORD ================= */
 
 void UserService::searchMovieByName() {
 

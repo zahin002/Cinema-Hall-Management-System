@@ -1,8 +1,13 @@
 #include "MenuService.h"
 #include "UserService.h"
+#include <Showtime.h>
+#include <FileManager.h>
 #include "TerminalColors.h"
 
 #include <iostream>
+#include <vector>
+#include <iomanip>
+
 
 using namespace std;
 
@@ -62,10 +67,10 @@ void MenuService::showUserMenu(const User& user) {
     } while (choice != 6);
 }
 
+
 /* ================= BROWSE MOVIES ================= */
 
 void MenuService::browseMoviesMenu(const User& user) {
-
     UserService userService;
     int choice;
 
@@ -83,7 +88,6 @@ void MenuService::browseMoviesMenu(const User& user) {
 
         switch (choice) {
             case 1:
-                cout << YELLOW << "Trending movies will appear here.\n" << RESET;
                 userService.showTrendingMovies();
                 selectMovieForDetails(user);
                 break;
@@ -91,20 +95,16 @@ void MenuService::browseMoviesMenu(const User& user) {
                 userService.viewMovies();
                 selectMovieForDetails(user);
                 break;
-
             case 3:
                 userService.filterMovies();
                 selectMovieForDetails(user);
                 break;
-
             case 4:
                 userService.searchMovieByName();
                 selectMovieForDetails(user);
                 break;
-
             case 5:
                 break;
-
             default:
                 cout << RED << "Invalid choice.\n" << RESET;
         }
@@ -112,7 +112,7 @@ void MenuService::browseMoviesMenu(const User& user) {
     } while (choice != 5);
 }
 
-/* ================= MOVIE CODE ENTRY ================= */
+/* ================= MOVIE CODE SELECTION ================= */
 
 void MenuService::selectMovieForDetails(const User& user) {
     int movieCode;
@@ -123,6 +123,7 @@ void MenuService::selectMovieForDetails(const User& user) {
         return;
 
     UserService userService;
-    userService.showMovieDetails(movieCode);
+    userService.showMovieDetails(movieCode, user); 
 }
+
 
