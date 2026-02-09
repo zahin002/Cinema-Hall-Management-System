@@ -7,6 +7,9 @@
 #include "TicketService.h"
 
 #include <iostream>
+#include <map>
+#include <vector>
+#include <fstream>
 #include <sstream>
 #include <set>
 #include <limits>
@@ -96,6 +99,84 @@ void UserService::showMovieDetails(int movieCode) {
     cout << BOLD << CYAN << "===================================\n" << RESET;
 }
 
+void UserService::showTrendingMovies() {
+
+    ifstream file("../data/ratings.txt");
+    if (!file.is_open()) {
+        cout << YELLOW << "No ratings available yet.\n" << RESET;
+        return;
+    }
+
+    // movieCode -> { movieName, totalRating, count }
+    map<int, pair<string, pair<double, int>>> ratingMap;
+
+    string line;
+    while (getline(file, line)) {
+        stringstream ss(line);
+        string codeStr, movieName, email, ratingStr, dateTime;
+
+        getline(ss, codeStr, '|');
+        getline(ss, movieName, '|');
+        getline(ss, email, '|');
+        getline(ss, ratingStr, '|');
+        getline(ss, dateTime);
+
+        int code = stoi(codeStr);
+        int rating = stoi(ratingStr);
+
+        ratingMap[code].first = movieName;
+        ratingMap[code].second.first += rating;
+        ratingMap[code].second.second += 1;
+    }
+    file.close();
+
+    // Convert to sortable vector
+    struct Trend {
+        int code;
+        string name;
+        double avg;
+        int count;
+    };
+
+    vector<Trend> trends;
+
+    for (auto& it : ratingMap) {
+        double avg = it.second.second.first / it.second.second.second;
+        trends.push_back({
+            it.first,
+            it.second.first,
+            avg,
+            it.second.second.second
+        });
+    }
+
+    if (trends.empty()) {
+        cout << YELLOW << "No ratings available yet.\n" << RESET;
+        return;
+    }
+
+    // Sort by average rating (descending)
+    sort(trends.begin(), trends.end(),
+         [](const Trend& a, const Trend& b) {
+             return a.avg > b.avg;
+         });
+
+    cout << "\n";
+    cout << BOLD << CYAN << "🔥 TRENDING MOVIES 🔥\n" << RESET;
+    cout << BOLD << CYAN << "----------------------------------\n" << RESET;
+
+    int limit = min(10, (int)trends.size());
+    for (int i = 0; i < limit; i++) {
+        cout << BOLD << (i + 1) << ". "
+             << trends[i].code << " | "
+             << trends[i].name << RESET
+             << "  ⭐ " << fixed << setprecision(1)
+             << trends[i].avg
+             << " (" << trends[i].count << " ratings)\n";
+    }
+
+    cout << BOLD << CYAN << "----------------------------------\n" << RESET;
+}
 
 void UserService::filterMovies() {
 

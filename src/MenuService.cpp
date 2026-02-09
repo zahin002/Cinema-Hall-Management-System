@@ -84,10 +84,9 @@ void MenuService::browseMoviesMenu(const User& user) {
         switch (choice) {
             case 1:
                 cout << YELLOW << "Trending movies will appear here.\n" << RESET;
-                // (implemented later using ratings.txt)
+                userService.showTrendingMovies();
                 selectMovieForDetails(user);
                 break;
-
             case 2:
                 userService.viewMovies();
                 selectMovieForDetails(user);

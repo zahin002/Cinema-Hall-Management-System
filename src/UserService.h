@@ -8,6 +8,7 @@ public:
     void userMenu(const User& user);
     void viewMovies();
     void showMovieDetails(int movieCode);
+    void showTrendingMovies();
     void filterMovies();
     void searchMovieByName();
     void viewShowtimes();
