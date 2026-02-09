@@ -247,11 +247,20 @@ double UserService::getAverageRating(int movieCode, int& count) {
 void UserService::giveOrUpdateRating(int movieCode, const User& user) {
 
     int rating;
+
     cout << "Enter rating (1–5): ";
-    cin >> rating;
+
+    // strict integer input check
+
+    if (!(cin >> rating)) {
+        cin.clear();        // clear error state
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << RED << "Invalid input. Rating must be an integer.\n" << RESET;
+        return;
+    }
 
     if (rating < 1 || rating > 5) {
-        cout << RED << "Invalid rating.\n" << RESET;
+        cout << RED << "Rating must be between 1 and 5.\n" << RESET;
         return;
     }
 
@@ -289,7 +298,7 @@ void UserService::giveOrUpdateRating(int movieCode, const User& user) {
         vector<Movie> movies = FileManager::loadMovies();
         string movieName;
 
-        for (auto& m : movies)
+        for (const Movie& m : movies)
             if (m.getCode() == movieCode)
                 movieName = m.getTitle();
 
@@ -297,21 +306,22 @@ void UserService::giveOrUpdateRating(int movieCode, const User& user) {
         string t = ctime(&now);
         t.pop_back();
 
-        string newLine = to_string(movieCode) + "|" +
-                         movieName + "|" +
-                         user.getEmail() + "|" +
-                         to_string(rating) + "|" + t;
-
-        lines.push_back(newLine);
+        lines.push_back(
+            to_string(movieCode) + "|" +
+            movieName + "|" +
+            user.getEmail() + "|" +
+            to_string(rating) + "|" + t
+        );
     }
 
     ofstream out("../data/ratings.txt");
-    for (auto& l : lines)
+    for (const string& l : lines)
         out << l << "\n";
     out.close();
 
     cout << GREEN << "✔ Rating saved successfully.\n" << RESET;
 }
+
 
 
 /* ================= FILTER MOVIES ================= */
