@@ -16,42 +16,6 @@
 
 using namespace std;
 
-/* ================= USER MENU ================= */
-
-void UserService::userMenu(const User& user) {
-
-    bool isGuest = (user.getRole() == "guest");
-    int choice;
-
-    do {
-        cout << "\n--- USER MENU ---\n";
-        cout << "1. Browse Movies\n";
-        cout << "2. Filter Movies (Genre/Language)\n";
-        cout << "3. Search Movie by Name\n";
-        cout << "4. View Showtimes\n";
-        cout << "5. Book Seat\n";
-        cout << "6. Recommend Best Seat\n";
-        cout << "7. Logout\n";
-
-        if (isGuest)
-            cout << "(Guest Mode - Phone: " << user.getEmail() << ")\n";
-
-        cout << "Enter choice: ";
-        cin >> choice;
-
-        switch (choice) {
-            case 1: viewMovies(); break;
-            case 2: filterMovies(); break;
-            case 3: searchMovieByName(); break;
-            case 4: viewShowtimes(); break;
-            case 5: bookSeat(user); break;
-            case 6: recommendSeat(); break;
-            case 7: cout << "Logged out.\n"; break;
-            default: cout << "Invalid choice.\n";
-        }
-    } while (choice != 7);
-}
-
 /* ================= UTIL ================= */
 
 static string toLower(string s) {
@@ -169,6 +133,55 @@ void UserService::searchMovieByName() {
     if (!foundAny)
         cout << "No matching movies found.\n";
 }
+
+
+
+/* ================= TICKET CANCELLATION ================= */
+
+void UserService::cancelTicket() {
+    string ticketId;
+    int choice;
+
+    // Take ticket ID
+    cout << "Enter Ticket ID: ";
+    cin >> ticketId;
+
+    // Validate ticket existence
+    if (!TicketService::ticketExists(ticketId)) {
+        cout << "❌ Invalid Ticket ID. Cancellation failed.\n";
+        return;
+    }
+
+    // Confirmation prompt
+    cout << "\n⚠ This action cannot be undone.\n";
+    cout << "Press 1 to confirm cancellation\n";
+    cout << "Press 2 to abort\n";
+    cout << "Your choice: ";
+
+    // Input validation loop
+    while (true) {
+        cin >> choice;
+
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(1000, '\n');
+            cout << "Invalid input. Please enter 1 or 2: ";
+        }
+        else if (choice == 1) {
+            TicketService::cancelTicket(ticketId);
+            cout << "✅ Ticket cancelled successfully.\n";
+            break;
+        }
+        else if (choice == 2) {
+            cout << "❎ Ticket cancellation aborted.\n";
+            break;
+        }
+        else {
+            cout << "Please press 1 (Yes) or 2 (No): ";
+        }
+    }
+}
+
 
 /* ================= SHOWTIMES ================= */
 
@@ -342,14 +355,37 @@ void UserService::bookSeat(const User& user) {
         finalPrice
     );
 
-    char snack;
-    cout << "\nWould you like to order snacks? (y/n): ";
-    cin >> snack;
-    if (snack == 'y' || snack == 'Y')
-        SnackShop::start();
+    int snackChoice;
+
+    cout << "\nWould you like to order snacks?\n";
+    cout << "Press 1 for Yes\n";
+    cout << "Press 2 for No\n";
+    cout << "Your choice: ";
+
+    while (true) {
+        cin >> snackChoice;
+
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(1000, '\n');
+            cout << "Invalid input. Please enter 1 or 2: ";
+        }
+        else if (snackChoice == 1) {
+            SnackShop::start();
+            break;
+        }
+        else if (snackChoice == 2) {
+            cout << "Skipping snack order.\n";
+            break;
+        }
+        else {
+            cout << "Please press 1 (Yes) or 2 (No): ";
+        }
+    }
+
 }
 
-/* ================= SEAT RECOMMEND ================= */
+/* ================= SEAT RECOMMENDATION ================= */
 
 void UserService::recommendSeat() {
 

@@ -26,6 +26,8 @@ public:
         double finalPrice
     );
 
+    static bool ticketExists(const string& ticketId);
+
     static void saveTicket(
         const string& ticketId,
         const string& customerName,

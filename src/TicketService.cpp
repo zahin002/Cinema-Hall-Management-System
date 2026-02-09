@@ -23,6 +23,24 @@ string TicketService::generateTicketId() {
     return "TCK" + to_string(::time(nullptr)) + "_" + to_string(rand() % 1000);
 }
 
+/* ================= EXISTENCE OF TICKET ID ================= */
+
+bool TicketService::ticketExists(const string& ticketId) {
+    ifstream file("tickets.txt"); 
+    string line;
+
+    while (getline(file, line)) {
+        if (line.find(ticketId) != string::npos) {
+            file.close();
+            return true;
+        }
+    }
+
+    file.close();
+    return false;
+}
+
+
 /* ================= PRINT TICKET ================= */
 
 void TicketService::printTicket(

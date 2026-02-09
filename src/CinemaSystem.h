@@ -14,11 +14,11 @@ private:
 
     void showMainMenu();
 
-    void login();
+    void login(User& user);
 
-    void signup();
+    void signup(User& user);
 
-    void guestLogin();
+    void guestLogin(User& user);
 
     bool isValidBangladeshPhone(const string& phone);
 

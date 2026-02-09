@@ -8,6 +8,7 @@
 #include "Movie.h"
 #include "AdminService.h"
 #include "UserService.h"
+#include "MenuService.h"
 
 using namespace std;
 
@@ -23,25 +24,41 @@ void CinemaSystem::run() {
     showWelcome();
 
     int choice;
+    User currentUser;   
+
     do {
         showMainMenu();
         cout << "Enter choice: ";
         cin >> choice;
 
-        /*
-         * Menu-driven control using switch-case ensures
-         * clean separation of authentication actions.
-         */
         switch (choice) {
-            case 1: login(); break;
-            case 2: signup(); break;
-            case 3: guestLogin(); break;
-            case 4: cout << "Exiting CINE++...\n"; break;
-            default: cout << "Invalid choice.\n";
+            case 1:
+                login(currentUser);
+                break;
+            case 2:
+                signup(currentUser);
+                break;
+            case 3:
+                guestLogin(currentUser);
+                break;
+            case 4:
+                cout << "Exiting CINE++...\n";
+                break;
+            default:
+                cout << "Invalid choice.\n";
         }
+
+
+        if (choice >= 1 && choice <= 3) {
+            MenuService menu;
+            menu.showUserMenu(currentUser);
+        }
+
         cout << endl;
+
     } while (choice != 4);
 }
+
 
 /*
  * Displays the system banner.
@@ -154,7 +171,7 @@ bool isValidPassword(const string& password) {
  * Password encryption ensures raw passwords are never saved.
  */
 
-void CinemaSystem::signup() {
+void CinemaSystem::signup(User& user) {
     string email, password, role;
 
     cout << "Enter email: ";
@@ -208,7 +225,7 @@ void CinemaSystem::signup() {
  * Redirects user to admin or user menu based on role.
  */
 
-void CinemaSystem::login() {
+void CinemaSystem::login(User& user) {
     string email, password;
 
     cout << "Enter email: ";
@@ -246,7 +263,7 @@ void CinemaSystem::login() {
 
 /* Guest login using Bangladeshi phone number validation.*/
 
-void CinemaSystem::guestLogin() {
+void CinemaSystem::guestLogin(User& user) {
     string rest;
     cout << "Enter phone number: +880";
     cin >> rest;
