@@ -1,7 +1,8 @@
 #include "FileManager.h"
 #include "SeatMap.h"
 #include <fstream>
-#include<iostream>
+#include <sstream>
+#include <iostream>
 #include <vector>
 #include <string>
 
@@ -11,21 +12,35 @@ using namespace std;
 
 void FileManager::saveUser(const User& user) {
     ofstream file("../data/users.txt", ios::app);
-    file << user.getEmail() << " "
-         << user.getPassword() << " "
-         << user.getRole() << endl;
+    file << user.getFullName() << "|"
+         << user.getEmail() << "|"
+         << user.getPassword() << "|"
+         << user.getRole() << "\n";
 }
+
 
 vector<User> FileManager::loadUsers() {
     vector<User> users;
     ifstream file("../data/users.txt");
+    string line;
 
-    string email, password, role;
-    while (file >> email >> password >> role) {
-        users.push_back(User(email, password, role));
+    while (getline(file, line)) {
+        if (line.empty()) continue;
+
+        stringstream ss(line);
+        string fullName, email, password, role;
+
+        getline(ss, fullName, '|');
+        getline(ss, email, '|');
+        getline(ss, password, '|');
+        getline(ss, role, '|');
+
+        users.emplace_back(fullName, email, password, role);
     }
+
     return users;
 }
+
 
 /* ================= MOVIES ================= */
 
@@ -199,6 +214,37 @@ void FileManager::saveTicketToFile(const string& record) {
     out << record << endl;
     out.close();
 }
+
+vector<string> FileManager::loadAllTickets() {
+    vector<string> records;
+    ifstream in("../data/tickets.txt");
+    string line;
+
+    while (getline(in, line)) {
+        records.push_back(line);
+    }
+
+    in.close();
+    return records;
+}
+
+void FileManager::overwriteAllTickets(const vector<string>& records) {
+    // no ios::app here
+    ofstream out("../data/tickets.txt");
+
+    for (const string& r : records) {
+        out << r << endl;
+    }
+
+    out.close();
+}
+
+void FileManager::logRefund(const string& record) {
+    ofstream out("../data/refunds.txt", ios::app);
+    out << record << endl;
+    out.close();
+}
+
 
 
 

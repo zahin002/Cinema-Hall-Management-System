@@ -2,17 +2,12 @@
 #define SEATMAP_H
 
 #include <vector>
+#include <utility>   
+
 using namespace std;
 
-/*
- * SeatMap
- * -------
- * Represents the seating layout for a specific show.
- * Manages seat availability, booking operations,
- * and intelligent seat recommendation logic. */
 class SeatMap {
 private:
- 
     int rows;
     int cols;
 
@@ -20,7 +15,6 @@ private:
      * 2D grid representing seat status.
      * 'O' = available, 'X' = booked
      */
-
     vector<vector<char>> seats;
 
 public:
@@ -34,18 +28,17 @@ public:
 
     bool bookSeat(int row, int col);
 
-    int getRows() const;
-
-    int getCols() const;
-
-    vector<vector<char>> getSeats() const;
-
-    void setSeats(const vector<vector<char>>& seats);
+    void releaseSeat(int row, int col);
 
     bool isSeatAvailable(int row, int col) const;
 
+    int getRows() const;
+    int getCols() const;
+
+    vector<vector<char>> getSeats() const;
+    void setSeats(const vector<vector<char>>& seats);
+
     pair<int,int> recommendBestSeat() const;
-    
     vector<pair<int,int>> recommendBestSeats_Custom(int count) const;
 };
 

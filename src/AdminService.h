@@ -11,7 +11,6 @@ public:
 private:
     // Movie management
     void addMovie();
-    void viewMovies();
     void deleteMovie();
 
     // Showtime management

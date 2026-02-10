@@ -2,10 +2,14 @@
 #include "FileManager.h"
 #include "Movie.h"
 #include "SeatMap.h"
+#include "MenuService.h"
+#include "TerminalColors.h"
+
 #include <fstream>
 #include <iostream>
 #include <ctime>
 #include <sstream>
+#include <limits>
 
 using namespace std;
 
@@ -17,13 +21,14 @@ vector<string> TIME_SLOTS = {
     "08:00 PM - 10:30 PM"
 };
 
-
 /* ================= ADMIN MENU ================= */
 
-void AdminService::adminMenu(const User&) {
+void AdminService::adminMenu(const User& admin) {
+
     int choice;
+
     do {
-        cout << "\n--- ADMIN MENU ---\n";
+        cout << "\n" << BOLD << CYAN << "--- ADMIN MENU ---\n" << RESET;
         cout << "1. Add Movie\n";
         cout << "2. View Movies\n";
         cout << "3. Delete Movie\n";
@@ -32,119 +37,142 @@ void AdminService::adminMenu(const User&) {
         cout << "6. Delete Showtime\n";
         cout << "7. View Seat Map\n";
         cout << "8. Logout\n";
-        cout << "Enter choice: ";
+        cout << YELLOW << "Enter choice: " << RESET;
+
         cin >> choice;
 
-        switch (choice) {
-            case 1: addMovie(); break;
-            case 2: viewMovies(); break;
-            case 3: deleteMovie(); break;
-            case 4: addShowtime(); break;
-            case 5: viewShowtimes(); break;
-            case 6: deleteShowtime(); break;
-            case 7: viewSeatMap(); break;
-            case 8: cout << "Logged out.\n"; break;
-            default: cout << "Invalid choice.\n";
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << RED << "Invalid input.\n" << RESET;
+            continue;
         }
-    } while (choice != 9);
+
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        switch (choice) {
+
+            case 1:
+                addMovie();
+                break;
+
+            case 2: {   // REUSE USER BROWSE MOVIES
+                MenuService menu;
+                menu.browseMoviesMenu(admin,true);
+                break;
+            }
+
+            case 3:
+                deleteMovie();
+                break;
+
+            case 4:
+                addShowtime();
+                break;
+
+            case 5:
+                viewShowtimes();
+                break;
+
+            case 6:
+                deleteShowtime();
+                break;
+
+            case 7:
+                viewSeatMap();
+                break;
+
+            case 8:
+                cout << GREEN << "Logged out.\n" << RESET;
+                break;
+
+            default:
+                cout << RED << "Invalid choice.\n" << RESET;
+        }
+
+    } while (choice != 8);
 }
 
 /* ================= MOVIE MANAGEMENT ================= */
 
 void AdminService::addMovie() {
+
     string title, genre, language;
     int duration;
 
     int code = FileManager::getNextMovieCode();
-    cout << "Auto-generated movie code: " << code << endl;
+    cout << CYAN << "Auto-generated movie code: " << code << RESET << endl;
 
-    cin.ignore();
     cout << "Enter movie title: ";
     getline(cin, title);
+
     cout << "Enter genre: ";
     getline(cin, genre);
+
     cout << "Enter duration (minutes): ";
     cin >> duration;
-    cin.ignore();
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
     cout << "Enter language: ";
     getline(cin, language);
 
     FileManager::saveMovie(Movie(code, title, genre, duration, language));
-    cout << "Movie added successfully!\n";
-}
-
-
-
-void AdminService::viewMovies() {
-    vector<Movie> movies = FileManager::loadMovies();
-
-    if (movies.empty()) {
-        cout << "No movies available.\n";
-        return;
-    }
-
-    cout << "\n--- MOVIE LIST ---\n";
-    for (size_t i = 0; i < movies.size(); i++) {
-        cout << i + 1 << ". "
-             << movies[i].getTitle()
-             << " | " << movies[i].getGenre()
-             << " | " << movies[i].getDuration() << " mins"
-             << " | " << movies[i].getLanguage() << endl;
-    }
+    cout << GREEN << "Movie added successfully!\n" << RESET;
 }
 
 void AdminService::deleteMovie() {
+
     int code;
-    cout << "Enter movie code to delete: ";
+    cout << YELLOW << "Enter movie code to delete: " << RESET;
     cin >> code;
+
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
     vector<Movie> movies = FileManager::loadMovies();
     vector<Showtime> shows = FileManager::loadShowtimes();
 
     for (const Showtime& s : shows) {
         if (s.getMovieCode() == code) {
-            cout << "Cannot delete movie. Showtime exists.\n";
+            cout << RED << "Cannot delete movie. Showtime exists.\n" << RESET;
             return;
         }
     }
 
-    ofstream file("../data/movies_temp.txt");
+    ofstream out("../data/movies_temp.txt");
     bool deleted = false;
 
     for (const Movie& m : movies) {
-        if (m.getCode() != code)
-            file << m.getCode() << "|"
-                 << m.getTitle() << "|"
-                 << m.getGenre() << "|"
-                 << m.getDuration() << "|"
-                 << m.getLanguage() << endl;
-        else
+        if (m.getCode() != code) {
+            out << m.getCode() << "|"
+                << m.getTitle() << "|"
+                << m.getGenre() << "|"
+                << m.getDuration() << "|"
+                << m.getLanguage() << "\n";
+        } else {
             deleted = true;
+        }
     }
-    file.close();
+    out.close();
 
     remove("../data/movies.txt");
     rename("../data/movies_temp.txt", "../data/movies.txt");
 
     if (deleted)
-        cout << "Movie deleted successfully.\n";
+        cout << GREEN << "Movie deleted successfully.\n" << RESET;
     else
-        cout << "Movie not found.\n";
+        cout << YELLOW << "Movie not found.\n" << RESET;
 }
-
-
 
 /* ================= SHOWTIME MANAGEMENT ================= */
 
 bool AdminService::isValidFutureDate(const string& dateStr) {
+
     int d, m, y;
     char dash1, dash2;
-
     stringstream ss(dateStr);
-    ss >> d >> dash1 >> m >> dash2 >> y;
 
-    if (ss.fail() || dash1 != '-' || dash2 != '-')
-        return false;
+    ss >> d >> dash1 >> m >> dash2 >> y;
+    if (ss.fail()) return false;
 
     tm inputDate = {};
     inputDate.tm_mday = d;
@@ -155,41 +183,35 @@ bool AdminService::isValidFutureDate(const string& dateStr) {
     time_t now = time(nullptr);
 
     double diffDays = difftime(inputTime, now) / (60 * 60 * 24);
-
     return diffDays >= 0 && diffDays <= 30;
 }
 
-
 void AdminService::addShowtime() {
-    int movieCode, hallNo;
-    string date, time;
+
+    int movieCode, hallNo, slotChoice;
+    string date;
 
     vector<Movie> movies = FileManager::loadMovies();
-
     if (movies.empty()) {
-        cout << "No movies available. Add movies first.\n";
+        cout << RED << "No movies available.\n" << RESET;
         return;
     }
 
     cout << "\nAvailable Movies:\n";
-    for (const Movie& m : movies) {
+    for (const Movie& m : movies)
         cout << m.getCode() << " - " << m.getTitle() << endl;
-    }
 
     cout << "Enter movie code: ";
     cin >> movieCode;
-    cin.ignore();
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
     bool found = false;
-    for (const Movie& m : movies) {
-        if (m.getCode() == movieCode) {
+    for (const Movie& m : movies)
+        if (m.getCode() == movieCode)
             found = true;
-            break;
-        }
-    }
 
     if (!found) {
-        cout << "This movie is not available yet.\n";
+        cout << RED << "Invalid movie code.\n" << RESET;
         return;
     }
 
@@ -197,170 +219,108 @@ void AdminService::addShowtime() {
     getline(cin, date);
 
     if (!isValidFutureDate(date)) {
-        cout << "Invalid date. You can only add showtimes for the next 30 days.\n";
+        cout << RED << "Invalid date.\n" << RESET;
         return;
     }
-
 
     cout << "\nChoose Time Slot:\n";
-    for (size_t i = 0; i < TIME_SLOTS.size(); i++) {
+    for (size_t i = 0; i < TIME_SLOTS.size(); i++)
         cout << i + 1 << ". " << TIME_SLOTS[i] << endl;
-    }
 
-    int slotChoice;
-    cout << "Enter option (1-5): ";
+    cout << "Enter option: ";
     cin >> slotChoice;
 
-    if (slotChoice < 1 || slotChoice > TIME_SLOTS.size()) {
-        cout << "Invalid time slot selection.\n";
+    if (slotChoice < 1 || slotChoice > (int)TIME_SLOTS.size()) {
+        cout << RED << "Invalid slot.\n" << RESET;
         return;
     }
 
-    time = TIME_SLOTS[slotChoice - 1];
-
-    cout << "Enter hall number: ";
+    cout << "Enter hall number (1-3): ";
     cin >> hallNo;
 
-    //3 Halls Fixed//
-
     if (hallNo < 1 || hallNo > 3) {
-        cout << "Invalid hall number. Only halls 1–3 are available.\n";
+        cout << RED << "Invalid hall number.\n" << RESET;
         return;
     }
 
-
-    vector<Showtime> existingShows = FileManager::loadShowtimes();
-
-    for (const Showtime& s : existingShows) {
-        if (s.getHallNo() == hallNo && s.getDate() == date &&s.getTime() == time) {
-            cout << "Showtime conflict detected.\n";
-            cout << "Hall " << hallNo << " already has a showtime at this time.\n";
-            cout << "Please delete the existing showtime first.\n";
-            return;
-        }
-    }
-
-
     FileManager::saveShowtime(
-        Showtime(movieCode, date, time, hallNo)
+        Showtime(movieCode, date, TIME_SLOTS[slotChoice - 1], hallNo)
     );
 
-    cout << "Showtime added successfully!\n";
+    cout << GREEN << "Showtime added successfully!\n" << RESET;
 }
 
+/* ================= VIEW / DELETE SHOWTIME & SEAT MAP ================= */
 
 void AdminService::viewShowtimes() {
     vector<Showtime> shows = FileManager::loadShowtimes();
     vector<Movie> movies = FileManager::loadMovies();
 
     if (shows.empty()) {
-        cout << "No showtimes available.\n";
+        cout << YELLOW << "No showtimes available.\n" << RESET;
         return;
     }
 
-    cout << "\n--- SHOWTIMES ---\n";
-    for (size_t i = 0; i < shows.size(); i++) {
+    cout << "\n" << BOLD << CYAN << "--- SHOWTIMES ---\n" << RESET;
 
+    for (size_t i = 0; i < shows.size(); i++) {
         string title = "Unknown";
-        for (const Movie& m : movies) {
-            if (m.getCode() == shows[i].getMovieCode()) {
+        for (const Movie& m : movies)
+            if (m.getCode() == shows[i].getMovieCode())
                 title = m.getTitle();
-                break;
-            }
-        }
 
         cout << i + 1 << ". "
-             << title
-             << " | " << shows[i].getDate()
-             << " | " << shows[i].getTime()
-             << " | Hall " << shows[i].getHallNo()
-             << endl;
+             << title << " | "
+             << shows[i].getDate() << " | "
+             << shows[i].getTime() << " | Hall "
+             << shows[i].getHallNo() << endl;
     }
 }
 
 void AdminService::deleteShowtime() {
     vector<Showtime> shows = FileManager::loadShowtimes();
-
-    if (shows.empty()) {
-        cout << "No showtimes available to delete.\n";
-        return;
-    }
-
-    cout << "\n--- SHOWTIMES ---\n";
-    for (size_t i = 0; i < shows.size(); i++) {
-        cout << i + 1 << ". "
-             << "Movie Code: " << shows[i].getMovieCode()
-             << " | Date: " << shows[i].getDate()
-             << " | Time: " << shows[i].getTime()
-             << " | Hall " << shows[i].getHallNo()
-             << endl;
-    }
+    if (shows.empty()) return;
 
     int choice;
     cout << "Enter showtime number to delete: ";
     cin >> choice;
 
-    if (choice < 1 || choice > shows.size()) {
-        cout << "Invalid selection.\n";
+    if (choice < 1 || choice > (int)shows.size()) {
+        cout << RED << "Invalid selection.\n" << RESET;
         return;
     }
 
-    ofstream file("../data/showtimes_temp.txt");
+    ofstream out("../data/showtimes_temp.txt");
 
     for (size_t i = 0; i < shows.size(); i++) {
-        if (i != choice - 1) {
-            file << shows[i].getMovieCode() << "|"
-                 << shows[i].getDate() << "|"
-                 << shows[i].getTime() << "|"
-                 << shows[i].getHallNo() << endl;
-        }
+        if ((int)i != choice - 1)
+            out << shows[i].getMovieCode() << "|"
+                << shows[i].getDate() << "|"
+                << shows[i].getTime() << "|"
+                << shows[i].getHallNo() << "\n";
     }
-
-    file.close();
+    out.close();
 
     remove("../data/showtimes.txt");
     rename("../data/showtimes_temp.txt", "../data/showtimes.txt");
 
-    cout << "Showtime deleted successfully.\n";
+    cout << GREEN << "Showtime deleted.\n" << RESET;
 }
-
-
-/* ================= SEAT MAP & BOOKING ================= */
 
 void AdminService::viewSeatMap() {
     vector<Showtime> shows = FileManager::loadShowtimes();
-
-    if (shows.empty()) {
-        cout << "No showtimes available.\n";
-        return;
-    }
-
-    cout << "\n--- SHOWTIMES ---\n";
-    for (size_t i = 0; i < shows.size(); i++) {
-        cout << i + 1 << ". "
-             << shows[i].getDate() << " | "
-             << shows[i].getTime() << " | Hall "
-             << shows[i].getHallNo() << endl;
-    }
+    if (shows.empty()) return;
 
     int choice;
     cout << "Select showtime: ";
     cin >> choice;
 
-    if (choice < 1 || choice > shows.size()) {
-        cout << "Invalid selection.\n";
-        return;
-    }
+    if (choice < 1 || choice > (int)shows.size()) return;
 
     Showtime s = shows[choice - 1];
 
     SeatMap map = FileManager::loadOrCreateSeatMap(
-        s.getHallNo(),
-        s.getDate(),
-        s.getTime()
+        s.getHallNo(), s.getDate(), s.getTime()
     );
-
     map.display();
 }
-
-

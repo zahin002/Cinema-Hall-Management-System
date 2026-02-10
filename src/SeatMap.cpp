@@ -23,6 +23,7 @@ SeatMap::SeatMap(int rows, int cols) {
  * Creates a predefined seat layout based on hall number.
  * Hall structures are fixed and reused for all showtimes.
  */
+
 SeatMap SeatMap::createForHall(int hallNo) {
     if (hallNo == 1) {
         // Largest hall
@@ -130,6 +131,20 @@ bool SeatMap::isSeatAvailable(int row, int col) const {
 
     return seats[row][col] == 'O';
 }
+
+//Refund Policy
+
+
+void SeatMap::releaseSeat(int row, int col) {
+    if (row < 0 || row >= rows || col < 0 || col >= cols)
+        return;
+
+    if (seats[row][col] == 'X') {
+        seats[row][col] = 'O';
+    }
+}
+
+
 
 /*
  * Recommends a single best available seat.

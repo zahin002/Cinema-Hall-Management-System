@@ -3,6 +3,9 @@
 
 #include "User.h"
 
+#include <string>
+using std::string;
+
 class CinemaSystem {
 public:
 
@@ -14,11 +17,13 @@ private:
 
     void showMainMenu();
 
-    void login();
+    bool login(User& user);
 
-    void signup();
+    bool signup(User& user);
 
-    void guestLogin();
+    bool guestLogin(User& user);
+
+    int getNextGuestNumber();
 
     bool isValidBangladeshPhone(const string& phone);
 

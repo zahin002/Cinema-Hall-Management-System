@@ -1,5 +1,2 @@
-
-admin@cine.com 3872667459 admin
-
-
-user@gmail.com 2464252756 user
+Zahin Uddin|admin@cine.com|3872667459|admin
+Abrar Faiyaz|abrarfaiyaz700@gmail.com|3872667459|admin

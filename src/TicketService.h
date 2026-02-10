@@ -9,11 +9,9 @@ using namespace std;
 
 class TicketService {
 public:
+    // ===== Ticket Creation =====
+    static string generateTicketId();
 
-    static std::string generateTicketId();
-    
-    // Prints colored ticket to terminal
-    
     static void printTicket(
         const string& ticketId,
         const string& customerName,
@@ -21,15 +19,15 @@ public:
         const string& showDate,
         const string& showTime,
         int hallNo,
-        const vector<pair<int,int>>& selectedSeats,
+        const vector<pair<int,int>>& seats,
         double basePrice,
         double discountTk,
         const string& discountLabel,
         double finalPrice
     );
 
-    
-    // Saves ticket to file
+    static bool ticketExists(const string& ticketId);
+
     static void saveTicket(
         const string& ticketId,
         const string& customerName,
@@ -37,8 +35,32 @@ public:
         const string& showDate,
         const string& showTime,
         int hallNo,
-        const vector<pair<int,int>>& selectedSeats,
+        const vector<pair<int,int>>& seats,
         double finalPrice
+    );
+
+    // ===== Cancellation & Refund =====
+    static void cancelTicket(const string& ticketId);
+
+private:
+    // Refund calculation based on time before show
+    static int calculateRefundPercent(
+        const string& showDate,
+        const string& showTime
+    );
+
+    // Cancelled ticket printout
+    static void printCancelledTicket(
+        const string& ticketId,
+        const string& customerName,
+        const string& movieTitle,
+        const string& showDate,
+        const string& showTime,
+        int hallNo,
+        const vector<pair<int,int>>& seats,
+        double paidAmount,
+        int refundPercent,
+        double refundAmount
     );
 };
 

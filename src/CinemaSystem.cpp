@@ -1,87 +1,130 @@
 #include <iostream>
 #include <conio.h>
 #include <vector>
-#include <sstream>     // Used for parsing multiple seat inputs
-#include <set>         // Used to prevent duplicate seat selection
+#include <limits>
+#include <fstream>
+#include <sstream>
+#include <set>
+
 #include "CinemaSystem.h"
 #include "FileManager.h"
 #include "Movie.h"
 #include "AdminService.h"
 #include "UserService.h"
+#include "MenuService.h"
+#include "TerminalColors.h"
 
 using namespace std;
 
 const string ADMIN_SECRET_CODE = "ADMIN2026";
 
 
-/*
- * Controls the overall application lifecycle.
- * Displays welcome message once, then repeatedly shows
- * the main menu until the user chooses to exit.
- */
-void CinemaSystem::run() {
-    showWelcome();
+/* ================= UI ================= */
 
-    int choice;
-    do {
-        showMainMenu();
-        cout << "Enter choice: ";
-        cin >> choice;
-
-        /*
-         * Menu-driven control using switch-case ensures
-         * clean separation of authentication actions.
-         */
-        switch (choice) {
-            case 1: login(); break;
-            case 2: signup(); break;
-            case 3: guestLogin(); break;
-            case 4: cout << "Exiting CINE++...\n"; break;
-            default: cout << "Invalid choice.\n";
-        }
-        cout << endl;
-    } while (choice != 4);
-}
-
-/*
- * Displays the system banner.
- * This function is purely presentational and does not
- * interact with any application state.
- */
 void CinemaSystem::showWelcome() {
+    cout << BOLD << CYAN;
     cout << "=====================================\n";
     cout << "        WELCOME TO CINE++             \n";
     cout << "   Cinema Hall Management System      \n";
     cout << "=====================================\n\n";
+    cout << RESET;
 }
 
-/*
- * Displays the main menu options available
- * before authentication.
- */
 void CinemaSystem::showMainMenu() {
+    cout << BOLD << BLUE;
     cout << "1. Login\n";
     cout << "2. Signup\n";
     cout << "3. Guest Booking\n";
     cout << "4. Exit\n";
+    cout << RESET;
 }
 
-/*
- * Reads password from console while showing '*'
- * Supports backspace and enter
- */
+
+/* ================= MAIN CONTROLLER ================= */
+
+void CinemaSystem::run() {
+
+    showWelcome();
+
+    int choice;
+    User currentUser;
+
+    do {
+        showMainMenu();
+        cout << YELLOW << "Enter choice: " << RESET;
+
+        cin >> choice;
+
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << RED << "Invalid input. Please enter a number.\n" << RESET;
+            continue;
+        }
+
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        switch (choice) {
+
+            case 1: {   // LOGIN
+                if (login(currentUser)) {
+                    if (currentUser.getRole() == "admin") {
+                        AdminService adminService;
+                        adminService.adminMenu(currentUser);
+                    } else {
+                        MenuService::showUserMenu(currentUser);
+                    }
+                }
+                break;
+            }
+
+            case 2: {   // SIGNUP
+                if (signup(currentUser)) {
+                    if (currentUser.getRole() == "admin") {
+                        AdminService adminService;
+                        adminService.adminMenu(currentUser);
+                    } else {
+                        MenuService::showUserMenu(currentUser);
+                    }
+                }
+                break;
+            }
+
+            case 3: {   // GUEST
+                if (guestLogin(currentUser)) {
+                    // guests are always users
+                    MenuService::showUserMenu(currentUser);
+                }
+                break;
+            }
+
+            case 4:
+                cout << GREEN << "Exiting CINE++...\n" << RESET;
+                break;
+
+            default:
+                cout << RED << "Invalid choice.\n" << RESET;
+        }
+
+        cout << endl;
+
+    } while (choice != 4);
+}
+
+/* ================= HIDDEN PASSWORD ================= */
+
 string getHiddenPassword() {
     string password;
     char ch;
 
     while (true) {
-        ch = _getch();   // get character without echo
+        ch = _getch();
 
-        if (ch == '\r') {          // Enter key
+        if (ch == '\r') {
             cout << endl;
             break;
         }
-        else if (ch == '\b') {     // Backspace
+        else if (ch == '\b') {
             if (!password.empty()) {
                 password.pop_back();
                 cout << "\b \b";
@@ -95,190 +138,179 @@ string getHiddenPassword() {
     return password;
 }
 
+/* ================= VALIDATION ================= */
+
 bool isValidEmail(const string& email) {
-    // no spaces
-    if (email.find(' ') != string::npos)
-        return false;
 
-    // exactly one '@'
+    if (email.find(' ') != string::npos) return false;
+
     size_t atPos = email.find('@');
-    if (atPos == string::npos || atPos == 0)
-        return false;
+    if (atPos == string::npos || atPos == 0) return false;
 
-    // last dot must be AFTER '@'
-    size_t lastDot = email.rfind('.');
-    if (lastDot == string::npos || lastDot < atPos + 2)
-        return false;
+    size_t dotPos = email.rfind('.');
+    if (dotPos == string::npos || dotPos < atPos + 2) return false;
 
-    // must not end with dot
-    if (lastDot == email.length() - 1)
-        return false;
-
-    // extension length >= 2
-    size_t extLen = email.length() - lastDot - 1;
-    if (extLen < 2)
-        return false;
-
-    // extension must be alphabetic
-    for (size_t i = lastDot + 1; i < email.length(); i++) {
-        if (!isalpha(email[i]))
-            return false;
-    }
+    if (dotPos == email.length() - 1) return false;
 
     return true;
 }
 
-
-
 bool isValidPassword(const string& password) {
-    if (password.length() < 8)
-        return false;
 
-    bool hasLetter = false;
-    bool hasDigit = false;
+    if (password.length() < 8) return false;
+
+    bool hasLetter = false, hasDigit = false;
 
     for (char c : password) {
-        if (isalpha(c))
-            hasLetter = true;
-        else if (isdigit(c))
-            hasDigit = true;
+        if (isalpha(c)) hasLetter = true;
+        if (isdigit(c)) hasDigit = true;
     }
 
     return hasLetter && hasDigit;
 }
 
+/* ================= SIGNUP ================= */
 
+bool CinemaSystem::signup(User& user) {
 
-/*
- * Registers a new user by storing encrypted credentials.
- * Password encryption ensures raw passwords are never saved.
- */
+    string fullName, email, password;
+    int roleChoice;
 
-void CinemaSystem::signup() {
-    string email, password, role;
+    cout << CYAN << "Enter full name: " << RESET;
+    getline(cin, fullName);
 
-    cout << "Enter email: ";
+    if (fullName.empty()) {
+        cout << RED << "Full name cannot be empty.\n" << RESET;
+        return false;
+    }
+
+    cout << CYAN << "Enter email: " << RESET;
     cin >> email;
 
-    //  EMAIL VALIDATION 
     if (!isValidEmail(email)) {
-        cout << "Invalid email format.\n";
-        return;   // THIS RETURN IS CRITICAL
+        cout << RED << "Invalid email format.\n" << RESET;
+        return false;
     }
 
-    cout << "Enter password: ";
+    cout << CYAN << "Enter password: " << RESET;
     password = getHiddenPassword();
 
-    //  PASSWORD VALIDATION
     if (!isValidPassword(password)) {
-        cout << "Password must be at least 8 characters long and contain letters and numbers.\n";
-        return;
+        cout << RED
+             << "Password must be at least 8 characters long and contain letters and numbers.\n"
+             << RESET;
+        return false;
     }
 
-    cout << "Signup as (user/admin): ";
-    cin >> role;
+    cout << BOLD << "\nSignup as:\n" << RESET;
+    cout << "1. Admin\n2. User\n";
+    cout << YELLOW << "Enter choice: " << RESET;
+    cin >> roleChoice;
 
-    if (role != "user" && role != "admin") {
-        cout << "Invalid role selection.\n";
-        return;
-    }
+    string role = (roleChoice == 1) ? "admin" : "user";
 
-    // ADMIN CHECK
     if (role == "admin") {
         string adminCode;
-        cout << "Enter admin secret code: ";
-        cin >> adminCode;
+        cout << YELLOW << "Enter admin secret code: " << RESET;
+        adminCode = getHiddenPassword();
 
         if (adminCode != ADMIN_SECRET_CODE) {
-            cout << "Unauthorized admin signup attempt!\n";
-            return;
+            cout << RED << "Unauthorized admin signup attempt!\n" << RESET;
+            return false;
         }
     }
 
-    //  SAVE USER ONLY IF EVERYTHING IS VALID
     string encrypted = User::encryptPassword(password);
-    FileManager::saveUser(User(email, encrypted, role));
+    user = User(fullName, email, encrypted, role);
 
-    cout << "Signup successful as " << role << "!\n";
+    FileManager::saveUser(user);
+
+    cout << GREEN << "Signup successful as " << role << "!\n" << RESET;
+    return true;
 }
 
 
-/*
- * Authenticates user credentials by comparing encrypted values.
- * Redirects user to admin or user menu based on role.
- */
+/* ================= LOGIN ================= */
 
-void CinemaSystem::login() {
+bool CinemaSystem::login(User& user) {
+
     string email, password;
 
-    cout << "Enter email: ";
+    cout << CYAN << "Enter email: " << RESET;
     cin >> email;
 
-    if (!isValidEmail(email)) {
-        cout << "Invalid email format.\n";
-        return;
-    }
-
-    cout << "Enter password: ";
+    cout << CYAN << "Enter password: " << RESET;
     password = getHiddenPassword();
 
     string encrypted = User::encryptPassword(password);
     vector<User> users = FileManager::loadUsers();
 
     for (const User& u : users) {
-        if (u.getEmail() == email &&
-            u.getPassword() == encrypted) {
-
-            if (u.getRole() == "admin") {
-                AdminService adminService;
-                adminService.adminMenu(u);
-            } else {
-                UserService userService;
-                userService.userMenu(u);
-            }
-            return;
+        if (u.getEmail() == email && u.getPassword() == encrypted) {
+            user = u;  // role preserved 
+            cout << GREEN << "Login successful!\n" << RESET;
+            return true;
         }
     }
 
-    cout << "Invalid email or password.\n";
+    cout << RED << "Invalid email or password.\n" << RESET;
+    return false;
 }
 
+/* ================= GUEST ================= */
 
-/* Guest login using Bangladeshi phone number validation.*/
+bool CinemaSystem::guestLogin(User& user) {
 
-void CinemaSystem::guestLogin() {
     string rest;
-    cout << "Enter phone number: +880";
+    cout << CYAN << "Enter phone number: +880" << RESET;
     cin >> rest;
 
     string phone = "+880" + rest;
 
     if (!isValidBangladeshPhone(phone)) {
-        cout << "Please input valid phone number.\n";
-        return;
+        cout << RED << "Invalid phone number.\n" << RESET;
+        return false;
     }
 
-    cout << "Guest login successful!\n";
+    int guestNo = getNextGuestNumber();
+    user = User("Guest " + to_string(guestNo), phone, "", "guest");
 
-    User guest(phone, "", "guest");
-    UserService userService;
-    userService.userMenu(guest);
+    cout << GREEN << "Guest login successful.\n" << RESET;
+    return true;
 }
 
+/* ================= GUEST COUNTER ================= */
+
+int CinemaSystem::getNextGuestNumber() {
+
+    ifstream in("../data/guest_counter.txt");
+    int count = 0;
+
+    if (in.is_open()) {
+        in >> count;
+        in.close();
+    }
+
+    count++;
+
+    ofstream out("../data/guest_counter.txt");
+    out << count;
+    out.close();
+
+    return count;
+}
+
+/* ================= PHONE VALIDATION ================= */
 
 bool CinemaSystem::isValidBangladeshPhone(const string& phone) {
-    if (phone.length() != 14) return false;
 
+    if (phone.length() != 14) return false;
     if (phone.substr(0, 4) != "+880") return false;
     if (phone[4] != '1') return false;
 
-    char simDigit = phone[5];
-    if (simDigit < '3' || simDigit > '9') return false;
-
-    for (int i = 6; i < 14; i++) {
+    for (int i = 5; i < 14; i++) {
         if (!isdigit(phone[i])) return false;
     }
 
     return true;
 }
-
