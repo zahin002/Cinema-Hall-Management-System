@@ -320,7 +320,7 @@ void UserService::filterMovies() {
         cout << i + 1 << ". " << capitalizeFirstLetter(genres[i]) << "\n";
 
     int g;
-    cout << "Enter choice: ";
+    cout << YELLOW << "Enter choice: " << RESET;
     if (!(cin >> g)) {
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -338,7 +338,7 @@ void UserService::filterMovies() {
         cout << i + 1 << ". " << capitalizeFirstLetter(languages[i]) << "\n";
 
     int l;
-    cout << "Enter choice: ";
+    cout << YELLOW << "Enter choice: " << RESET;
     if (!(cin >> l)) {
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
