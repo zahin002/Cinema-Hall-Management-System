@@ -11,7 +11,10 @@ public:
     void showMovieDetails(int movieCode, const User& user);
     void showGenreRecommendations(int currentMovieCode, const string& genre);
     void giveOrUpdateRating(int movieCode, const User& user);
-     void addOrUpdateReview(int movieCode, const User& user);
+     
+    void addOrUpdateReview(int movieCode, const User& user);
+    void deleteOwnReview(int movieCode, const User& user);
+    void deleteAnyReview(int movieCode);
 
     void filterMovies();
     void searchMovieByName();

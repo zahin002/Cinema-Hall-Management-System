@@ -21,7 +21,7 @@ void MenuService::showUserMenu(const User& user) {
 
     do {
         cout << "\n";
-        cout << BOLD << CYAN << "=========== USER MENU ===========" << RESET << "\n";
+        cout << BOLD << CYAN << "======== USER MENU ========" << RESET << "\n";
         cout << "1. Browse Movies\n";
         cout << "2. View Showtimes\n";
         cout << "3. Book Seat\n";
@@ -47,7 +47,7 @@ void MenuService::showUserMenu(const User& user) {
 
         switch (choice) {
             case 1:
-                browseMoviesMenu(user);
+                browseMoviesMenu(user,false);
                 break;
 
             case 2:
@@ -80,7 +80,7 @@ void MenuService::showUserMenu(const User& user) {
 
 /* ================= BROWSE MOVIES ================= */
 
-void MenuService::browseMoviesMenu(const User& user) {
+void MenuService::browseMoviesMenu(const User& user, bool isAdmin) {
 
     UserService userService;
     int choice;
@@ -100,7 +100,7 @@ void MenuService::browseMoviesMenu(const User& user) {
         if (cin.fail()) {
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cout << RED << "Invalid input. Please enter a number.\n" << RESET;
+            cout << RED << "Invalid input.\n" << RESET;
             continue;
         }
 
@@ -109,33 +109,29 @@ void MenuService::browseMoviesMenu(const User& user) {
         switch (choice) {
             case 1:
                 userService.showTrendingMovies();
-                selectMovieForDetails(user);
                 break;
 
             case 2:
                 userService.viewMovies();
-                selectMovieForDetails(user);
                 break;
 
             case 3:
                 userService.filterMovies();
-                selectMovieForDetails(user);
                 break;
 
             case 4:
                 userService.searchMovieByName();
-                selectMovieForDetails(user);
                 break;
 
             case 5:
-                break;
-
-            default:
-                cout << RED << "Invalid choice.\n" << RESET;
+                return;   
         }
 
-    } while (choice != 5);
+        selectMovieForDetails(user);
+
+    } while (true);
 }
+
 
 
 /* ================= MOVIE CODE SELECTION ================= */

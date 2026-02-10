@@ -6,14 +6,13 @@
 class MenuService {
 public:
     // Displays the main user menu (user / admin / guest)
-    void showUserMenu(const User& user);
+    static void showUserMenu(const User& user);
 
-private:
     // Movie browsing related sub-menus
-    void browseMoviesMenu(const User& user);
-
+    static void browseMoviesMenu(const User& user, bool isAdmin);
+    
     // Allows user to select a movie to view detailed information
-    void selectMovieForDetails(const User& user);
+    static void selectMovieForDetails(const User& user);
 };
 
 #endif

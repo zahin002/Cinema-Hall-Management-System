@@ -17,11 +17,11 @@ private:
 
     void showMainMenu();
 
-    void login(User& user);
+    bool login(User& user);
 
-    void signup(User& user);
+    bool signup(User& user);
 
-    void guestLogin(User& user);
+    bool guestLogin(User& user);
 
     int getNextGuestNumber();
 

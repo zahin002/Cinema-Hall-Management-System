@@ -4,6 +4,8 @@
 #include "PricingEngine.h"
 #include "TerminalColors.h"
 #include "SnackShop.h"
+#include "RatingService.h"
+#include "ReviewService.h"
 #include "TicketService.h"
 
 #include <iostream>
@@ -26,29 +28,49 @@ static string toLower(string s) {
     return s;
 }
 
+string normalize(const string& s) {
+    string result = s;
+
+    // trim leading/trailing spaces
+    result.erase(0, result.find_first_not_of(" \t\r\n"));
+    result.erase(result.find_last_not_of(" \t\r\n") + 1);
+
+    // optional: make consistent case
+    transform(result.begin(), result.end(), result.begin(), ::tolower);
+
+    return result;
+}
+
+string capitalizeFirstLetter(const string& s) {
+    if (s.empty()) return s;
+
+    string result = s;
+    result[0] = toupper(result[0]);
+    return result;
+}
+
 /* ================= MOVIES ================= */
 
 void UserService::viewMovies() {
+
     vector<Movie> movies = FileManager::loadMovies();
 
     if (movies.empty()) {
-        cout << "No movies available.\n";
+        cout << YELLOW << "No movies available.\n" << RESET;
         return;
     }
 
-    cout << "\n--- MOVIE LIST ---\n";
-    for (size_t i = 0; i < movies.size(); i++) {
-        cout << i + 1 << ". "
-             << movies[i].getTitle() << " | "
-             << movies[i].getGenre() << " | "
-             << movies[i].getDuration() << " mins | "
-             << movies[i].getLanguage() << endl;
+    cout << "\n" << BOLD << CYAN << "--- MOVIE LIST ---\n" << RESET;
+
+    for (const Movie& m : movies) {
+        cout << BOLD << m.getCode() << RESET
+             << " - " << m.getTitle() << "\n";
     }
+
+    cout << BOLD << CYAN << "------------------\n" << RESET;
 }
 
-
 /* ================= MOVIE DETAILS ================= */
-
 
 void UserService::showMovieDetails(int movieCode, const User& user) {
 
@@ -67,66 +89,90 @@ void UserService::showMovieDetails(int movieCode, const User& user) {
     }
 
     if (!found) {
-        cout << RED << "❌ Invalid movie code.\n" << RESET;
+        cout << RED << "Invalid movie code.\n" << RESET;
         return;
     }
 
-    cout << "\n";
-    cout << BOLD << CYAN << "========== MOVIE DETAILS ==========\n" << RESET;
+    cout << "\n" << BOLD << CYAN
+         << "========== MOVIE DETAILS ==========\n"
+         << RESET;
+
     cout << BOLD << YELLOW << selected.getTitle() << RESET << "\n";
-    cout << BOLD << CYAN << "===================================\n" << RESET;
+    cout << CYAN << "-----------------------------------\n" << RESET;
 
     cout << "Duration : " << selected.getDuration() << " minutes\n";
     cout << "Language : " << selected.getLanguage() << "\n";
     cout << "Genre    : " << selected.getGenre() << "\n";
 
-    // ⭐ RATINGS
     int ratingCount = 0;
-    double avg = getAverageRating(movieCode, ratingCount);
+    double avg = RatingService::getAverageRating(movieCode, ratingCount);
 
     cout << "\n";
     if (ratingCount > 0) {
-        cout << BOLD << GREEN
-             << "⭐ Average Rating: "
+        cout << GREEN << "Average Rating: "
              << fixed << setprecision(1) << avg
              << " / 5 (" << ratingCount << " ratings)\n"
              << RESET;
     } else {
-        cout << YELLOW << "⭐ No ratings yet\n" << RESET;
+        cout << YELLOW << "No ratings yet\n" << RESET;
     }
 
-    // 🎬 SHOWTIMES
-    bool hasShow = false;
     cout << "\n" << BOLD << CYAN << "Showtimes:\n" << RESET;
 
+    bool hasShow = false;
     for (const Showtime& s : shows) {
         if (s.getMovieCode() == movieCode) {
             hasShow = true;
-            cout << " • " << s.getDate()
+            cout << "• " << s.getDate()
                  << " | " << s.getTime()
                  << " | Hall " << s.getHallNo() << "\n";
         }
     }
 
-    if (!hasShow) {
-        cout << YELLOW << "⚠ Currently not in showtime\n" << RESET;
-    }
+    if (!hasShow)
+        cout << YELLOW << "Not currently scheduled\n" << RESET;
 
-    if (user.getRole() != "guest") {
-        cout << "\n1. Give / Update Rating\n2. Back\nEnter choice: ";
+    
+    ReviewService::showReviews(movieCode);
+
+    if (user.getRole() == "user") {
+        cout << "\n1. Give / Update Rating\n"
+             << "2. Add / Update Review\n"
+             << "3. Delete My Review\n"
+             << "0. Back\n"
+             << YELLOW << "Enter choice: " << RESET;
+
         int ch;
         cin >> ch;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
         if (ch == 1)
-            giveOrUpdateRating(movieCode, user);
+            RatingService::giveOrUpdateRating(movieCode, user);
+        else if (ch == 2)
+            ReviewService::addOrUpdateReview(movieCode, user);
+        else if (ch == 3)
+            ReviewService::deleteOwnReview(movieCode, user);
+    }
+    else if (user.getRole() == "admin") {
+        cout << "\n" << RED << "Admin Options\n" << RESET
+             << "1. Delete a Review\n"
+             << "0. Back\n"
+             << YELLOW << "Enter choice: " << RESET;
+
+        int ch;
+        cin >> ch;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        if (ch == 1)
+            ReviewService::deleteAnyReview(movieCode);
     }
 
-    cout << BOLD << CYAN << "===================================\n" << RESET;
+    cout << BOLD << CYAN
+         << "===================================\n"
+         << RESET;
 }
 
-
-
 /* ================= TRENDING MOVIES ================= */
-
 
 void UserService::showTrendingMovies() {
 
@@ -136,7 +182,6 @@ void UserService::showTrendingMovies() {
         return;
     }
 
-    // movieCode -> { movieName, totalRating, count }
     map<int, pair<string, pair<double, int>>> ratingMap;
 
     string line;
@@ -157,9 +202,7 @@ void UserService::showTrendingMovies() {
         ratingMap[code].second.first += rating;
         ratingMap[code].second.second += 1;
     }
-    file.close();
 
-    // Convert to sortable vector
     struct Trend {
         int code;
         string name;
@@ -184,14 +227,12 @@ void UserService::showTrendingMovies() {
         return;
     }
 
-    // Sort by average rating (descending)
     sort(trends.begin(), trends.end(),
          [](const Trend& a, const Trend& b) {
              return a.avg > b.avg;
          });
 
-    cout << "\n";
-    cout << BOLD << CYAN << "🔥 TRENDING MOVIES 🔥\n" << RESET;
+    cout << "\n" << BOLD << CYAN << "🔥 TRENDING MOVIES 🔥\n" << RESET;
     cout << BOLD << CYAN << "----------------------------------\n" << RESET;
 
     int limit = min(10, (int)trends.size());
@@ -216,11 +257,8 @@ void UserService::showGenreRecommendations(int currentMovieCode, const string& g
 
     for (const Movie& m : movies) {
         if (m.getGenre() == genre && m.getCode() != currentMovieCode) {
-
             int count = 0;
-            double avg = getAverageRating(m.getCode(), count);
-
-            // Even if no rating, include with 0
+            double avg = RatingService::getAverageRating(m.getCode(), count);
             candidates.push_back({ m, avg });
         }
     }
@@ -232,12 +270,10 @@ void UserService::showGenreRecommendations(int currentMovieCode, const string& g
         return;
     }
 
-    // Sort by rating (descending)
     sort(candidates.begin(), candidates.end(),
         [](auto& a, auto& b) {
             return a.second > b.second;
-        }
-    );
+        });
 
     cout << BOLD << CYAN
          << "\n🎬 You may also like (Same Genre)\n"
@@ -254,251 +290,8 @@ void UserService::showGenreRecommendations(int currentMovieCode, const string& g
             cout << " ⭐ " << fixed << setprecision(1) << item.second;
 
         cout << endl;
-
         if (++shown == 5) break;
     }
-}
-
-
-/* ================= AVERAGE RATING ================= */
-
-
-double UserService::getAverageRating(int movieCode, int& count) {
-    ifstream file("../data/ratings.txt");
-    count = 0;
-    double total = 0;
-
-    if (!file.is_open())
-        return 0;
-
-    string line;
-    while (getline(file, line)) {
-        stringstream ss(line);
-        string codeStr, movieName, email, ratingStr, dt;
-
-        getline(ss, codeStr, '|');
-        getline(ss, movieName, '|');
-        getline(ss, email, '|');
-        getline(ss, ratingStr, '|');
-        getline(ss, dt);
-
-        if (stoi(codeStr) == movieCode) {
-            total += stoi(ratingStr);
-            count++;
-        }
-    }
-    file.close();
-
-    return (count == 0) ? 0 : total / count;
-}
-
-
-/* ================= GIVE / UPDATE RATING  ================= */
-
-
-void UserService::giveOrUpdateRating(int movieCode, const User& user) {
-
-    int rating;
-
-    cout << "Enter rating (1–5): ";
-
-    // strict integer input check
-
-    if (!(cin >> rating)) {
-        cin.clear();        // clear error state
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cout << RED << "Invalid input. Rating must be an integer.\n" << RESET;
-        return;
-    }
-
-    if (rating < 1 || rating > 5) {
-        cout << RED << "Rating must be between 1 and 5.\n" << RESET;
-        return;
-    }
-
-    vector<string> lines;
-    ifstream in("../data/ratings.txt");
-    string line;
-    bool updated = false;
-
-    while (getline(in, line)) {
-        stringstream ss(line);
-        string codeStr, movieName, email, rateStr, dt;
-
-        getline(ss, codeStr, '|');
-        getline(ss, movieName, '|');
-        getline(ss, email, '|');
-        getline(ss, rateStr, '|');
-        getline(ss, dt);
-
-        if (stoi(codeStr) == movieCode && email == user.getEmail()) {
-            time_t now = time(nullptr);
-            string t = ctime(&now);
-            t.pop_back();
-
-            line = codeStr + "|" + movieName + "|" +
-                   email + "|" + to_string(rating) + "|" + t;
-
-            updated = true;
-        }
-
-        lines.push_back(line);
-    }
-    in.close();
-
-    if (!updated) {
-        vector<Movie> movies = FileManager::loadMovies();
-        string movieName;
-
-        for (const Movie& m : movies)
-            if (m.getCode() == movieCode)
-                movieName = m.getTitle();
-
-        time_t now = time(nullptr);
-        string t = ctime(&now);
-        t.pop_back();
-
-        lines.push_back(
-            to_string(movieCode) + "|" +
-            movieName + "|" +
-            user.getEmail() + "|" +
-            to_string(rating) + "|" + t
-        );
-    }
-
-    ofstream out("../data/ratings.txt");
-    for (const string& l : lines)
-        out << l << "\n";
-    out.close();
-
-    cout << GREEN << "✔ Rating saved successfully.\n" << RESET;
-}
-
-
-/* ================= DISPLAY REVIEWS ================= */
-
-void UserService::showReviews(int movieCode) {
-
-    ifstream file("../data/reviews.txt");
-    if (!file.is_open()) {
-        cout << YELLOW << "📝 No reviews yet.\n" << RESET;
-        return;
-    }
-
-    struct Review {
-        string name;
-        string text;
-        string datetime;
-    };
-
-    vector<Review> reviews;
-    string line;
-
-    while (getline(file, line)) {
-        stringstream ss(line);
-        string codeStr, movieName, reviewer, reviewText, dt;
-
-        getline(ss, codeStr, '|');
-        getline(ss, movieName, '|');
-        getline(ss, reviewer, '|');
-        getline(ss, reviewText, '|');
-        getline(ss, dt);
-
-        if (stoi(codeStr) == movieCode) {
-            reviews.push_back({reviewer, reviewText, dt});
-        }
-    }
-    file.close();
-
-    if (reviews.empty()) {
-        cout << YELLOW << "📝 No reviews yet.\n" << RESET;
-        return;
-    }
-
-    // newest → oldest (string datetime works since format is consistent)
-
-    sort(reviews.begin(), reviews.end(),
-         [](const Review& a, const Review& b) {
-             return a.datetime > b.datetime;
-         });
-
-    cout << "\n" << BOLD << CYAN << "📝 REVIEWS\n" << RESET;
-
-    for (auto& r : reviews) {
-        cout << "[" << r.datetime << "] "
-             << BOLD << r.name << RESET << ":\n";
-        cout << r.text << "\n\n";
-    }
-}
-
-
-/* ================= ADD / UPDATE REVIEWS ================= */
-
-
-void UserService::addOrUpdateReview(int movieCode, const User& user) {
-
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
-    cout << "Write your review:\n> ";
-    string review;
-    getline(cin, review);
-
-    if (review.empty()) {
-        cout << RED << "Review cannot be empty.\n" << RESET;
-        return;
-    }
-
-    vector<string> lines;
-    ifstream in("../data/reviews.txt");
-    string line;
-    bool updated = false;
-
-    vector<Movie> movies = FileManager::loadMovies();
-    string movieName;
-
-    for (const Movie& m : movies)
-        if (m.getCode() == movieCode)
-            movieName = m.getTitle();
-
-    time_t now = time(nullptr);
-    string dt = ctime(&now);
-    dt.pop_back();
-
-    while (getline(in, line)) {
-        stringstream ss(line);
-        string codeStr, mName, reviewer, text, oldDt;
-
-        getline(ss, codeStr, '|');
-        getline(ss, mName, '|');
-        getline(ss, reviewer, '|');
-        getline(ss, text, '|');
-        getline(ss, oldDt);
-
-        if (stoi(codeStr) == movieCode && reviewer == user.getFullName()) {
-            line = codeStr + "|" + movieName + "|" +
-                   user.getFullName() + "|" + review + "|" + dt;
-            updated = true;
-        }
-
-        lines.push_back(line);
-    }
-    in.close();
-
-    if (!updated) {
-        lines.push_back(
-            to_string(movieCode) + "|" +
-            movieName + "|" +
-            user.getFullName() + "|" +
-            review + "|" + dt
-        );
-    }
-
-    ofstream out("../data/reviews.txt");
-    for (auto& l : lines)
-        out << l << "\n";
-    out.close();
-
-    cout << GREEN << "✔ Review saved successfully.\n" << RESET;
 }
 
 
@@ -508,98 +301,148 @@ void UserService::filterMovies() {
 
     vector<Movie> movies = FileManager::loadMovies();
     if (movies.empty()) {
-        cout << "No movies available.\n";
+        cout << YELLOW << "No movies available.\n" << RESET;
         return;
     }
 
     set<string> genreSet, languageSet;
     for (const Movie& m : movies) {
-        genreSet.insert(m.getGenre());
-        languageSet.insert(m.getLanguage());
+        genreSet.insert(normalize(m.getGenre()));
+        languageSet.insert(normalize(m.getLanguage()));
     }
 
     vector<string> genres(genreSet.begin(), genreSet.end());
     vector<string> languages(languageSet.begin(), languageSet.end());
 
+    /* ---------- GENRE SELECTION ---------- */
     cout << "\nChoose Genre:\n0. All\n";
     for (size_t i = 0; i < genres.size(); i++)
-        cout << i + 1 << ". " << genres[i] << endl;
+        cout << i + 1 << ". " << capitalizeFirstLetter(genres[i]) << "\n";
 
     int g;
-    cin >> g;
-    string selectedGenre = (g > 0 && g <= genres.size()) ? genres[g - 1] : "*";
+    cout << "Enter choice: ";
+    if (!(cin >> g)) {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << RED << "Invalid input.\n" << RESET;
+        return;
+    }
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
+    string selectedGenre =
+        (g > 0 && g <= (int)genres.size()) ? genres[g - 1] : "*";
+
+    /* ---------- LANGUAGE SELECTION ---------- */
     cout << "\nChoose Language:\n0. All\n";
     for (size_t i = 0; i < languages.size(); i++)
-        cout << i + 1 << ". " << languages[i] << endl;
+        cout << i + 1 << ". " << capitalizeFirstLetter(languages[i]) << "\n";
 
     int l;
-    cin >> l;
-    string selectedLang = (l > 0 && l <= languages.size()) ? languages[l - 1] : "*";
+    cout << "Enter choice: ";
+    if (!(cin >> l)) {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << RED << "Invalid input.\n" << RESET;
+        return;
+    }
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-    cout << "\n--- FILTERED MOVIES ---\n";
+    string selectedLang =
+        (l > 0 && l <= (int)languages.size()) ? languages[l - 1] : "*";
+
+    /* ---------- FILTERED RESULTS ---------- */
+    cout << "\n" << BOLD << CYAN << "--- FILTERED MOVIES ---\n" << RESET;
     bool found = false;
 
     for (const Movie& m : movies) {
-        if ((selectedGenre == "*" || m.getGenre() == selectedGenre) &&
-            (selectedLang == "*" || m.getLanguage() == selectedLang)) {
+        if ((selectedGenre == "*" || normalize(m.getGenre()) == selectedGenre) &&
+            (selectedLang == "*" || normalize(m.getLanguage()) == selectedLang)) {
 
-            cout << m.getCode() << " | "
-                 << m.getTitle() << " | "
-                 << m.getGenre() << " | "
-                 << m.getLanguage() << endl;
+            cout << m.getCode() << " | " << m.getTitle() << "\n";
             found = true;
         }
     }
 
     if (!found)
-        cout << "No movies found.\n";
+        cout << YELLOW << "No movies found.\n" << RESET;
 }
 
 /* ================= SEARCH BY KEYWORD ================= */
 
 void UserService::searchMovieByName() {
 
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
     string query;
-    cout << "Enter movie name: ";
+    cout << CYAN << "Enter movie name: " << RESET;
     getline(cin, query);
+
+    if (query.empty()) {
+        cout << RED << "Search keyword cannot be empty.\n" << RESET;
+        return;
+    }
+
+    // convert full query to lowercase
     query = toLower(query);
+
+    // split query into words
+    stringstream ss(query);
+    vector<string> tokens;
+    string word;
+
+    while (ss >> word) {
+        tokens.push_back(word);
+    }
 
     vector<Movie> movies = FileManager::loadMovies();
     vector<Showtime> shows = FileManager::loadShowtimes();
 
     bool foundAny = false;
-    cout << "\n--- SEARCH RESULTS ---\n";
+    cout << "\n" << BOLD << CYAN << "--- SEARCH RESULTS ---\n" << RESET;
 
     for (const Movie& m : movies) {
-        if (toLower(m.getTitle()).find(query) != string::npos) {
-            foundAny = true;
-            cout << "\n🎬 " << m.getTitle() << " (" << m.getLanguage() << ")\n";
 
-            bool hasShow = false;
-            for (const Showtime& s : shows) {
-                if (s.getMovieCode() == m.getCode()) {
-                    if (!hasShow) cout << "   ▶ Showtimes:\n";
-                    hasShow = true;
-                    cout << "     - " << s.getDate()
-                         << " | " << s.getTime()
-                         << " | Hall " << s.getHallNo() << endl;
-                }
+        string titleLower = toLower(m.getTitle());
+        bool matched = false;
+
+        // match ANY word in query
+        for (const string& token : tokens) {
+            if (titleLower.find(token) != string::npos) {
+                matched = true;
+                break;
             }
-
-            if (!hasShow)
-                cout << "   ⚠ Not currently scheduled\n";
         }
+
+        if (!matched) continue;
+
+        foundAny = true;
+        cout << "\n[Movie] " << m.getCode() << "] "
+             << BOLD << m.getTitle() << RESET
+             << " (" << m.getLanguage() << ")\n";
+
+        bool hasShow = false;
+        for (const Showtime& s : shows) {
+            if (s.getMovieCode() == m.getCode()) {
+                if (!hasShow) {
+                    cout << "   ▶ Showtimes:\n";
+                    hasShow = true;
+                }
+                cout << "     - " << s.getDate()
+                     << " | " << s.getTime()
+                     << " | Hall " << s.getHallNo() << "\n";
+            }
+        }
+
+        if (!hasShow)
+            cout << "   [!] Not currently scheduled\n";
     }
 
     if (!foundAny)
-        cout << "No matching movies found.\n";
+        cout << YELLOW << "No matching movies found.\n" << RESET;
 }
 
 
 
 /* ================= TICKET CANCELLATION ================= */
+
 
 void UserService::cancelTicket() {
     string ticketId;
