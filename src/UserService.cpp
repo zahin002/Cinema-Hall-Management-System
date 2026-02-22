@@ -93,83 +93,95 @@ void UserService::showMovieDetails(int movieCode, const User& user) {
         return;
     }
 
-    cout << "\n" << BOLD << CYAN
-         << "========== MOVIE DETAILS ==========\n"
-         << RESET;
+    int ch;
 
-    cout << BOLD << YELLOW << selected.getTitle() << RESET << "\n";
-    cout << CYAN << "-----------------------------------\n" << RESET;
+    do {
 
-    cout << "Duration : " << selected.getDuration() << " minutes\n";
-    cout << "Language : " << selected.getLanguage() << "\n";
-    cout << "Genre    : " << selected.getGenre() << "\n";
-
-    int ratingCount = 0;
-    double avg = RatingService::getAverageRating(movieCode, ratingCount);
-
-    cout << "\n";
-    if (ratingCount > 0) {
-        cout << GREEN << "Average Rating: "
-             << fixed << setprecision(1) << avg
-             << " / 5 (" << ratingCount << " ratings)\n"
+        cout << "\n" << BOLD << CYAN
+             << "========== MOVIE DETAILS ==========\n"
              << RESET;
-    } else {
-        cout << YELLOW << "No ratings yet\n" << RESET;
-    }
 
-    cout << "\n" << BOLD << CYAN << "Showtimes:\n" << RESET;
+        cout << BOLD << YELLOW << selected.getTitle() << RESET << "\n";
+        cout << CYAN << "-----------------------------------\n" << RESET;
 
-    bool hasShow = false;
-    for (const Showtime& s : shows) {
-        if (s.getMovieCode() == movieCode) {
-            hasShow = true;
-            cout << "• " << s.getDate()
-                 << " | " << s.getTime()
-                 << " | Hall " << s.getHallNo() << "\n";
+        cout << "Duration : " << selected.getDuration() << " minutes\n";
+        cout << "Language : " << selected.getLanguage() << "\n";
+        cout << "Genre    : " << selected.getGenre() << "\n";
+
+        int ratingCount = 0;
+        double avg = RatingService::getAverageRating(movieCode, ratingCount);
+
+        cout << "\n";
+        if (ratingCount > 0) {
+            cout << GREEN << "Average Rating: "
+                 << fixed << setprecision(1) << avg
+                 << " / 5 (" << ratingCount << " ratings)\n"
+                 << RESET;
+        } else {
+            cout << YELLOW << "No ratings yet\n" << RESET;
         }
-    }
 
-    if (!hasShow)
-        cout << YELLOW << "Not currently scheduled\n" << RESET;
+        cout << "\n" << BOLD << CYAN << "Showtimes:\n" << RESET;
 
-    
-    ReviewService::showReviews(movieCode);
+        bool hasShow = false;
+        for (const Showtime& s : shows) {
+            if (s.getMovieCode() == movieCode) {
+                hasShow = true;
+                cout << "• " << s.getDate()
+                     << " | " << s.getTime()
+                     << " | Hall " << s.getHallNo() << "\n";
+            }
+        }
 
-    if (user.getRole() == "user") {
-        cout << "\n1. Give / Update Rating\n"
-             << "2. Add / Update Review\n"
-             << "3. Delete My Review\n"
-             << "0. Back\n"
-             << YELLOW << "Enter choice: " << RESET;
+        if (!hasShow)
+            cout << YELLOW << "Not currently scheduled\n" << RESET;
 
-        int ch;
-        cin >> ch;
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "\n";
 
-        if (ch == 1)
-            RatingService::giveOrUpdateRating(movieCode, user);
-        else if (ch == 2)
-            ReviewService::addOrUpdateReview(movieCode, user);
-        else if (ch == 3)
-            ReviewService::deleteOwnReview(movieCode, user);
-    }
-    else if (user.getRole() == "admin") {
-        cout << "\n" << RED << "Admin Options\n" << RESET
-             << "1. Delete a Review\n"
-             << "0. Back\n"
-             << YELLOW << "Enter choice: " << RESET;
+        // ===== SHOW REVIEWS =====
+        ReviewService::showReviews(movieCode);
 
-        int ch;
-        cin >> ch;
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        // ===== USER OPTIONS =====
+        if (user.getRole() == "user") {
 
-        if (ch == 1)
-            ReviewService::deleteAnyReview(movieCode);
-    }
+            cout << "\n"
+                 << "1. Give / Update Rating\n"
+                 << "2. Add / Update Review\n"
+                 << "3. Delete My Review\n"
+                 << "0. Back\n"
+                 << YELLOW << "Enter choice: " << RESET;
 
-    cout << BOLD << CYAN
-         << "===================================\n"
-         << RESET;
+            cin >> ch;
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+            if (ch == 1)
+                RatingService::giveOrUpdateRating(movieCode, user);
+            else if (ch == 2)
+                ReviewService::addOrUpdateReview(movieCode, user);
+            else if (ch == 3)
+                ReviewService::deleteOwnReview(movieCode, user);
+
+        }
+        // ===== ADMIN OPTIONS =====
+        else if (user.getRole() == "admin") {
+
+            cout << "\n" << RED << "Admin Options\n" << RESET
+                 << "1. Delete a Review\n"
+                 << "0. Back\n"
+                 << YELLOW << "Enter choice: " << RESET;
+
+            cin >> ch;
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+            if (ch == 1)
+                ReviewService::deleteAnyReview(movieCode);
+        }
+
+        cout << BOLD << CYAN
+             << "===================================\n"
+             << RESET;
+
+    } while (ch != 0);
 }
 
 /* ================= TRENDING MOVIES ================= */
@@ -182,10 +194,16 @@ void UserService::showTrendingMovies() {
         return;
     }
 
+    // movieCode -> { movieName, { totalRating, ratingCount } }
     map<int, pair<string, pair<double, int>>> ratingMap;
 
     string line;
+
     while (getline(file, line)) {
+
+        if (line.empty())
+            continue;
+
         stringstream ss(line);
         string codeStr, movieName, email, ratingStr, dateTime;
 
@@ -195,35 +213,53 @@ void UserService::showTrendingMovies() {
         getline(ss, ratingStr, '|');
         getline(ss, dateTime);
 
-        int code = stoi(codeStr);
-        int rating = stoi(ratingStr);
+        try {
+            int code = stoi(codeStr);
+            int rating = stoi(ratingStr);
 
-        ratingMap[code].first = movieName;
-        ratingMap[code].second.first += rating;
-        ratingMap[code].second.second += 1;
+            if (rating < 1 || rating > 5)
+                continue;
+
+            ratingMap[code].first = movieName;
+            ratingMap[code].second.first += rating;   // total rating
+            ratingMap[code].second.second += 1;       // count
+        }
+        catch (...) {
+            continue; // skip corrupted lines
+        }
     }
+
+    file.close();
 
     struct Trend {
         int code;
         string name;
         double avg;
-        int count;
     };
 
     vector<Trend> trends;
 
     for (auto& it : ratingMap) {
-        double avg = it.second.second.first / it.second.second.second;
+
+        int count = it.second.second.second;
+
+        // REQUIRE AT LEAST 10 RATINGS
+        if (count < 10)
+            continue;
+
+        double avg =
+            static_cast<double>(it.second.second.first) /
+            static_cast<double>(count);
+
         trends.push_back({
             it.first,
             it.second.first,
-            avg,
-            it.second.second.second
+            avg
         });
     }
 
     if (trends.empty()) {
-        cout << YELLOW << "No ratings available yet.\n" << RESET;
+        cout << YELLOW << "No movies qualify as trending yet.\n" << RESET;
         return;
     }
 
@@ -232,66 +268,25 @@ void UserService::showTrendingMovies() {
              return a.avg > b.avg;
          });
 
-    cout << "\n" << BOLD << CYAN << "🔥 TRENDING MOVIES 🔥\n" << RESET;
+    cout << "\n" << BOLD << CYAN << " TRENDING MOVIES\n" << RESET;
     cout << BOLD << CYAN << "----------------------------------\n" << RESET;
 
     int limit = min(10, (int)trends.size());
+
     for (int i = 0; i < limit; i++) {
+
         cout << BOLD << (i + 1) << ". "
-             << trends[i].code << " | "
-             << trends[i].name << RESET
-             << "  ⭐ " << fixed << setprecision(1)
+             << YELLOW << trends[i].code << RESET
+             << " | "
+             << BOLD << trends[i].name << RESET
+             << "  "
+             << CYAN << "Rating: " << RESET
+             << fixed << setprecision(2)
              << trends[i].avg
-             << " (" << trends[i].count << " ratings)\n";
+             << "\n";
     }
 
     cout << BOLD << CYAN << "----------------------------------\n" << RESET;
-}
-
-/* ================= GENRE RECOMMENDATION ================= */
-
-void UserService::showGenreRecommendations(int currentMovieCode, const string& genre) {
-
-    vector<Movie> movies = FileManager::loadMovies();
-    vector<pair<Movie, double>> candidates;
-
-    for (const Movie& m : movies) {
-        if (m.getGenre() == genre && m.getCode() != currentMovieCode) {
-            int count = 0;
-            double avg = RatingService::getAverageRating(m.getCode(), count);
-            candidates.push_back({ m, avg });
-        }
-    }
-
-    if (candidates.empty()) {
-        cout << YELLOW
-             << "\n⚠ No similar movies found in this genre.\n"
-             << RESET;
-        return;
-    }
-
-    sort(candidates.begin(), candidates.end(),
-        [](auto& a, auto& b) {
-            return a.second > b.second;
-        });
-
-    cout << BOLD << CYAN
-         << "\n🎬 You may also like (Same Genre)\n"
-         << "---------------------------------\n"
-         << RESET;
-
-    int shown = 0;
-    for (auto& item : candidates) {
-        cout << "• "
-             << item.first.getCode()
-             << " | " << item.first.getTitle();
-
-        if (item.second > 0)
-            cout << " ⭐ " << fixed << setprecision(1) << item.second;
-
-        cout << endl;
-        if (++shown == 5) break;
-    }
 }
 
 
@@ -414,7 +409,7 @@ void UserService::searchMovieByName() {
         if (!matched) continue;
 
         foundAny = true;
-        cout << "\n[Movie] " << m.getCode() << "] "
+        cout << "\n[Movie] [" << m.getCode() << "] "
              << BOLD << m.getTitle() << RESET
              << " (" << m.getLanguage() << ")\n";
 
@@ -454,7 +449,7 @@ void UserService::cancelTicket() {
 
     // Validate ticket existence
     if (!TicketService::ticketExists(ticketId)) {
-        cout << "❌ Invalid Ticket ID. Cancellation failed.\n";
+        cout << "Invalid Ticket ID. Cancellation failed.\n";
         return;
     }
 
@@ -475,11 +470,11 @@ void UserService::cancelTicket() {
         }
         else if (choice == 1) {
             TicketService::cancelTicket(ticketId);
-            cout << "✅ Ticket cancelled successfully.\n";
+            cout << "Ticket cancelled successfully.\n";
             break;
         }
         else if (choice == 2) {
-            cout << "❎ Ticket cancellation aborted.\n";
+            cout << "Ticket cancellation aborted.\n";
             break;
         }
         else {

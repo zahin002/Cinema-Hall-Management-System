@@ -1,0 +1,704 @@
+101|Inception|abidurrahman.uk@gmail.com|5|Mon Feb 03 18:12:41 2026
+101|Inception|adibhossain.mist@gmail.com|4|Tue Feb 04 19:22:13 2026
+101|Inception|adnansarwar.ju@gmail.com|4|Wed Feb 05 20:45:55 2026
+101|Inception|ahinshadman.brac@gmail.com|3|Thu Feb 06 17:31:09 2026
+101|Inception|fahimshahriar.aust@gmail.com|5|Fri Feb 07 21:02:48 2026
+101|Inception|ahnafmorshed.ju@gmail.com|4|Sat Feb 08 18:19:27 2026
+101|Inception|ahsansikder.ruet@gmail.com|4|Sun Feb 09 16:44:11 2026
+101|Inception|nahianniloy44@gmail.com|5|Mon Feb 10 19:55:40 2026
+101|Inception|alfazasif.mistce@gmail.com|4|Tue Feb 11 20:21:33 2026
+101|Inception|anasturzo.nsu@gmail.com|5|Wed Feb 12 18:14:58 2026
+101|Inception|armankhan.uiu@gmail.com|4|Thu Feb 13 17:37:19 2026
+101|Inception|ashikurrahman.brac@gmail.com|4|Fri Feb 14 21:09:02 2026
+
+102|Graves of the Fireflies|edraktasin.buet@gmail.com|5|Mon Feb 03 17:10:20 2026
+102|Graves of the Fireflies|faiaziqbal.ducse@gmail.com|4|Tue Feb 04 19:00:15 2026
+102|Graves of the Fireflies|fardinahmed21@gmail.com|2|Wed Feb 05 18:44:59 2026
+102|Graves of the Fireflies|fardinomi.buetcse@gmail.com|3|Thu Feb 06 20:31:42 2026
+102|Graves of the Fireflies|farhanmahmood.nsucse@gmail.com|5|Fri Feb 07 17:55:11 2026
+102|Graves of the Fireflies|saturo.gojo.mist@gmail.com|2|Sat Feb 08 18:48:30 2026
+102|Graves of the Fireflies|hameemnabil.drmc@gmail.com|4|Sun Feb 09 19:12:16 2026
+102|Graves of the Fireflies|hasiburhany.ruetgce@gmail.com|3|Mon Feb 10 20:05:28 2026
+102|Graves of the Fireflies|edraktasin.buet@gmail.com|5|Mon Feb 03 17:10:20 2026
+102|Graves of the Fireflies|faiaziqbal.ducse@gmail.com|4|Tue Feb 04 19:00:15 2026
+102|Graves of the Fireflies|fardinahmed21@gmail.com|5|Wed Feb 05 18:44:59 2026
+102|Graves of the Fireflies|fardinomi.buetcse@gmail.com|4|Thu Feb 06 20:31:42 2026
+102|Graves of the Fireflies|farhanmahmood.nsucse@gmail.com|5|Fri Feb 07 17:55:11 2026
+102|Graves of the Fireflies|saturo.gojo.mist@gmail.com|3|Sat Feb 08 18:48:30 2026
+102|Graves of the Fireflies|hameemnabil.drmc@gmail.com|5|Sun Feb 09 19:12:16 2026
+102|Graves of the Fireflies|hasiburhany.ruetgce@gmail.com|4|Mon Feb 10 20:05:28 2026
+
+103|The Dark Knight|abidurrahman.uk@gmail.com|5|Mon Aug 01 18:11:22 2026
+103|The Dark Knight|adibhossain.mist@gmail.com|5|Tue Aug 02 19:33:10 2026
+103|The Dark Knight|adnansarwar.ju@gmail.com|5|Wed Aug 03 20:55:41 2026
+103|The Dark Knight|ahinshadman.brac@gmail.com|4|Thu Aug 04 21:10:18 2026
+103|The Dark Knight|ahnafmorshed.ju@gmail.com|5|Fri Aug 05 17:39:55 2026
+103|The Dark Knight|ahsansikder.ruet@gmail.com|4|Sat Aug 06 18:41:23 2026
+103|The Dark Knight|nahianniloy44@gmail.com|4|Sun Aug 07 19:12:44 2026
+103|The Dark Knight|alfazasif.mistce@gmail.com|5|Mon Aug 08 20:09:31 2026
+103|The Dark Knight|anasturzo.nsu@gmail.com|3|Tue Aug 09 21:33:16 2026
+103|The Dark Knight|armankhan.uiu@gmail.com|4|Wed Aug 10 17:55:42 2026
+103|The Dark Knight|ashikurrahman.brac@gmail.com|5|Thu Aug 11 18:28:59 2026
+103|The Dark Knight|edraktasin.buet@gmail.com|2|Fri Aug 12 19:45:37 2026
+
+104|Monpura|tanjim.hossain2256@gmail.com|5|Mon Feb 03 17:15:22 2026
+104|Monpura|tanjim.rafi.gsc@gmail.com|4|Tue Feb 04 18:42:19 2026
+104|Monpura|tanjirtasin.sjc@gmail.com|4|Wed Feb 05 19:33:41 2026
+104|Monpura|yamarevan.iuteee@gmail.com|4|Thu Feb 06 20:11:07 2026
+104|Monpura|zihanzaman.juiit@gmail.com|5|Fri Feb 07 21:05:55 2026
+104|Monpura|zitumondol.dueee@gmail.com|4|Sat Feb 08 17:48:29 2026
+104|Monpura|sujal.podder55@gmail.com|3|Sun Feb 09 18:56:33 2026
+104|Monpura|sohan.hawlader.gsc@gmail.com|4|Mon Feb 10 19:22:48 2026
+
+105|Parasite|nabil.hameem.dev@gmail.com|5|Mon Feb 03 18:12:11 2026
+105|Parasite|naorozbarenya.smc@gmail.com|4|Tue Feb 04 19:41:23 2026
+105|Parasite|neamul.islam.ruetipe@gmail.com|2|Wed Feb 05 20:55:33 2026
+105|Parasite|niloy.khondokar.ju@gmail.com|5|Thu Feb 06 17:12:48 2026
+105|Parasite|nishan.khan.mbstucse@gmail.com|3|Fri Feb 07 18:55:31 2026
+105|Parasite|nur.sohan.mistarch@gmail.com|1|Sat Feb 08 20:22:10 2026
+105|Parasite|rafialam.buetipe@gmail.com|4|Sun Feb 09 19:11:45 2026
+105|Parasite|rawashahma.cu@gmail.com|3|Mon Feb 10 21:40:17 2026
+105|Parasite|ronaldoratul.nsucse@gmail.com|4|Tue Feb 11 18:35:12 2026
+105|Parasite|sadmanwasi.braccse@gmail.com|5|Wed Feb 12 19:50:26 2026
+105|Parasite|saiful.islam.buetche@gmail.com|4|Thu Feb 13 20:12:09 2026
+105|Parasite|sajjad.hossain.mistme@gmail.com|5|Fri Feb 14 21:08:41 2026
+
+106|Spirited Away|iftekharultonmoy.iut@gmail.com|5|Mon Feb 03 17:33:20 2026
+106|Spirited Away|titasahmed.cadet@gmail.com|5|Tue Feb 04 18:48:11 2026
+106|Spirited Away|imranhasan.du@gmail.com|4|Wed Feb 05 19:59:41 2026
+106|Spirited Away|imtiajrohan.uiu@gmail.com|5|Thu Feb 06 20:14:30 2026
+106|Spirited Away|ishmamnafi.ibnsina@gmail.com|4|Fri Feb 07 21:28:17 2026
+106|Spirited Away|likhonghosh.ju@gmail.com|4|Sat Feb 08 18:02:55 2026
+106|Spirited Away|rimahir.uiucse@gmail.com|5|Sun Feb 09 19:13:38 2026
+106|Spirited Away|ishtiaqahmed.eee@gmail.com|4|Mon Feb 10 20:45:23 2026
+106|Spirited Away|mahadihasan.kuetcse@gmail.com|4|Tue Feb 11 21:33:12 2026
+106|Spirited Away|mahadihossion.kueteee@gmail.com|4|Wed Feb 12 17:50:28 2026
+106|Spirited Away|siammustafi.jnu@gmail.com|5|Thu Feb 13 18:39:42 2026
+106|Spirited Away|rawnakalam.mist@gmail.com|4|Fri Feb 14 19:55:31 2026
+106|Spirited Away|mushfiqtandid.mist@gmail.com|5|Sat Feb 15 20:44:18 2026
+
+107|Avengers: Endgame|sajjad.hossain.mistme@gmail.com|5|Mon Feb 03 18:12:33 2026
+107|Avengers: Endgame|sazim.qiyamah66@gmail.com|4|Tue Feb 04 19:22:18 2026
+107|Avengers: Endgame|shabbashachiarnob.med@gmail.com|3|Wed Feb 05 20:44:21 2026
+107|Avengers: Endgame|shadman.ahin.braccse@gmail.com|4|Thu Feb 06 21:11:42 2026
+107|Avengers: Endgame|shahrafialam.buetipe@gmail.com|5|Fri Feb 07 17:33:14 2026
+107|Avengers: Endgame|sheikhhabib.buetipe@gmail.com|4|Sat Feb 08 18:49:25 2026
+107|Avengers: Endgame|siam.hossain.mist@gmail.com|3|Sun Feb 09 19:27:18 2026
+107|Avengers: Endgame|sohan.hawlader.gsc@gmail.com|4|Mon Feb 10 20:41:55 2026
+107|Avengers: Endgame|sujal.podder55@gmail.com|5|Tue Feb 11 21:12:44 2026
+107|Avengers: Endgame|tahsin.noman.bueteee@gmail.com|4|Wed Feb 12 18:50:16 2026
+107|Avengers: Endgame|taimwafi.iutce@gmail.com|4|Thu Feb 13 19:33:39 2026
+107|Avengers: Endgame|tanjim.hossain2256@gmail.com|3|Fri Feb 14 20:10:52 2026
+
+108|Aynabaji|tanjim.rafi.gsc@gmail.com|4|Mon Feb 03 17:14:22 2026
+108|Aynabaji|tanjirtasin.sjc@gmail.com|3|Tue Feb 04 18:44:19 2026
+108|Aynabaji|yamarevan.iuteee@gmail.com|5|Wed Feb 05 19:22:41 2026
+108|Aynabaji|zihanzaman.juiit@gmail.com|2|Thu Feb 06 20:11:07 2026
+108|Aynabaji|zitumondol.dueee@gmail.com|4|Fri Feb 07 21:05:55 2026
+108|Aynabaji|abidurrahman.uk@gmail.com|3|Sat Feb 08 17:48:29 2026
+108|Aynabaji|adibhossain.mist@gmail.com|4|Sun Feb 09 18:56:33 2026
+108|Aynabaji|adnansarwar.ju@gmail.com|5|Mon Feb 10 19:22:48 2026
+
+109|Interstellar|sazim.qiyamah66@gmail.com|5|Mon Feb 03 18:11:32 2026
+109|Interstellar|shabbashachiarnob.med@gmail.com|5|Tue Feb 04 19:33:21 2026
+109|Interstellar|shadman.ahin.braccse@gmail.com|4|Wed Feb 05 20:15:40 2026
+109|Interstellar|shahrafialam.buetipe@gmail.com|5|Thu Feb 06 21:01:55 2026
+109|Interstellar|sheikhhabib.buetipe@gmail.com|4|Fri Feb 07 17:29:12 2026
+109|Interstellar|siam.hossain.mist@gmail.com|5|Sat Feb 08 18:44:33 2026
+109|Interstellar|sohan.hawlader.gsc@gmail.com|5|Sun Feb 09 19:58:26 2026
+109|Interstellar|sujal.podder55@gmail.com|4|Mon Feb 10 20:17:05 2026
+109|Interstellar|tahsin.noman.bueteee@gmail.com|4|Tue Feb 11 21:12:44 2026
+109|Interstellar|taimwafi.iutce@gmail.com|4|Wed Feb 12 18:39:18 2026
+109|Interstellar|tanjim.hossain2256@gmail.com|5|Thu Feb 13 19:22:03 2026
+109|Interstellar|tanjim.rafi.gsc@gmail.com|4|Fri Feb 14 20:11:19 2026
+109|Interstellar|tanjirtasin.sjc@gmail.com|4|Sat Feb 15 21:03:48 2026
+109|Interstellar|yamarevan.iuteee@gmail.com|5|Sun Feb 16 18:50:22 2026
+
+110|Forrest Gump|ahinshadman.brac@gmail.com|5|Mon Feb 03 18:12:41 2026
+110|Forrest Gump|fahimshahriar.aust@gmail.com|4|Tue Feb 04 19:22:13 2026
+110|Forrest Gump|ahnafmorshed.ju@gmail.com|3|Wed Feb 05 20:45:55 2026
+110|Forrest Gump|ahsansikder.ruet@gmail.com|4|Thu Feb 06 17:31:09 2026
+110|Forrest Gump|nahianniloy44@gmail.com|2|Fri Feb 07 21:02:48 2026
+110|Forrest Gump|alfazasif.mistce@gmail.com|5|Sat Feb 08 18:19:27 2026
+110|Forrest Gump|anasturzo.nsu@gmail.com|4|Sun Feb 09 16:44:11 2026
+110|Forrest Gump|armankhan.uiu@gmail.com|3|Mon Feb 10 19:55:40 2026
+110|Forrest Gump|ashikurrahman.brac@gmail.com|5|Tue Feb 11 20:21:33 2026
+110|Forrest Gump|edraktasin.buet@gmail.com|4|Wed Feb 12 18:14:58 2026
+
+111|Joker|faiaziqbal.ducse@gmail.com|5|Mon Feb 03 18:12:33 2026
+111|Joker|fardinahmed21@gmail.com|4|Tue Feb 04 19:22:18 2026
+111|Joker|fardinomi.buetcse@gmail.com|3|Wed Feb 05 20:44:21 2026
+111|Joker|farhanmahmood.nsucse@gmail.com|2|Thu Feb 06 21:11:42 2026
+111|Joker|saturo.gojo.mist@gmail.com|5|Fri Feb 07 17:33:14 2026
+111|Joker|hameemnabil.drmc@gmail.com|4|Sat Feb 08 18:49:25 2026
+111|Joker|hasiburhany.ruetgce@gmail.com|3|Sun Feb 09 19:27:18 2026
+111|Joker|iftekharultonmoy.iut@gmail.com|4|Mon Feb 10 20:41:55 2026
+111|Joker|titasahmed.cadet@gmail.com|5|Tue Feb 11 21:12:44 2026
+111|Joker|imranhasan.du@gmail.com|3|Wed Feb 12 18:50:16 2026
+111|Joker|imtiajrohan.uiu@gmail.com|4|Thu Feb 13 19:33:39 2026
+111|Joker|ishmamnafi.ibnsina@gmail.com|3|Fri Feb 14 20:10:52 2026
+
+112|Daruchini Dwip|likhonghosh.ju@gmail.com|4|Mon Feb 03 17:12:11 2026
+112|Daruchini Dwip|rimahir.uiucse@gmail.com|3|Tue Feb 04 18:45:28 2026
+112|Daruchini Dwip|ishtiaqahmed.eee@gmail.com|5|Wed Feb 05 19:22:37 2026
+112|Daruchini Dwip|mahadihasan.kuetcse@gmail.com|2|Thu Feb 06 20:11:44 2026
+112|Daruchini Dwip|mahadihossion.kueteee@gmail.com|4|Fri Feb 07 21:05:55 2026
+112|Daruchini Dwip|siammustafi.jnu@gmail.com|3|Sat Feb 08 17:48:29 2026
+112|Daruchini Dwip|rawnakalam.mist@gmail.com|4|Sun Feb 09 18:56:33 2026
+
+113|Titanic|mushfiqtandid.mist@gmail.com|5|Mon Feb 03 18:15:11 2026
+113|Titanic|muzahid.zim.hstu@gmail.com|4|Tue Feb 04 19:33:02 2026
+113|Titanic|nabil.hameem.dev@gmail.com|3|Wed Feb 05 20:12:44 2026
+113|Titanic|naorozbarenya.smc@gmail.com|5|Thu Feb 06 21:00:15 2026
+113|Titanic|neamul.islam.ruetipe@gmail.com|4|Fri Feb 07 17:45:37 2026
+113|Titanic|niloy.khondokar.ju@gmail.com|2|Sat Feb 08 18:20:59 2026
+113|Titanic|nishan.khan.mbstucse@gmail.com|5|Sun Feb 09 19:44:12 2026
+113|Titanic|nur.sohan.mistarch@gmail.com|4|Mon Feb 10 20:16:03 2026
+113|Titanic|rafialam.buetipe@gmail.com|5|Tue Feb 11 21:28:41 2026
+113|Titanic|rawashahma.cu@gmail.com|3|Wed Feb 12 18:52:26 2026
+113|Titanic|ronaldoratul.nsucse@gmail.com|4|Thu Feb 13 19:33:55 2026
+113|Titanic|sadmanwasi.braccse@gmail.com|5|Fri Feb 14 20:40:14 2026
+
+114|The Godfather|saiful.islam.buetche@gmail.com|5|Mon Feb 03 17:11:33 2026
+114|The Godfather|sajjad.hossain.mistme@gmail.com|4|Tue Feb 04 18:29:45 2026
+114|The Godfather|sazim.qiyamah66@gmail.com|5|Wed Feb 05 19:55:18 2026
+114|The Godfather|shabbashachiarnob.med@gmail.com|3|Thu Feb 06 20:12:52 2026
+114|The Godfather|shadman.ahin.braccse@gmail.com|4|Fri Feb 07 21:08:11 2026
+114|The Godfather|shahrafialam.buetipe@gmail.com|5|Sat Feb 08 18:50:37 2026
+114|The Godfather|sheikhhabib.buetipe@gmail.com|2|Sun Feb 09 19:14:55 2026
+114|The Godfather|siam.hossain.mist@gmail.com|4|Mon Feb 10 20:44:02 2026
+114|The Godfather|sohan.hawlader.gsc@gmail.com|5|Tue Feb 11 21:22:13 2026
+114|The Godfather|sujal.podder55@gmail.com|4|Wed Feb 12 18:09:39 2026
+114|The Godfather|tahsin.noman.bueteee@gmail.com|5|Thu Feb 13 19:33:21 2026
+
+115|The Shawshank Redemption|faiaziqbal.ducse@gmail.com|5|Sat Aug 13 20:22:41 2026
+115|The Shawshank Redemption|fardinahmed21@gmail.com|5|Sun Aug 14 21:15:18 2026
+115|The Shawshank Redemption|fardinomi.buetcse@gmail.com|5|Mon Aug 15 18:33:26 2026
+115|The Shawshank Redemption|farhanmahmood.nsucse@gmail.com|4|Tue Aug 16 19:44:11 2026
+115|The Shawshank Redemption|saturo.gojo.mist@gmail.com|4|Wed Aug 17 20:15:09 2026
+115|The Shawshank Redemption|hameemnabil.drmc@gmail.com|5|Thu Aug 18 21:28:37 2026
+115|The Shawshank Redemption|hasiburhany.ruetgce@gmail.com|4|Fri Aug 19 17:52:48 2026
+115|The Shawshank Redemption|iftekharultonmoy.iut@gmail.com|5|Sat Aug 20 18:31:26 2026
+115|The Shawshank Redemption|titasahmed.cadet@gmail.com|3|Sun Aug 21 19:12:03 2026
+115|The Shawshank Redemption|imranhasan.du@gmail.com|4|Mon Aug 22 20:05:44 2026
+115|The Shawshank Redemption|imtiajrohan.uiu@gmail.com|5|Tue Aug 23 21:42:19 2026
+115|The Shawshank Redemption|ishmamnafi.ibnsina@gmail.com|4|Wed Aug 24 18:23:51 2026
+
+116|Pather Panchali|taimwafi.iutce@gmail.com|5|Mon Feb 03 17:22:33 2026
+116|Pather Panchali|tanjim.hossain2256@gmail.com|4|Tue Feb 04 18:40:18 2026
+116|Pather Panchali|tanjim.rafi.gsc@gmail.com|3|Wed Feb 05 19:10:22 2026
+116|Pather Panchali|tanjirtasin.sjc@gmail.com|5|Thu Feb 06 20:55:31 2026
+116|Pather Panchali|yamarevan.iuteee@gmail.com|4|Fri Feb 07 21:12:09 2026
+116|Pather Panchali|zihanzaman.juiit@gmail.com|2|Sat Feb 08 18:44:17 2026
+116|Pather Panchali|zitumondol.dueee@gmail.com|4|Sun Feb 09 19:36:55 2026
+
+117|Pulp Fiction|abidurrahman.uk@gmail.com|5|Mon Feb 03 18:02:44 2026
+117|Pulp Fiction|adibhossain.mist@gmail.com|4|Tue Feb 04 19:44:31 2026
+117|Pulp Fiction|adnansarwar.ju@gmail.com|3|Wed Feb 05 20:21:40 2026
+117|Pulp Fiction|ahinshadman.brac@gmail.com|4|Thu Feb 06 21:11:22 2026
+117|Pulp Fiction|fahimshahriar.aust@gmail.com|5|Fri Feb 07 17:29:15 2026
+117|Pulp Fiction|ahnafmorshed.ju@gmail.com|2|Sat Feb 08 18:12:48 2026
+117|Pulp Fiction|ahsansikder.ruet@gmail.com|4|Sun Feb 09 19:33:11 2026
+117|Pulp Fiction|nahianniloy44@gmail.com|3|Mon Feb 10 20:05:33 2026
+117|Pulp Fiction|alfazasif.mistce@gmail.com|5|Tue Feb 11 21:10:27 2026
+
+118|Your Name|zihanzaman.juiit@gmail.com|4|Mon Feb 03 17:15:21 2026
+118|Your Name|zitumondol.dueee@gmail.com|4|Tue Feb 04 18:44:10 2026
+118|Your Name|abidurrahman.uk@gmail.com|5|Wed Feb 05 19:55:33 2026
+118|Your Name|adibhossain.mist@gmail.com|3|Thu Feb 06 20:42:17 2026
+118|Your Name|adnansarwar.ju@gmail.com|5|Fri Feb 07 21:09:51 2026
+118|Your Name|ahinshadman.brac@gmail.com|4|Sat Feb 08 17:30:42 2026
+118|Your Name|fahimshahriar.aust@gmail.com|4|Sun Feb 09 18:59:26 2026
+118|Your Name|ahnafmorshed.ju@gmail.com|3|Mon Feb 10 19:41:11 2026
+118|Your Name|ahsansikder.ruet@gmail.com|3|Tue Feb 11 20:12:55 2026
+118|Your Name|nahianniloy44@gmail.com|4|Wed Feb 12 21:05:38 2026
+118|Your Name|alfazasif.mistce@gmail.com|4|Thu Feb 13 18:33:27 2026
+118|Your Name|anasturzo.nsu@gmail.com|4|Fri Feb 14 19:28:14 2026
+
+119|Coco|naorozbarenya.smc@gmail.com|2|Sun Sep 04 21:02:59 2026
+119|Coco|neamul.islam.ruetipe@gmail.com|4|Mon Sep 05 18:21:33 2026
+119|Coco|niloy.khondokar.ju@gmail.com|3|Tue Sep 06 19:44:10 2026
+119|Coco|nishan.khan.mbstucse@gmail.com|4|Wed Sep 07 20:15:28 2026
+119|Coco|nur.sohan.mistarch@gmail.com|1|Thu Sep 08 21:35:17 2026
+119|Coco|rafialam.buetipe@gmail.com|3|Fri Sep 09 18:29:41 2026
+119|Coco|rawashahma.cu@gmail.com|2|Sat Sep 10 19:58:26 2026
+
+120|Gladiator|ronaldoratul.nsucse@gmail.com|5|Sun Sep 11 20:44:12 2026
+120|Gladiator|sadmanwasi.braccse@gmail.com|4|Mon Sep 12 21:17:03 2026
+120|Gladiator|saiful.islam.buetche@gmail.com|3|Tue Sep 13 18:36:55 2026
+120|Gladiator|sajjad.hossain.mistme@gmail.com|4|Wed Sep 14 19:45:11 2026
+120|Gladiator|sazim.qiyamah66@gmail.com|3|Thu Sep 15 20:22:31 2026
+120|Gladiator|shabbashachiarnob.med@gmail.com|3|Fri Sep 16 21:09:55 2026
+120|Gladiator|shadman.ahin.braccse@gmail.com|2|Sat Sep 17 18:45:17 2026
+
+121|Hirak Rajar Deshe|abidurrahman.uk@gmail.com|5|Mon Sep 18 18:11:22 2026
+121|Hirak Rajar Deshe|adibhossain.mist@gmail.com|4|Tue Sep 19 19:33:10 2026
+121|Hirak Rajar Deshe|adnansarwar.ju@gmail.com|5|Wed Sep 20 20:55:41 2026
+121|Hirak Rajar Deshe|ahinshadman.brac@gmail.com|4|Thu Sep 21 21:10:18 2026
+121|Hirak Rajar Deshe|ahnafmorshed.ju@gmail.com|3|Fri Sep 22 17:39:55 2026
+121|Hirak Rajar Deshe|ahsansikder.ruet@gmail.com|4|Sat Sep 23 18:41:23 2026
+121|Hirak Rajar Deshe|nahianniloy44@gmail.com|2|Sun Sep 24 19:12:44 2026
+
+122|Fight Club|likhonghosh.ju@gmail.com|5|Thu Aug 25 19:38:14 2026
+122|Fight Club|rimahir.uiucse@gmail.com|4|Fri Aug 26 20:29:55 2026
+122|Fight Club|ishtiaqahmed.eee@gmail.com|5|Sat Aug 27 21:10:47 2026
+122|Fight Club|mahadihasan.kuetcse@gmail.com|4|Sun Aug 28 18:17:39 2026
+122|Fight Club|mahadihossion.kueteee@gmail.com|5|Mon Aug 29 19:22:48 2026
+122|Fight Club|siammustafi.jnu@gmail.com|4|Tue Aug 30 20:55:26 2026
+122|Fight Club|rawnakalam.mist@gmail.com|3|Wed Aug 31 21:18:14 2026
+122|Fight Club|mushfiqtandid.mist@gmail.com|5|Thu Sep 01 18:44:37 2026
+122|Fight Club|muzahid.zim.hstu@gmail.com|2|Fri Sep 02 19:55:22 2026
+122|Fight Club|nabil.hameem.dev@gmail.com|4|Sat Sep 03 20:33:41 2026
+
+123|The Prestige|hameemnabil.drmc@gmail.com|3|Thu Oct 05 21:28:37 2026
+123|The Prestige|hasiburhany.ruetgce@gmail.com|4|Fri Oct 06 17:52:48 2026
+123|The Prestige|iftekharultonmoy.iut@gmail.com|3|Sat Oct 07 18:31:26 2026
+123|The Prestige|titasahmed.cadet@gmail.com|3|Sun Oct 08 19:12:03 2026
+123|The Prestige|imranhasan.du@gmail.com|4|Mon Oct 09 20:05:44 2026
+123|The Prestige|imtiajrohan.uiu@gmail.com|2|Tue Oct 10 21:42:19 2026
+123|The Prestige|ishmamnafi.ibnsina@gmail.com|4|Wed Oct 11 18:23:51 2026
+
+124|A Silent Voice|anasturzo.nsu@gmail.com|5|Mon Feb 03 18:22:10 2026
+124|A Silent Voice|armankhan.uiu@gmail.com|4|Tue Feb 04 19:42:33 2026
+124|A Silent Voice|ashikurrahman.brac@gmail.com|3|Wed Feb 05 20:14:52 2026
+124|A Silent Voice|edraktasin.buet@gmail.com|5|Thu Feb 06 21:33:21 2026
+124|A Silent Voice|faiaziqbal.ducse@gmail.com|4|Fri Feb 07 17:52:19 2026
+124|A Silent Voice|fardinahmed21@gmail.com|2|Sat Feb 08 18:30:48 2026
+124|A Silent Voice|fardinomi.buetcse@gmail.com|5|Sun Feb 09 19:12:36 2026
+124|A Silent Voice|farhanmahmood.nsucse@gmail.com|4|Mon Feb 10 20:41:11 2026
+124|A Silent Voice|saturo.gojo.mist@gmail.com|3|Tue Feb 11 21:09:22 2026
+124|A Silent Voice|hameemnabil.drmc@gmail.com|4|Wed Feb 12 18:28:55 2026
+
+125|Demon Slayer: Infinity Castle Part 1|muzahid.zim.hstu@gmail.com|5|Mon Feb 03 18:33:15 2026
+125|Demon Slayer: Infinity Castle Part 1|nabil.hameem.dev@gmail.com|4|Tue Feb 04 19:11:40 2026
+125|Demon Slayer: Infinity Castle Part 1|naorozbarenya.smc@gmail.com|5|Wed Feb 05 20:48:22 2026
+125|Demon Slayer: Infinity Castle Part 1|neamul.islam.ruetipe@gmail.com|4|Thu Feb 06 21:32:44 2026
+125|Demon Slayer: Infinity Castle Part 1|niloy.khondokar.ju@gmail.com|4|Fri Feb 07 17:40:55 2026
+125|Demon Slayer: Infinity Castle Part 1|nishan.khan.mbstucse@gmail.com|4|Sat Feb 08 18:55:31 2026
+125|Demon Slayer: Infinity Castle Part 1|nur.sohan.mistarch@gmail.com|5|Sun Feb 09 19:28:16 2026
+125|Demon Slayer: Infinity Castle Part 1|rafialam.buetipe@gmail.com|3|Mon Feb 10 20:05:27 2026
+125|Demon Slayer: Infinity Castle Part 1|rawashahma.cu@gmail.com|5|Tue Feb 11 21:18:09 2026
+125|Demon Slayer: Infinity Castle Part 1|ronaldoratul.nsucse@gmail.com|4|Wed Feb 12 18:36:12 2026
+125|Demon Slayer: Infinity Castle Part 1|sadmanwasi.braccse@gmail.com|4|Thu Feb 13 19:45:55 2026
+125|Demon Slayer: Infinity Castle Part 1|saiful.islam.buetche@gmail.com|4|Fri Feb 14 20:59:22 2026
+
+126|Weathering With You|muzahid.zim.hstu@gmail.com|4|Fri Oct 20 19:55:22 2026
+126|Weathering With You|nabil.hameem.dev@gmail.com|5|Sat Oct 21 20:33:41 2026
+126|Weathering With You|naorozbarenya.smc@gmail.com|4|Sun Oct 22 21:02:59 2026
+126|Weathering With You|neamul.islam.ruetipe@gmail.com|3|Mon Oct 23 18:21:33 2026
+126|Weathering With You|niloy.khondokar.ju@gmail.com|4|Tue Oct 24 19:44:10 2026
+126|Weathering With You|nishan.khan.mbstucse@gmail.com|2|Wed Oct 25 20:15:28 2026
+
+127|Whiplash|nur.sohan.mistarch@gmail.com|4|Thu Oct 26 21:35:17 2026
+127|Whiplash|rafialam.buetipe@gmail.com|2|Fri Oct 27 18:29:41 2026
+127|Whiplash|rawashahma.cu@gmail.com|4|Sat Oct 28 19:58:26 2026
+127|Whiplash|ronaldoratul.nsucse@gmail.com|3|Sun Oct 29 20:44:12 2026
+127|Whiplash|sadmanwasi.braccse@gmail.com|4|Mon Oct 30 21:17:03 2026
+127|Whiplash|saiful.islam.buetche@gmail.com|5|Tue Oct 31 18:36:55 2026
+127|Whiplash|sajjad.hossain.mistme@gmail.com|2|Wed Nov 01 19:45:11 2026
+
+128|La La Land|sazim.qiyamah66@gmail.com|4|Thu Nov 02 20:22:31 2026
+128|La La Land|shabbashachiarnob.med@gmail.com|3|Fri Nov 03 21:09:55 2026
+128|La La Land|shadman.ahin.braccse@gmail.com|2|Sat Nov 04 18:45:17 2026
+128|La La Land|shahrafialam.buetipe@gmail.com|4|Sun Nov 05 19:52:44 2026
+128|La La Land|sheikhhabib.buetipe@gmail.com|5|Mon Nov 06 20:31:08 2026
+128|La La Land|siam.hossain.mist@gmail.com|4|Tue Nov 07 21:12:39 2026
+
+129|Iron Man|anasturzo.nsu@gmail.com|5|Tue Dec 04 21:33:16 2026
+129|Iron Man|armankhan.uiu@gmail.com|4|Wed Dec 05 17:55:42 2026
+129|Iron Man|ashikurrahman.brac@gmail.com|4|Thu Dec 06 18:28:59 2026
+129|Iron Man|edraktasin.buet@gmail.com|3|Fri Dec 07 19:45:37 2026
+129|Iron Man|faiaziqbal.ducse@gmail.com|4|Sat Dec 08 20:22:41 2026
+129|Iron Man|fardinahmed21@gmail.com|5|Sun Dec 09 21:15:18 2026
+129|Iron Man|fardinomi.buetcse@gmail.com|2|Mon Dec 10 18:33:26 2026
+
+130|Doctor Strange|farhanmahmood.nsucse@gmail.com|4|Tue Dec 11 19:44:11 2026
+130|Doctor Strange|saturo.gojo.mist@gmail.com|3|Wed Dec 12 20:15:09 2026
+130|Doctor Strange|hameemnabil.drmc@gmail.com|4|Thu Dec 13 21:28:37 2026
+130|Doctor Strange|hasiburhany.ruetgce@gmail.com|3|Fri Dec 14 17:52:48 2026
+130|Doctor Strange|iftekharultonmoy.iut@gmail.com|5|Sat Dec 15 18:31:26 2026
+130|Doctor Strange|titasahmed.cadet@gmail.com|2|Sun Dec 16 19:12:03 2026
+
+131|Up|imranhasan.du@gmail.com|5|Mon Dec 17 20:05:44 2026
+131|Up|imtiajrohan.uiu@gmail.com|4|Tue Dec 18 21:42:19 2026
+131|Up|ishmamnafi.ibnsina@gmail.com|5|Wed Dec 19 18:23:51 2026
+131|Up|likhonghosh.ju@gmail.com|4|Thu Dec 20 19:38:14 2026
+131|Up|rimahir.uiucse@gmail.com|5|Fri Dec 21 20:29:55 2026
+131|Up|ishtiaqahmed.eee@gmail.com|3|Sat Dec 22 21:10:47 2026
+131|Up|mahadihasan.kuetcse@gmail.com|4|Sun Dec 23 18:17:39 2026
+
+132|Chainsaw Man: Reze Arc|mahadihossion.kueteee@gmail.com|5|Mon Dec 24 19:22:48 2026
+132|Chainsaw Man: Reze Arc|siammustafi.jnu@gmail.com|4|Tue Dec 25 20:55:26 2026
+132|Chainsaw Man: Reze Arc|rawnakalam.mist@gmail.com|4|Wed Dec 26 21:18:14 2026
+132|Chainsaw Man: Reze Arc|mushfiqtandid.mist@gmail.com|5|Thu Dec 27 18:44:37 2026
+132|Chainsaw Man: Reze Arc|muzahid.zim.hstu@gmail.com|3|Fri Dec 28 19:55:22 2026
+132|Chainsaw Man: Reze Arc|nabil.hameem.dev@gmail.com|2|Sat Dec 29 20:33:41 2026
+
+133|1917|sohan.hawlader.gsc@gmail.com|5|Wed Nov 08 18:17:52 2026
+133|1917|tahsin.noman.bueteee@gmail.com|4|Thu Nov 09 19:41:26 2026
+133|1917|taimwafi.iutce@gmail.com|5|Fri Nov 10 20:55:33 2026
+133|1917|tanjim.hossain2256@gmail.com|4|Sat Nov 11 21:18:14 2026
+133|1917|tanjim.rafi.gsc@gmail.com|4|Sun Nov 12 18:36:05 2026
+133|1917|tanjirtasin.sjc@gmail.com|3|Mon Nov 13 19:22:47 2026
+
+134|Dunkirk|naorozbarenya.smc@gmail.com|4|Sun Dec 30 21:02:59 2026
+134|Dunkirk|neamul.islam.ruetipe@gmail.com|3|Mon Dec 31 18:21:33 2026
+134|Dunkirk|niloy.khondokar.ju@gmail.com|4|Tue Jan 01 19:44:10 2027
+134|Dunkirk|nishan.khan.mbstucse@gmail.com|3|Wed Jan 02 20:15:28 2027
+134|Dunkirk|nur.sohan.mistarch@gmail.com|2|Thu Jan 03 21:35:17 2027
+134|Dunkirk|rafialam.buetipe@gmail.com|5|Fri Jan 04 18:29:41 2027
+
+135|Baishe Srabon|rawashahma.cu@gmail.com|4|Sat Jan 05 19:58:26 2027
+135|Baishe Srabon|ronaldoratul.nsucse@gmail.com|3|Sun Jan 06 20:44:12 2027
+135|Baishe Srabon|sadmanwasi.braccse@gmail.com|4|Mon Jan 07 21:17:03 2027
+135|Baishe Srabon|saiful.islam.buetche@gmail.com|2|Tue Jan 08 18:36:55 2027
+135|Baishe Srabon|sajjad.hossain.mistme@gmail.com|5|Wed Jan 09 19:45:11 2027
+
+136|The Imitation Game|sazim.qiyamah66@gmail.com|4|Thu Jan 10 20:22:31 2027
+136|The Imitation Game|shabbashachiarnob.med@gmail.com|5|Fri Jan 11 21:09:55 2027
+136|The Imitation Game|shadman.ahin.braccse@gmail.com|4|Sat Jan 12 18:45:17 2027
+136|The Imitation Game|shahrafialam.buetipe@gmail.com|3|Sun Jan 13 19:52:44 2027
+136|The Imitation Game|sheikhhabib.buetipe@gmail.com|5|Mon Jan 14 20:31:08 2027
+136|The Imitation Game|siam.hossain.mist@gmail.com|3|Tue Jan 15 21:12:39 2027
+136|The Imitation Game|sohan.hawlader.gsc@gmail.com|5|Wed Jan 16 18:25:11 2027
+136|The Imitation Game|tahsin.noman.bueteee@gmail.com|4|Thu Jan 17 19:41:44 2027
+136|The Imitation Game|taimwafi.iutce@gmail.com|5|Fri Jan 18 20:18:33 2027
+136|The Imitation Game|tanjim.hossain2256@gmail.com|4|Sat Jan 19 21:03:27 2027
+
+137|Shutter Island|yamarevan.iuteee@gmail.com|4|Tue Nov 14 20:40:11 2026
+137|Shutter Island|zihanzaman.juiit@gmail.com|3|Wed Nov 15 21:33:26 2026
+137|Shutter Island|zitumondol.dueee@gmail.com|2|Thu Nov 16 18:28:55 2026
+137|Shutter Island|rahimhasan.du@gmail.com|4|Fri Nov 17 19:55:41 2026
+137|Shutter Island|imtiajahmed.rohan@gmail.com|5|Sat Nov 18 20:44:18 2026
+137|Shutter Island|mushfiqtandid.mist@gmail.com|4|Sun Nov 19 21:17:09 2026
+
+138|The Departed|sohan.hawlader.gsc@gmail.com|5|Wed Jan 16 18:17:52 2027
+138|The Departed|tahsin.noman.bueteee@gmail.com|4|Thu Jan 17 19:41:26 2027
+138|The Departed|taimwafi.iutce@gmail.com|5|Fri Jan 18 20:55:33 2027
+138|The Departed|tanjim.hossain2256@gmail.com|4|Sat Jan 19 21:18:14 2027
+138|The Departed|tanjim.rafi.gsc@gmail.com|5|Sun Jan 20 18:36:05 2027
+138|The Departed|tanjirtasin.sjc@gmail.com|3|Mon Jan 21 19:22:47 2027
+138|The Departed|yamarevan.iuteee@gmail.com|2|Tue Jan 22 20:40:11 2027
+
+139|The Pianist|rafialam.buetipe@gmail.com|1|Mon Nov 20 18:33:22 2026
+139|The Pianist|sadmanwasi.braccse@gmail.com|3|Tue Nov 21 19:48:30 2026
+139|The Pianist|sazim.qiyamah66@gmail.com|4|Wed Nov 22 20:12:16 2026
+139|The Pianist|shabbashachiarnob.med@gmail.com|5|Thu Nov 23 21:05:37 2026
+139|The Pianist|shadman.ahin.braccse@gmail.com|2|Fri Nov 24 18:42:11 2026
+139|The Pianist|shahrafialam.buetipe@gmail.com|3|Sat Nov 25 19:29:44 2026
+
+140|Life of Pi|zihanzaman.juiit@gmail.com|4|Wed Jan 23 21:33:26 2027
+140|Life of Pi|zitumondol.dueee@gmail.com|5|Thu Jan 24 18:28:55 2027
+140|Life of Pi|rahimhasan.du@gmail.com|4|Fri Jan 25 19:55:41 2027
+140|Life of Pi|imtiajahmed.rohan@gmail.com|5|Sat Jan 26 20:44:18 2027
+140|Life of Pi|mushfiqtandid.mist@gmail.com|4|Sun Jan 27 21:17:09 2027
+140|Life of Pi|muzahid.zim.hstu@gmail.com|4|Mon Jan 28 18:33:22 2027
+140|Life of Pi|nabil.hameem.dev@gmail.com|5|Tue Jan 29 19:42:10 2027
+140|Life of Pi|naorozbarenya.smc@gmail.com|4|Wed Jan 30 20:15:33 2027
+140|Life of Pi|neamul.islam.ruetipe@gmail.com|5|Thu Jan 31 18:55:44 2027
+140|Life of Pi|niloy.khondokar.ju@gmail.com|4|Fri Feb 01 19:28:11 2027
+140|Life of Pi|nishan.khan.mbstucse@gmail.com|5|Sat Feb 02 20:33:47 2027
+140|Life of Pi|nur.sohan.mistarch@gmail.com|4|Sun Feb 03 21:10:19 2027
+140|Life of Pi|rafialam.buetipe@gmail.com|4|Mon Feb 04 18:41:55 2027
+
+141|Slumdog Millionaire|abidurrahman.uk@gmail.com|5|Tue Feb 01 18:12:11 2027
+141|Slumdog Millionaire|adibhossain.mist@gmail.com|4|Wed Feb 02 19:41:23 2027
+141|Slumdog Millionaire|adnansarwar.ju@gmail.com|4|Thu Feb 03 20:55:33 2027
+141|Slumdog Millionaire|ahinshadman.brac@gmail.com|3|Fri Feb 04 17:12:48 2027
+141|Slumdog Millionaire|ahnafmorshed.ju@gmail.com|5|Sat Feb 05 18:55:31 2027
+141|Slumdog Millionaire|ahsansikder.ruet@gmail.com|4|Sun Feb 06 20:22:10 2027
+141|Slumdog Millionaire|nahianniloy44@gmail.com|2|Mon Feb 07 19:11:45 2027
+
+142|Arrival|alfazasif.mistce@gmail.com|5|Tue Feb 08 21:40:17 2027
+142|Arrival|anasturzo.nsu@gmail.com|4|Wed Feb 09 18:22:44 2027
+142|Arrival|armankhan.uiu@gmail.com|5|Thu Feb 10 19:17:36 2027
+142|Arrival|ashikurrahman.brac@gmail.com|4|Fri Feb 11 20:51:12 2027
+142|Arrival|edraktasin.buet@gmail.com|5|Sat Feb 12 18:44:09 2027
+142|Arrival|faiaziqbal.ducse@gmail.com|3|Sun Feb 13 19:33:21 2027
+142|Arrival|fardinahmed21@gmail.com|4|Mon Feb 14 20:28:55 2027
+
+143|Blade Runner 2049|fardinomi.buetcse@gmail.com|4|Tue Feb 15 18:19:47 2027
+143|Blade Runner 2049|farhanmahmood.nsucse@gmail.com|5|Wed Feb 16 19:57:12 2027
+143|Blade Runner 2049|saturo.gojo.mist@gmail.com|4|Thu Feb 17 20:33:41 2027
+143|Blade Runner 2049|hameemnabil.drmc@gmail.com|5|Fri Feb 18 18:25:33 2027
+143|Blade Runner 2049|hasiburhany.ruetgce@gmail.com|4|Sat Feb 19 19:41:44 2027
+143|Blade Runner 2049|iftekharultonmoy.iut@gmail.com|3|Sun Feb 20 20:55:22 2027
+
+144|Logan|titasahmed.cadet@gmail.com|5|Mon Feb 21 18:31:19 2027
+144|Logan|imranhasan.du@gmail.com|4|Tue Feb 22 19:28:33 2027
+144|Logan|imtiajrohan.uiu@gmail.com|5|Wed Feb 23 20:17:41 2027
+144|Logan|ishmamnafi.ibnsina@gmail.com|4|Thu Feb 24 21:02:56 2027
+144|Logan|likhonghosh.ju@gmail.com|5|Fri Feb 25 18:55:30 2027
+144|Logan|rimahir.uiucse@gmail.com|3|Sat Feb 26 19:44:22 2027
+
+145|Oldboy|ishtiaqahmed.eee@gmail.com|5|Sun Feb 27 20:11:14 2027
+145|Oldboy|mahadihasan.kuetcse@gmail.com|4|Mon Feb 28 18:29:42 2027
+145|Oldboy|mahadihossion.kueteee@gmail.com|5|Tue Mar 01 19:41:27 2027
+145|Oldboy|siammustafi.jnu@gmail.com|4|Wed Mar 02 20:55:19 2027
+145|Oldboy|rawnakalam.mist@gmail.com|5|Thu Mar 03 18:36:54 2027
+145|Oldboy|mushfiqtandid.mist@gmail.com|2|Fri Mar 04 19:28:33 2027
+
+146|The Grand Budapest Hotel|muzahid.zim.hstu@gmail.com|4|Sat Mar 05 20:19:44 2027
+146|The Grand Budapest Hotel|nabil.hameem.dev@gmail.com|3|Sun Mar 06 18:47:15 2027
+146|The Grand Budapest Hotel|naorozbarenya.smc@gmail.com|4|Mon Mar 07 19:39:28 2027
+146|The Grand Budapest Hotel|neamul.islam.ruetipe@gmail.com|3|Tue Mar 08 20:25:10 2027
+146|The Grand Budapest Hotel|niloy.khondokar.ju@gmail.com|2|Wed Mar 09 21:03:41 2027
+146|The Grand Budapest Hotel|nishan.khan.mbstucse@gmail.com|5|Thu Mar 10 18:33:55 2027
+
+147|Her|abidurrahman.uk@gmail.com|4|Sun Apr 10 18:11:22 2027
+147|Her|adibhossain.mist@gmail.com|5|Mon Apr 11 19:33:10 2027
+147|Her|adnansarwar.ju@gmail.com|4|Tue Apr 12 20:55:41 2027
+147|Her|ahinshadman.brac@gmail.com|3|Wed Apr 13 21:10:18 2027
+147|Her|ahnafmorshed.ju@gmail.com|4|Thu Apr 14 17:39:55 2027
+147|Her|ahsansikder.ruet@gmail.com|2|Fri Apr 15 18:41:23 2027
+147|Her|nahianniloy44@gmail.com|5|Sat Apr 16 19:12:44 2027
+
+148|No Country for Old Men|alfazasif.mistce@gmail.com|5|Sun Apr 17 20:09:31 2027
+148|No Country for Old Men|anasturzo.nsu@gmail.com|4|Mon Apr 18 21:33:16 2027
+148|No Country for Old Men|armankhan.uiu@gmail.com|5|Tue Apr 19 17:55:42 2027
+148|No Country for Old Men|ashikurrahman.brac@gmail.com|4|Wed Apr 20 18:28:59 2027
+148|No Country for Old Men|edraktasin.buet@gmail.com|5|Thu Apr 21 19:45:37 2027
+148|No Country for Old Men|faiaziqbal.ducse@gmail.com|3|Fri Apr 22 20:22:41 2027
+148|No Country for Old Men|abidurrahman.uk@gmail.com|4|Sun Apr 10 18:11:22 2027
+148|No Country for Old Men|adibhossain.mist@gmail.com|5|Mon Apr 11 19:33:10 2027
+148|No Country for Old Men|adnansarwar.ju@gmail.com|4|Tue Apr 12 20:55:41 2027
+148|No Country for Old Men|ahinshadman.brac@gmail.com|2|Wed Apr 13 21:10:18 2027
+148|No Country for Old Men|muzahid.zim.hstu@gmail.com|4|Sat Mar 05 20:19:44 2027
+148|No Country for Old Men|nabil.hameem.dev@gmail.com|5|Sun Mar 06 18:47:15 2027
+148|No Country for Old Men|nishan.khan.mbstucse@gmail.com|5|Thu Mar 10 18:33:55 2027
+
+149|The Matrix|nur.sohan.mistarch@gmail.com|5|Fri Mar 11 19:44:16 2027
+149|The Matrix|rafialam.buetipe@gmail.com|5|Sat Mar 12 20:22:10 2027
+149|The Matrix|rawashahma.cu@gmail.com|4|Sun Mar 13 18:55:41 2027
+149|The Matrix|ronaldoratul.nsucse@gmail.com|5|Mon Mar 14 19:31:55 2027
+149|The Matrix|sadmanwasi.braccse@gmail.com|4|Tue Mar 15 20:11:22 2027
+149|The Matrix|saiful.islam.buetche@gmail.com|3|Wed Mar 16 21:00:44 2027
+
+150|The Lion King|sajjad.hossain.mistme@gmail.com|5|Thu Mar 17 18:22:18 2027
+150|The Lion King|sazim.qiyamah66@gmail.com|4|Fri Mar 18 19:41:09 2027
+150|The Lion King|shabbashachiarnob.med@gmail.com|5|Sat Mar 19 20:33:27 2027
+150|The Lion King|shadman.ahin.braccse@gmail.com|4|Sun Mar 20 18:55:14 2027
+150|The Lion King|shahrafialam.buetipe@gmail.com|5|Mon Mar 21 19:39:52 2027
+150|The Lion King|sheikhhabib.buetipe@gmail.com|3|Tue Mar 22 20:22:30 2027
+
+151|Mad Max: Fury Road|fardinahmed21@gmail.com|5|Sat Apr 23 21:15:18 2027
+151|Mad Max: Fury Road|fardinomi.buetcse@gmail.com|4|Sun Apr 24 18:33:26 2027
+151|Mad Max: Fury Road|farhanmahmood.nsucse@gmail.com|5|Mon Apr 25 19:44:11 2027
+151|Mad Max: Fury Road|saturo.gojo.mist@gmail.com|4|Tue Apr 26 20:15:09 2027
+151|Mad Max: Fury Road|hameemnabil.drmc@gmail.com|5|Wed Apr 27 21:28:37 2027
+151|Mad Max: Fury Road|hasiburhany.ruetgce@gmail.com|3|Thu Apr 28 17:52:48 2027
+
+152|Demon Slayer: Mugen Train|siam.hossain.mist@gmail.com|5|Wed Mar 23 18:44:10 2027
+152|Demon Slayer: Mugen Train|sohan.hawlader.gsc@gmail.com|4|Thu Mar 24 19:29:11 2027
+152|Demon Slayer: Mugen Train|tahsin.noman.bueteee@gmail.com|5|Fri Mar 25 20:12:41 2027
+152|Demon Slayer: Mugen Train|taimwafi.iutce@gmail.com|5|Sat Mar 26 18:55:09 2027
+152|Demon Slayer: Mugen Train|tanjim.hossain2256@gmail.com|4|Sun Mar 27 19:38:47 2027
+152|Demon Slayer: Mugen Train|tanjim.rafi.gsc@gmail.com|5|Mon Mar 28 20:25:31 2027
+152|Demon Slayer: Mugen Train|tanjirtasin.sjc@gmail.com|3|Tue Mar 29 21:04:12 2027
+
+153|The Lighthouse|iftekharultonmoy.iut@gmail.com|4|Fri Apr 29 18:31:26 2027
+153|The Lighthouse|titasahmed.cadet@gmail.com|3|Sat Apr 30 19:12:03 2027
+153|The Lighthouse|imranhasan.du@gmail.com|2|Sun May 01 20:05:44 2027
+153|The Lighthouse|imtiajrohan.uiu@gmail.com|3|Mon May 02 21:42:19 2027
+153|The Lighthouse|ishmamnafi.ibnsina@gmail.com|4|Tue May 03 18:23:51 2027
+153|The Lighthouse|likhonghosh.ju@gmail.com|1|Wed May 04 19:38:14 2027
+
+154|Everything Everywhere All at Once|rimahir.uiucse@gmail.com|5|Thu May 05 20:29:55 2027
+154|Everything Everywhere All at Once|ishtiaqahmed.eee@gmail.com|5|Fri May 06 21:10:47 2027
+154|Everything Everywhere All at Once|mahadihasan.kuetcse@gmail.com|4|Sat May 07 18:17:39 2027
+154|Everything Everywhere All at Once|mahadihossion.kueteee@gmail.com|5|Sun May 08 19:22:48 2027
+154|Everything Everywhere All at Once|siammustafi.jnu@gmail.com|4|Mon May 09 20:55:26 2027
+154|Everything Everywhere All at Once|rawnakalam.mist@gmail.com|5|Tue May 10 21:18:14 2027
+154|Everything Everywhere All at Once|mushfiqtandid.mist@gmail.com|3|Wed May 11 18:44:37 2027
+
+155|Memories of Murder|yamarevan.iuteee@gmail.com|5|Wed Mar 30 18:33:41 2027
+155|Memories of Murder|zihanzaman.juiit@gmail.com|5|Thu Mar 31 19:42:16 2027
+155|Memories of Murder|zitumondol.dueee@gmail.com|4|Fri Apr 01 20:18:30 2027
+155|Memories of Murder|rahimhasan.du@gmail.com|5|Sat Apr 02 18:59:27 2027
+155|Memories of Murder|imtiajahmed.rohan@gmail.com|4|Sun Apr 03 19:47:13 2027
+155|Memories of Murder|mushfiqtandid.mist@gmail.com|3|Mon Apr 04 20:22:55 2027
+
+156|The Social Network|muzahid.zim.hstu@gmail.com|4|Thu May 12 19:55:22 2027
+156|The Social Network|nabil.hameem.dev@gmail.com|3|Fri May 13 20:33:41 2027
+156|The Social Network|naorozbarenya.smc@gmail.com|4|Sat May 14 21:02:59 2027
+156|The Social Network|neamul.islam.ruetipe@gmail.com|5|Sun May 15 18:21:33 2027
+156|The Social Network|niloy.khondokar.ju@gmail.com|2|Mon May 16 19:44:10 2027
+156|The Social Network|nishan.khan.mbstucse@gmail.com|4|Tue May 17 20:15:28 2027
+
+158|Edge of Tomorrow|nur.sohan.mistarch@gmail.com|4|Wed May 18 21:35:17 2027
+158|Edge of Tomorrow|rafialam.buetipe@gmail.com|5|Thu May 19 18:29:41 2027
+158|Edge of Tomorrow|rawashahma.cu@gmail.com|4|Fri May 20 19:58:26 2027
+158|Edge of Tomorrow|ronaldoratul.nsucse@gmail.com|5|Sat May 21 20:44:12 2027
+158|Edge of Tomorrow|sadmanwasi.braccse@gmail.com|3|Sun May 22 21:17:03 2027
+158|Edge of Tomorrow|saiful.islam.buetche@gmail.com|4|Mon May 23 18:36:55 2027
+
+159|Prisoners|sajjad.hossain.mistme@gmail.com|5|Tue May 24 19:45:11 2027
+159|Prisoners|sazim.qiyamah66@gmail.com|4|Wed May 25 20:22:31 2027
+159|Prisoners|shabbashachiarnob.med@gmail.com|5|Thu May 26 21:09:55 2027
+159|Prisoners|shadman.ahin.braccse@gmail.com|4|Fri May 27 18:45:17 2027
+159|Prisoners|shahrafialam.buetipe@gmail.com|3|Sat May 28 19:52:44 2027
+159|Prisoners|sheikhhabib.buetipe@gmail.com|4|Sun May 29 20:31:08 2027
+
+160|Snowpiercer|muzahid.zim.hstu@gmail.com|4|Tue Apr 05 18:31:42 2027
+160|Snowpiercer|nabil.hameem.dev@gmail.com|3|Wed Apr 06 19:28:18 2027
+160|Snowpiercer|naorozbarenya.smc@gmail.com|4|Thu Apr 07 20:11:29 2027
+160|Snowpiercer|neamul.islam.ruetipe@gmail.com|3|Fri Apr 08 18:55:47 2027
+160|Snowpiercer|niloy.khondokar.ju@gmail.com|2|Sat Apr 09 19:33:05 2027
+
+161|Paprika|abidurrahman.uk@gmail.com|5|Mon Jun 01 18:11:22 2027
+161|Paprika|adibhossain.mist@gmail.com|4|Tue Jun 02 19:33:10 2027
+161|Paprika|adnansarwar.ju@gmail.com|4|Wed Jun 03 20:55:41 2027
+161|Paprika|ahinshadman.brac@gmail.com|3|Thu Jun 04 21:10:18 2027
+161|Paprika|ahnafmorshed.ju@gmail.com|4|Fri Jun 05 17:39:55 2027
+161|Paprika|ahsansikder.ruet@gmail.com|5|Sat Jun 06 18:41:23 2027
+161|Paprika|nahianniloy44@gmail.com|2|Sun Jun 07 19:12:44 2027
+
+162|Perfect Blue|alfazasif.mistce@gmail.com|5|Mon Jun 08 20:09:31 2027
+162|Perfect Blue|anasturzo.nsu@gmail.com|4|Tue Jun 09 21:33:16 2027
+162|Perfect Blue|armankhan.uiu@gmail.com|5|Wed Jun 10 17:55:42 2027
+162|Perfect Blue|ashikurrahman.brac@gmail.com|4|Thu Jun 11 18:28:59 2027
+162|Perfect Blue|edraktasin.buet@gmail.com|5|Fri Jun 12 19:45:37 2027
+162|Perfect Blue|faiaziqbal.ducse@gmail.com|3|Sat Jun 13 20:22:41 2027
+
+163|Tokyo Godfathers|fardinahmed21@gmail.com|4|Sun Jun 14 21:15:18 2027
+163|Tokyo Godfathers|fardinomi.buetcse@gmail.com|5|Mon Jun 15 18:33:26 2027
+163|Tokyo Godfathers|farhanmahmood.nsucse@gmail.com|3|Tue Jun 16 19:44:11 2027
+163|Tokyo Godfathers|saturo.gojo.mist@gmail.com|4|Wed Jun 17 20:15:09 2027
+163|Tokyo Godfathers|hameemnabil.drmc@gmail.com|2|Thu Jun 18 21:28:37 2027
+
+164|The Wind Rises|hasiburhany.ruetgce@gmail.com|5|Fri Jun 19 17:52:48 2027
+164|The Wind Rises|iftekharultonmoy.iut@gmail.com|4|Sat Jun 20 18:31:26 2027
+164|The Wind Rises|titasahmed.cadet@gmail.com|4|Sun Jun 21 19:12:03 2027
+164|The Wind Rises|imranhasan.du@gmail.com|5|Mon Jun 22 20:05:44 2027
+164|The Wind Rises|imtiajrohan.uiu@gmail.com|3|Tue Jun 23 21:42:19 2027
+164|The Wind Rises|likhonghosh.ju@gmail.com|4|Wed Jun 24 18:33:41 2027
+164|The Wind Rises|rimahir.uiucse@gmail.com|5|Thu Jun 25 19:42:16 2027
+164|The Wind Rises|ishtiaqahmed.eee@gmail.com|4|Fri Jun 26 20:18:30 2027
+164|The Wind Rises|mahadihasan.kuetcse@gmail.com|5|Sat Jun 27 18:59:27 2027
+164|The Wind Rises|mahadihossion.kueteee@gmail.com|4|Sun Jun 28 19:47:13 2027
+164|The Wind Rises|siammustafi.jnu@gmail.com|2|Mon Jun 29 20:22:55 2027
+164|The Wind Rises|rawnakalam.mist@gmail.com|5|Tue Jun 30 18:31:42 2027
+
+165|Erased The Movie|ishmamnafi.ibnsina@gmail.com|4|Wed Jun 24 18:23:51 2027
+165|Erased The Movie|likhonghosh.ju@gmail.com|3|Thu Jun 25 19:38:14 2027
+165|Erased The Movie|rimahir.uiucse@gmail.com|4|Fri Jun 26 20:29:55 2027
+165|Erased The Movie|ishtiaqahmed.eee@gmail.com|4|Sat Jun 27 21:10:47 2027
+165|Erased The Movie|mahadihasan.kuetcse@gmail.com|5|Sun Jun 28 18:17:39 2027
+165|Erased The Movie|mahadihossion.kueteee@gmail.com|4|Mon Jun 29 19:22:48 2027
+165|Erased The Movie|siammustafi.jnu@gmail.com|5|Tue Jun 30 20:55:26 2027
+165|Erased The Movie|rawnakalam.mist@gmail.com|4|Wed Jul 01 21:18:14 2027
+165|Erased The Movie|mushfiqtandid.mist@gmail.com|4|Thu Jul 02 18:44:37 2027
+165|Erased The Movie|muzahid.zim.hstu@gmail.com|4|Fri Jul 03 19:55:22 2027
+165|Erased The Movie|nabil.hameem.dev@gmail.com|5|Sat Jul 04 20:33:41 2027
+165|Erased The Movie|naorozbarenya.smc@gmail.com|4|Sun Jul 05 21:02:59 2027
+165|Erased The Movie|neamul.islam.ruetipe@gmail.com|5|Mon Jul 06 18:21:33 2027
+165|Erased The Movie|niloy.khondokar.ju@gmail.com|4|Tue Jul 07 19:44:10 2027
+165|Erased The Movie|nishan.khan.mbstucse@gmail.com|4|Wed Jul 08 20:15:28 2027
+
+166|Dragon Ball Super Broly|mahadihossion.kueteee@gmail.com|5|Mon Jun 29 19:22:48 2027
+166|Dragon Ball Super Broly|siammustafi.jnu@gmail.com|4|Tue Jun 30 20:55:26 2027
+166|Dragon Ball Super Broly|rawnakalam.mist@gmail.com|5|Wed Jul 01 21:18:14 2027
+166|Dragon Ball Super Broly|mushfiqtandid.mist@gmail.com|4|Thu Jul 02 18:44:37 2027
+166|Dragon Ball Super Broly|muzahid.zim.hstu@gmail.com|3|Fri Jul 03 19:55:22 2027
+166|Dragon Ball Super Broly|nabil.hameem.dev@gmail.com|5|Sat Jul 04 20:33:41 2027
+
+167|One Piece Stampede|naorozbarenya.smc@gmail.com|4|Sun Jul 05 21:02:59 2027
+167|One Piece Stampede|neamul.islam.ruetipe@gmail.com|3|Mon Jul 06 18:21:33 2027
+167|One Piece Stampede|niloy.khondokar.ju@gmail.com|5|Tue Jul 07 19:44:10 2027
+167|One Piece Stampede|nishan.khan.mbstucse@gmail.com|4|Wed Jul 08 20:15:28 2027
+167|One Piece Stampede|nur.sohan.mistarch@gmail.com|2|Thu Jul 09 21:35:17 2027
+
+168|Burning|rafialam.buetipe@gmail.com|4|Fri Jul 10 18:29:41 2027
+168|Burning|rawashahma.cu@gmail.com|3|Sat Jul 11 19:58:26 2027
+168|Burning|ronaldoratul.nsucse@gmail.com|2|Sun Jul 12 20:44:12 2027
+168|Burning|sadmanwasi.braccse@gmail.com|4|Mon Jul 13 21:17:03 2027
+168|Burning|saiful.islam.buetche@gmail.com|5|Tue Jul 14 18:36:55 2027
+
+169|The Wailing|sajjad.hossain.mistme@gmail.com|5|Wed Jul 15 19:45:11 2027
+169|The Wailing|sazim.qiyamah66@gmail.com|4|Thu Jul 16 20:22:31 2027
+169|The Wailing|shabbashachiarnob.med@gmail.com|5|Fri Jul 17 21:09:55 2027
+169|The Wailing|shadman.ahin.braccse@gmail.com|4|Sat Jul 18 18:45:17 2027
+169|The Wailing|shahrafialam.buetipe@gmail.com|3|Sun Jul 19 19:52:44 2027
+
+170|Mother|sheikhhabib.buetipe@gmail.com|4|Mon Jul 20 20:31:08 2027
+170|Mother|siam.hossain.mist@gmail.com|5|Tue Jul 21 21:12:39 2027
+170|Mother|sohan.hawlader.gsc@gmail.com|3|Wed Jul 22 18:17:52 2027
+170|Mother|tahsin.noman.bueteee@gmail.com|4|Thu Jul 23 19:41:26 2027
+170|Mother|taimwafi.iutce@gmail.com|2|Fri Jul 24 20:55:33 2027
+
+171|A Taxi Driver|tanjim.hossain2256@gmail.com|5|Sat Jul 25 21:18:14 2027
+171|A Taxi Driver|tanjim.rafi.gsc@gmail.com|4|Sun Jul 26 18:36:05 2027
+171|A Taxi Driver|tanjirtasin.sjc@gmail.com|5|Mon Jul 27 19:22:47 2027
+171|A Taxi Driver|yamarevan.iuteee@gmail.com|4|Tue Jul 28 20:40:11 2027
+171|A Taxi Driver|zihanzaman.juiit@gmail.com|3|Wed Jul 29 21:33:26 2027
+
+172|The Chaser|zitumondol.dueee@gmail.com|4|Thu Jul 30 18:28:55 2027
+172|The Chaser|rahimhasan.du@gmail.com|5|Fri Jul 31 19:55:41 2027
+172|The Chaser|imtiajahmed.rohan@gmail.com|4|Sat Aug 01 20:44:18 2027
+172|The Chaser|mushfiqtandid.mist@gmail.com|3|Sun Aug 02 21:17:09 2027
+172|The Chaser|muzahid.zim.hstu@gmail.com|2|Mon Aug 03 18:33:22 2027
+
+173|Silenced|nabil.hameem.dev@gmail.com|5|Tue Aug 04 19:48:30 2027
+173|Silenced|naorozbarenya.smc@gmail.com|4|Wed Aug 05 20:12:16 2027
+173|Silenced|neamul.islam.ruetipe@gmail.com|5|Thu Aug 06 21:05:37 2027
+173|Silenced|niloy.khondokar.ju@gmail.com|4|Fri Aug 07 18:42:11 2027
+173|Silenced|nishan.khan.mbstucse@gmail.com|3|Sat Aug 08 19:29:44 2027
+
+174|Extreme Job|nur.sohan.mistarch@gmail.com|4|Sun Aug 09 20:50:31 2027
+174|Extreme Job|rafialam.buetipe@gmail.com|5|Mon Aug 10 21:33:55 2027
+174|Extreme Job|rawashahma.cu@gmail.com|3|Tue Aug 11 18:11:19 2027
+174|Extreme Job|ronaldoratul.nsucse@gmail.com|4|Wed Aug 12 19:37:42 2027
+174|Extreme Job|sadmanwasi.braccse@gmail.com|2|Thu Aug 13 20:26:14 2027
+
+175|Akira|saiful.islam.buetche@gmail.com|5|Fri Aug 14 21:18:55 2027
+175|Akira|sajjad.hossain.mistme@gmail.com|5|Sat Aug 15 18:44:10 2027
+175|Akira|sazim.qiyamah66@gmail.com|4|Sun Aug 16 19:33:28 2027
+175|Akira|shabbashachiarnob.med@gmail.com|5|Mon Aug 17 20:59:33 2027
+175|Akira|shadman.ahin.braccse@gmail.com|4|Tue Aug 18 21:12:33 2027
+
+176|Ghost in the Shell|shahrafialam.buetipe@gmail.com|5|Wed Aug 19 19:45:11 2027
+176|Ghost in the Shell|sheikhhabib.buetipe@gmail.com|4|Thu Aug 20 20:17:54 2027
+176|Ghost in the Shell|siam.hossain.mist@gmail.com|5|Fri Aug 21 18:22:09 2027
+176|Ghost in the Shell|sohan.hawlader.gsc@gmail.com|3|Sat Aug 22 21:10:41 2027
+176|Ghost in the Shell|tahsin.noman.bueteee@gmail.com|4|Sun Aug 23 17:33:26 2027
+
+177|Vinland Saga The Movie|taimwafi.iutce@gmail.com|5|Mon Aug 24 19:55:12 2027
+177|Vinland Saga The Movie|tanjim.hossain2256@gmail.com|4|Tue Aug 25 20:14:48 2027
+177|Vinland Saga The Movie|tanjim.rafi.gsc@gmail.com|5|Wed Aug 26 18:05:17 2027
+177|Vinland Saga The Movie|tanjirtasin.sjc@gmail.com|4|Thu Aug 27 21:47:39 2027
+177|Vinland Saga The Movie|yamarevan.iuteee@gmail.com|3|Fri Aug 28 19:26:52 2027
+
+178|Blue Lock Episode Nagi|asifazad49@gmail.com|3|Sun Feb 22 17:17:14 2026
+178|Blue Lock Episode Nagi|abidurrahman.uk@gmail.com|5|Sun Feb 10 17:17:14 2026
+178|Blue Lock Episode Nagi|adibhossain.mist@gmail.com|2|Mon Feb 11 18:10:22 2026
+178|Blue Lock Episode Nagi|adnansarwar.ju@gmail.com|3|Tue Feb 12 16:22:45 2026
+178|Blue Lock Episode Nagi|ahinshadman.brac@gmail.com|4|Wed Feb 13 19:45:30 2026
+178|Blue Lock Episode Nagi|fahimshahriar.aust@gmail.com|1|Thu Feb 14 20:11:10 2026
+178|Blue Lock Episode Nagi|ahnafmorshed.ju@gmail.com|5|Fri Feb 15 15:05:55 2026
+178|Blue Lock Episode Nagi|ahsansikder.ruet@gmail.com|4|Sat Feb 16 17:55:03 2026
+178|Blue Lock Episode Nagi|nahianniloy44@gmail.com|2|Sun Feb 17 18:42:12 2026
+178|Blue Lock Episode Nagi|alfazasif.mistce@gmail.com|4|Mon Feb 18 19:01:48 2026
+178|Blue Lock Episode Nagi|anasturzo.nsu@gmail.com|3|Tue Feb 19 20:17:27 2026
+178|Blue Lock Episode Nagi|armankhan.uiu@gmail.com|5|Wed Feb 20 21:03:11 2026
+178|Blue Lock Episode Nagi|ashikurrahman.brac@gmail.com|2|Thu Feb 21 16:33:22 2026
+178|Blue Lock Episode Nagi|edraktasin.buet@gmail.com|4|Fri Feb 22 17:17:14 2026
+178|Blue Lock Episode Nagi|faiaziqbal.ducse@gmail.com|1|Sat Feb 23 18:40:33 2026
+178|Blue Lock Episode Nagi|fardinahmed21@gmail.com|4|Sun Feb 24 19:29:55 2026
+178|Blue Lock Episode Nagi|fardinomi.buetcse@gmail.com|5|Mon Feb 25 20:50:41 2026
+
+179|Suzume no Tojimari|abidurrahman.uk@gmail.com|5|Sat Sep 01 18:11:22 2027
+179|Suzume no Tojimari|adibhossain.mist@gmail.com|4|Sun Sep 02 19:33:10 2027
+179|Suzume no Tojimari|adnansarwar.ju@gmail.com|5|Mon Sep 03 20:55:41 2027
+179|Suzume no Tojimari|ahinshadman.brac@gmail.com|4|Tue Sep 04 21:10:18 2027
+179|Suzume no Tojimari|ahnafmorshed.ju@gmail.com|5|Wed Sep 05 17:39:55 2027
+179|Suzume no Tojimari|ahsansikder.ruet@gmail.com|4|Thu Sep 06 18:41:23 2027
+179|Suzume no Tojimari|nahianniloy44@gmail.com|3|Fri Sep 07 19:12:44 2027
+179|Suzume no Tojimari|alfazasif.mistce@gmail.com|5|Sat Sep 08 20:09:31 2027
+
+180|The Girl Who Leapt Through Time|anasturzo.nsu@gmail.com|4|Sun Sep 09 21:33:16 2027
+180|The Girl Who Leapt Through Time|armankhan.uiu@gmail.com|5|Mon Sep 10 17:55:42 2027
+180|The Girl Who Leapt Through Time|ashikurrahman.brac@gmail.com|4|Tue Sep 11 18:28:59 2027
+180|The Girl Who Leapt Through Time|edraktasin.buet@gmail.com|3|Wed Sep 12 19:45:37 2027
+180|The Girl Who Leapt Through Time|faiaziqbal.ducse@gmail.com|4|Thu Sep 13 20:22:41 2027
+180|The Girl Who Leapt Through Time|fardinahmed21@gmail.com|2|Fri Sep 14 21:15:18 2027
+180|The Girl Who Leapt Through Time|fardinomi.buetcse@gmail.com|5|Sat Sep 15 18:33:26 2027

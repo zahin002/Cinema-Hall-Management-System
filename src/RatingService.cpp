@@ -17,14 +17,20 @@ using namespace std;
 double RatingService::getAverageRating(int movieCode, int& count) {
 
     ifstream file("../data/ratings.txt");
-    count = 0;
-    double total = 0;
-
-    if (!file.is_open())
-        return 0;
+    if (!file.is_open()) {
+        count = 0;
+        return 0.0;
+    }
 
     string line;
+    double total = 0.0;
+    count = 0;
+
     while (getline(file, line)) {
+
+        if (line.empty())
+            continue;
+
         stringstream ss(line);
         string codeStr, movieName, email, ratingStr, dt;
 
@@ -34,13 +40,25 @@ double RatingService::getAverageRating(int movieCode, int& count) {
         getline(ss, ratingStr, '|');
         getline(ss, dt);
 
-        if (stoi(codeStr) == movieCode) {
-            total += stoi(ratingStr);
-            count++;
+        try {
+            int code = stoi(codeStr);
+            int rating = stoi(ratingStr);
+
+            if (code == movieCode) {
+                total += rating;
+                count++;
+            }
+        }
+        catch (...) {
+            // skip malformed line safely
+            continue;
         }
     }
 
-    return (count == 0) ? 0 : total / count;
+    if (count == 0)
+        return 0.0;
+
+    return total / count;
 }
 
 /* ================= GIVE / UPDATE RATING ================= */
