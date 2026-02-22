@@ -63,7 +63,7 @@ void UserService::viewMovies() {
     cout << "\n" << BOLD << CYAN << "--- MOVIE LIST ---\n" << RESET;
 
     for (const Movie& m : movies) {
-        cout << BOLD << m.getCode() << RESET
+        cout << BOLD << YELLOW << m.getCode() << RESET
              << " - " << m.getTitle() << "\n";
     }
 

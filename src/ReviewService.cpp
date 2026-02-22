@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <ctime>
 #include <limits>
+#include <iomanip>
 
 using namespace std;
 
@@ -41,14 +42,21 @@ void ReviewService::showReviews(int movieCode) {
         getline(ss, text, '|');
         getline(ss, dt);
 
-        if (stoi(codeStr) == movieCode)
-            reviews.push_back({ email, text, dt });
+        try {
+            if (stoi(codeStr) == movieCode)
+                reviews.push_back({ email, text, dt });
+        } catch (...) {
+            continue;
+        }
     }
 
     if (reviews.empty()) {
         cout << YELLOW << "No reviews yet.\n" << RESET;
         return;
     }
+
+    // Load users once
+    vector<User> users = FileManager::loadUsers();
 
     sort(reviews.begin(), reviews.end(),
          [](const Review& a, const Review& b) {
@@ -58,17 +66,40 @@ void ReviewService::showReviews(int movieCode) {
     cout << "\n" << BOLD << CYAN << "REVIEWS\n" << RESET;
 
     for (const auto& r : reviews) {
+
+        string displayName = r.email; // fallback
+
+        for (const User& u : users) {
+            if (u.getEmail() == r.email) {
+                displayName = u.getFullName();
+                break;
+            }
+        }
+
         cout << "[" << r.dt << "] "
-             << BOLD << r.email << RESET << "\n"
+             << BOLD << GREEN << displayName << RESET << "\n"
              << r.text << "\n\n";
     }
 }
 
+string ReviewService::getStarVisual(int rating) {
+
+    string stars;
+
+    for (int i = 1; i <= 5; i++) {
+        if (i <= rating)
+            stars += "★ ";
+        else
+            stars += "☆ ";
+    }
+
+    return stars;
+}
+
+
 /* ================= ADD / UPDATE REVIEW ================= */
 
 void ReviewService::addOrUpdateReview(int movieCode, const User& user) {
-
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
     cout << "Write your review:\n> ";
     string review;
@@ -92,8 +123,12 @@ void ReviewService::addOrUpdateReview(int movieCode, const User& user) {
             movieName = m.getTitle();
 
     time_t now = time(nullptr);
-    string dt = ctime(&now);
-    dt.pop_back();
+    tm* local = localtime(&now);
+
+    char dateStr[20];
+    strftime(dateStr, sizeof(dateStr), "%b %d %Y", local);
+
+    string dt = dateStr;
 
     while (getline(in, line)) {
         stringstream ss(line);
@@ -105,11 +140,14 @@ void ReviewService::addOrUpdateReview(int movieCode, const User& user) {
         getline(ss, text, '|');
         getline(ss, oldDt);
 
-        if (stoi(codeStr) == movieCode && email == user.getEmail()) {
-            line = codeStr + "|" + movieName + "|" +
-                   user.getEmail() + "|" + review + "|" + dt;
-            updated = true;
-        }
+        try {
+            if (stoi(codeStr) == movieCode && email == user.getEmail()) {
+                line = codeStr + "|" + movieName + "|" +
+                       user.getEmail() + "|" + review + "|" + dt;
+                updated = true;
+            }
+        } catch (...) {}
+
         lines.push_back(line);
     }
 
