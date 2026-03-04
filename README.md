@@ -84,7 +84,7 @@ Cinema-Hall-Management-System/
 
 From the `src` directory:
 
-`g++ main.cpp CinemaSystem.cpp AdminService.cpp UserService.cpp User.cpp FileManager.cpp Movie.cpp Showtime.cpp SeatMap.cpp PricingEngine.cpp -o cine`
+`g++ *.cpp -o cine`
 
 Run the program:
 
