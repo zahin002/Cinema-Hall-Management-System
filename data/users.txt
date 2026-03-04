@@ -1,3 +1,7 @@
 Zahin Uddin|admin@cine.com|3872667459|admin
 Abrar Faiyaz|abrarfaiyaz700@gmail.com|3872667459|admin
+<<<<<<< HEAD
+Asif Azad|asifazad49@gmail.com|4015304488|user
+=======
 Asif Azad|asifazad@gmail.com|3911256766|user
+>>>>>>> e703f60d320e2350aab020efd7d99663e18fafc2
