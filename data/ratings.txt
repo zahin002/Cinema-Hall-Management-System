@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 101|Inception|abidurrahman.uk@gmail.com|5|Mon Feb 03 18:12:41 2026
 101|Inception|adibhossain.mist@gmail.com|4|Tue Feb 04 19:22:13 2026
 101|Inception|adnansarwar.ju@gmail.com|4|Wed Feb 05 20:45:55 2026
@@ -702,3 +703,6 @@
 180|The Girl Who Leapt Through Time|faiaziqbal.ducse@gmail.com|4|Thu Sep 13 20:22:41 2027
 180|The Girl Who Leapt Through Time|fardinahmed21@gmail.com|2|Fri Sep 14 21:15:18 2027
 180|The Girl Who Leapt Through Time|fardinomi.buetcse@gmail.com|5|Sat Sep 15 18:33:26 2027
+=======
+172|Dragon Ball Super: Super Hero|asifazad@gmail.com|4|Wed Feb 11 18:58:58 2026
+>>>>>>> e703f60d320e2350aab020efd7d99663e18fafc2

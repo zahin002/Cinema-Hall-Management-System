@@ -1,79 +1,180 @@
-101|Inception|Sci-Fi|148|English
-102|Graves of the Fireflies|Tragedy|89|Japanese 
-103|The Dark Knight|Action|152|English
-104|Monpura|Romance|135|Bangla
-105|Parasite|Thriller|132|Korean
-106|Spirited Away|Fantasy|125|Japanese
-107|Avengers: Endgame|Action|181|English
-108|Aynabaji|Thriller|147|Bangla
-109|Interstellar|Sci-Fi|169|English
-110|Forrest Gump|Drama|142|English
-111|Joker|Psychological|122|English
-112|Daruchini Dwip|Adventure|120|Bangla
-113|Titanic|Romance|195|English
-114|The Godfather|Crime|175|English
-115|The Shawshank Redemption|Drama|142|English
-116|Pather Panchali|Drama|125|Bangla
-117|Pulp Fiction|Crime|154|English
-118|Your Name|Romance|106|Japanese
-119|Coco|Animation|105|English
-120|Gladiator|Action|155|English
-121|Hirak Rajar Deshe|Fantasy|118|Bangla
-122|Fight Club|Drama|139|English
-123|The Prestige|Mystery|130|English
-124|A Silent Voice|Drama|130|Japanese
-125|Demon Slayer: Infinity Castle Part 1|Action|125|Japanese
-126|Weathering With You|Romance|112|Japanese
-127|Whiplash|Drama|107|English
-128|La La Land|Musical|128|English
-129|Iron Man|Action|126|English
-130|Doctor Strange|Fantasy|115|English
-131|Up|Animation|96|English
-132|Chainsaw Man: Reze Arc|Action|110|Japanese
-133|1917|War|119|English
-134|Dunkirk|War|106|English
-135|Baishe Srabon|Thriller|138|Bangla
-136|The Imitation Game|Biography|114|English
-137|Shutter Island|Mystery|138|English
-138|The Departed|Crime|151|English
-139|The Pianist|Biography|150|English
-140|Life of Pi|Adventure|127|English
-141|Slumdog Millionaire|Drama|120|English
-142|Arrival|Sci-Fi|116|English
-143|Blade Runner 2049|Sci-Fi|164|English
-144|Logan|Action|137|English
-145|Oldboy|Thriller|120|Korean
-146|The Grand Budapest Hotel|Comedy|99|English
-147|Her|Romance|126|English
-148|No Country for Old Men|Thriller|122|English
-149|The Matrix|Sci-Fi|136|English 
-150|The Lion King|Animation|88|English
-151|Mad Max: Fury Road|Action|120|English
-152|Demon Slayer: Mugen Train|Action|117|Japanese
-153|The Lighthouse|Thriller|109|English
-154|Everything Everywhere All at Once|Sci-Fi|139|English
-155|Memories of Murder|Crime|131|Korean
-156|The Social Network|Drama|120|English
-158|Edge of Tomorrow|Sci-Fi|113|English
-159|Prisoners|Thriller|153|English
-160|Snowpiercer|Sci-Fi|126|Korean
-161|Paprika|Sci-Fi|90|Japanese
-162|Perfect Blue|Thriller|81|Japanese
-163|Tokyo Godfathers|Drama|92|Japanese
-164|The Wind Rises|Biography|126|Japanese
-165|Erased The Movie|Mystery|121|Japanese
-166|Dragon Ball Super Broly|Action|100|Japanese
-167|One Piece Stampede|Action|101|Japanese
-168|Burning|Drama|148|Korean
-169|The Wailing|Horror|156|Korean
-170|Mother|Crime|129|Korean
-171|A Taxi Driver|Drama|137|Korean
-172|The Chaser|Thriller|125|Korean
-173|Silenced|Drama|125|Korean
-174|Extreme Job|Comedy|111|Korean
-175|Akira|Sci-Fi|124|Japanese
-176|Ghost in the Shell|Sci-Fi|83|Japanese
-177|Vinland Saga The Movie|Action|130|Japanese
-178|Blue Lock Episode Nagi|Sports|95|Japanese
-179|Suzume no Tojimari|Adventure|122|Japanese
-180|The Girl Who Leapt Through Time|Romance|98|Japanese
+0001|The Shawshank Redemption|Drama|142|English
+0002|Spirited Away|Fantasy|125|Japanese
+0003|Parasite|Thriller|132|Korean
+0004|Monpura|Romance|135|Bangla
+0005|The Dark Knight|Action|152|English
+0006|Your Name|Romance|106|Japanese
+0007|Oldboy|Thriller|120|Korean
+0008|Aynabaji|Thriller|147|Bangla
+0009|Inception|Sci-Fi|148|English
+0010|Princess Mononoke|Fantasy|134|Japanese
+0011|Memories of Murder|Crime|131|Korean
+0012|Pather Panchali|Drama|125|Bangla
+0013|Interstellar|Sci-Fi|169|English
+0014|Akira|Sci-Fi|124|Japanese
+0015|Burning|Drama|148|Korean
+0016|Hirak Rajar Deshe|Fantasy|118|Bangla
+0017|The Godfather|Crime|175|English
+0018|Grave of the Fireflies|Drama|89|Japanese
+0019|The Wailing|Horror|156|Korean
+0020|Daruchini Dwip|Adventure|120|Bangla
+0021|Gladiator|Action|155|English
+0022|Weathering With You|Romance|112|Japanese
+0023|The Chaser|Thriller|125|Korean
+0024|Baishe Srabon|Thriller|138|Bangla
+0025|Titanic|Romance|195|English
+0026|Ghost in the Shell|Sci-Fi|83|Japanese
+0027|Extreme Job|Comedy|111|Korean
+0028|Moner Manush|Biography|150|Bangla
+0029|The Prestige|Mystery|130|English
+0030|Paprika|Sci-Fi|90|Japanese
+0031|The Matrix|Sci-Fi|136|English
+0032|Suzume no Tojimari|Adventure|122|Japanese
+0033|Mother|Crime|129|Korean
+0034|Television|Drama|130|Bangla
+0035|Fight Club|Drama|139|English
+0036|A Silent Voice|Drama|130|Japanese
+0037|Train to Busan|Horror|118|Korean
+0038|Third Person Singular Number|Drama|140|Bangla
+0039|The Lord of the Rings: The Fellowship of the Ring|Fantasy|178|English
+0040|Perfect Blue|Thriller|81|Japanese
+0041|The Handmaiden|Mystery|145|Korean
+0042|Matir Moina|Drama|98|Bangla
+0043|The Departed|Crime|151|English
+0044|The Wind Rises|Biography|126|Japanese
+0045|A Taxi Driver|Drama|137|Korean
+0046|Chutir Ghonta|Drama|120|Bangla
+0047|Whiplash|Drama|107|English
+0048|Demon Slayer: Mugen Train|Action|117|Japanese
+0049|Snowpiercer|Sci-Fi|126|Korean
+0050|Ghetuputra Komola|Drama|122|Bangla
+0051|The Social Network|Drama|120|English
+0052|Tokyo Godfathers|Comedy|92|Japanese
+0053|The Man from Nowhere|Action|119|Korean
+0054|Aguner Poroshmoni|War|123|Bangla
+0055|Blade Runner 2049|Sci-Fi|164|English
+0056|Erased The Movie|Mystery|121|Japanese
+0057|The Host|Horror|120|Korean
+0058|Oggatonama|Drama|122|Bangla
+0059|Mad Max: Fury Road|Action|120|English
+0060|One Piece Stampede|Action|101|Japanese
+0061|The Pianist|Biography|150|English
+0062|The Girl Who Leapt Through Time|Romance|98|Japanese
+0063|Silenced|Drama|125|Korean
+0064|Bachelor|Comedy|110|Bangla
+0065|The Grand Budapest Hotel|Comedy|99|English
+0066|Vinland Saga: The Movie|Action|130|Japanese
+0067|I Saw the Devil|Thriller|144|Korean
+0068|Swapnajaal|Romance|138|Bangla
+0069|No Country for Old Men|Thriller|122|English
+0070|Dragon Ball Super: Broly|Action|100|Japanese
+0071|Decision to Leave|Mystery|138|Korean
+0072|Debi|Mystery|105|Bangla
+0073|Arrival|Sci-Fi|116|English
+0074|Howl's Moving Castle|Fantasy|119|Japanese
+0075|The Admiral: Roaring Currents|War|128|Korean
+0076|Runway|Drama|135|Bangla
+0077|The Imitation Game|Biography|114|English
+0078|Tokyo Story|Drama|136|Japanese
+0079|The Outlaws|Crime|121|Korean
+0080|Made in Bangladesh|Drama|95|Bangla
+0081|Her|Romance|126|English
+0082|My Neighbor Totoro|Fantasy|86|Japanese
+0083|The Thieves|Crime|135|Korean
+0084|Hawa|Thriller|130|Bangla
+0085|Logan|Action|137|English
+0086|Rashomon|Mystery|88|Japanese
+0087|The Chaser|Thriller|125|Korean
+0088|Shonibar Bikel|Drama|110|Bangla
+0089|Everything Everywhere All at Once|Sci-Fi|139|English
+0090|Jujutsu Kaisen 0|Action|105|Japanese
+0091|The Lighthouse|Thriller|109|English
+0092|The Boy and the Heron|Fantasy|124|Japanese
+0093|The Age of Shadows|Thriller|140|Korean
+0094|Guerrilla|War|130|Bangla
+0095|Django Unchained|Western|165|English
+0096|The Tale of the Princess Kaguya|Animation|137|Japanese
+0097|The Fortress|War|140|Korean
+0098|Komola Rocket|Drama|140|Bangla
+0099|1917|War|119|English
+0100|Cowboy Bebop: The Movie|Sci-Fi|115|Japanese
+0101|Joint Security Area|Mystery|110|Korean
+0102|Poramon 2|Romance|118|Bangla
+0103|The Revenant|Adventure|156|English
+0104|When Marnie Was There|Drama|103|Japanese
+0105|New World|Crime|134|Korean
+0106|Chorabali|Thriller|120|Bangla
+0107|The Wolf of Wall Street|Biography|180|English
+0108|The Garden of Words|Romance|46|Japanese
+0109|A Bittersweet Life|Crime|120|Korean
+0110|Bhuban Majhi|Drama|140|Bangla
+0111|The Truman Show|Drama|103|English
+0112|Castle in the Sky|Adventure|125|Japanese
+0113|The King and the Clown|Historical|119|Korean
+0114|Gunday|Action|137|Bangla
+0115|The Green Mile|Drama|189|English
+0116|Millennium Actress|Drama|87|Japanese
+0117|Confession of Murder|Action|119|Korean
+0118|Haldaa|Drama|130|Bangla
+0119|The Silence of the Lambs|Thriller|118|English
+0120|Drifting Home|Fantasy|120|Japanese
+0121|The Avengers|Action|143|English
+0122|Nausicaä of the Valley of the Wind|Fantasy|117|Japanese
+0123|The Villainess|Action|129|Korean
+0124|Ahaa Re|Romance|115|Bangla
+0125|The Curious Case of Benjamin Button|Drama|166|English
+0126|The Girl Who Leapt Through Time|Sci-Fi|98|Japanese
+0127|The Good, the Bad, the Weird|Action|130|Korean
+0128|Rajkahini|Drama|160|Bangla
+0129|The Dark Knight Rises|Action|165|English
+0130|Pom Poko|Fantasy|119|Japanese
+0131|The Drug King|Crime|139|Korean
+0132|Nodir Naam Modhumoti|Drama|130|Bangla
+0133|The Hateful Eight|Western|168|English
+0134|Summer Wars|Sci-Fi|114|Japanese
+0135|The Berlin File|Action|120|Korean
+0136|Jago|Drama|140|Bangla
+0137|Good Will Hunting|Drama|126|English
+0138|Redline|Action|102|Japanese
+0139|Secret Sunshine|Drama|142|Korean
+0140|Doob: No Bed of Roses|Drama|106|Bangla
+0141|The Martian|Sci-Fi|144|English
+0142|The Wind Rises|Biography|126|Japanese
+0143|Along with the Gods: The Two Worlds|Fantasy|139|Korean
+0144|Moner Manush|Biography|150|Bangla
+0145|The Irishman|Crime|209|English
+0146|Wolf Children|Fantasy|117|Japanese
+0147|Assassination|Action|140|Korean
+0148|Hridita|Romance|125|Bangla
+0149|La La Land|Musical|128|English
+0150|The Place Promised in Our Early Days|Romance|91|Japanese
+0151|Oppenheimer|Biography|180|English
+0152|Naruto: Road to Ninja|Action|109|Japanese
+0153|The Roundup|Crime|106|Korean
+0154|Abar Bibaho Obhijaan|Comedy|118|Bangla
+0155|The Batman|Action|176|English
+0156|Code Geass: Lelouch of the Re;Surrection|Action|112|Japanese
+0157|The Man Standing Next|Drama|114|Korean
+0158|Priyotoma|Romance|145|Bangla
+0159|Top Gun: Maverick|Action|131|English
+0160|Steins;Gate: The Movie – Load Region of Déjà Vu|Sci-Fi|90|Japanese
+0161|The Roundup: No Way Out|Crime|105|Korean
+0162|Operation Sundarbans|Action|140|Bangla
+0163|Dune|Sci-Fi|155|English
+0164|Pokémon: Mewtwo Strikes Back – Evolution|Animation|98|Japanese
+0165|Veteran|Action|123|Korean
+0166|Poran|Romance|130|Bangla
+0167|The Hunger Games|Sci-Fi|142|English
+0168|Attack on Titan: The Final Chapters (Movie Edition)|Action|145|Japanese
+0169|The Attorney|Drama|127|Korean
+0170|Damalgiri|Comedy|135|Bangla
+0171|Joker|Psychological|122|English
+0172|Dragon Ball Super: Super Hero|Action|100|Japanese
+0173|The Host|Horror|120|Korean
+0174|Shyamol Chhaya|War|125|Bangla
+0175|The Conjuring|Horror|112|English
+0176|My Hero Academia: Heroes Rising|Action|104|Japanese
+0177|Train to Busan Presents: Peninsula|Action|116|Korean
+0178|Bongo|Comedy|115|Bangla
+0179|The Wolf of Wall Street|Biography|180|English
+0180|Black Clover: Sword of the Wizard King|Action|113|Japanese

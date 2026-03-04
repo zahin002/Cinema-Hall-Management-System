@@ -1,10 +1,12 @@
 #include "FileManager.h"
 #include "SeatMap.h"
+#include "TerminalColors.h"
 #include <fstream>
 #include <sstream>
 #include <iostream>
 #include <vector>
 #include <string>
+#include <iomanip>
 
 using namespace std;
 
@@ -44,50 +46,142 @@ vector<User> FileManager::loadUsers() {
 
 /* ================= MOVIES ================= */
 
+/* ================= SAVE MOVIE ================= */
+
 void FileManager::saveMovie(const Movie& movie) {
+
     ofstream file("../data/movies.txt", ios::app);
+
+    if (!file.is_open())
+        return;  // fail silently (or handle error)
+
     file << movie.getCode() << "|"
          << movie.getTitle() << "|"
          << movie.getGenre() << "|"
          << movie.getDuration() << "|"
-         << movie.getLanguage() << endl;
+         << movie.getLanguage()
+         << "\n";
+
+    file.close();
 }
+
+
+/* ================= GET NEXT MOVIE CODE ================= */
 
 int FileManager::getNextMovieCode() {
-    vector<Movie> movies = loadMovies();
-    int maxCode = 100;
 
-    for (const Movie& m : movies)
-        maxCode = max(maxCode, m.getCode());
+    ifstream file("../data/movies.txt");
 
-    return maxCode + 1;
+    if (!file.is_open())
+        return 1;   // if file missing, start from 1
+
+    string line;
+    int maxCode = 0;
+
+    while (getline(file, line)) {
+
+        if (line.empty())
+            continue;
+
+        stringstream ss(line);
+        string codeStr;
+
+        getline(ss, codeStr, '|');
+
+        try {
+            int code = stoi(codeStr);
+            if (code > maxCode)
+                maxCode = code;
+        }
+        catch (...) {
+            continue;  // skip malformed lines
+        }
+    }
+
+    file.close();
+
+    return maxCode + 1;  // If empty → returns 1
 }
 
+
+/* ================= LOAD MOVIES ================= */
+
 vector<Movie> FileManager::loadMovies() {
+
     vector<Movie> movies;
     ifstream file("../data/movies.txt");
 
-    int code, duration;
-    string title, genre, language;
-    char sep;
+    if (!file.is_open())
+        return movies;
 
-    while (file >> code >> sep) {
-        getline(file, title, '|');
-        getline(file, genre, '|');
-        file >> duration >> sep;
-        getline(file, language);
+    string line;
 
-        movies.push_back(Movie(code, title, genre, duration, language));
+    while (getline(file, line)) {
+
+        if (line.empty())
+            continue;
+
+        stringstream ss(line);
+        string codeStr, title, genre, durationStr, language;
+
+        getline(ss, codeStr, '|');
+        getline(ss, title, '|');
+        getline(ss, genre, '|');
+        getline(ss, durationStr, '|');
+        getline(ss, language);
+
+        try {
+            int code = stoi(codeStr);
+            int duration = stoi(durationStr);
+
+            movies.emplace_back(code, title, genre, duration, language);
+        }
+        catch (...) {
+            continue;  // skip corrupted lines safely
+        }
     }
+
+    file.close();
+
     return movies;
 }
 
+
+/* ================= CHECK MOVIE CODE EXISTS ================= */
+
 bool FileManager::movieCodeExists(int code) {
-    for (const Movie& m : loadMovies())
-        if (m.getCode() == code)
-            return true;
+
+    ifstream file("../data/movies.txt");
+
+    if (!file.is_open())
+        return false;
+
+    string line;
+
+    while (getline(file, line)) {
+
+        if (line.empty())
+            continue;
+
+        stringstream ss(line);
+        string codeStr;
+
+        getline(ss, codeStr, '|');
+
+        try {
+            if (stoi(codeStr) == code)
+                return true;
+        }
+        catch (...) {
+            continue;
+        }
+    }
+
+    file.close();
+
     return false;
 }
+
 
 /* ================= SHOWTIMES ================= */
 
