@@ -112,11 +112,15 @@ void UserService::showMovieDetails(int movieCode, const User& user) {
         double avg = RatingService::getAverageRating(movieCode, ratingCount);
 
         cout << "\n";
-        if (ratingCount > 0) {
+        if (ratingCount > 0 && avg >= 0) {
             cout << GREEN << "Average Rating: "
-                 << fixed << setprecision(1) << avg
+                 << fixed << setprecision(2) << avg
                  << " / 5 (" << ratingCount << " ratings)\n"
                  << RESET;
+
+            cout.unsetf(ios::fixed);
+            cout << setprecision(6);
+
         } else {
             cout << YELLOW << "No ratings yet\n" << RESET;
         }

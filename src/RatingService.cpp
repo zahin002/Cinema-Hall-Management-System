@@ -24,7 +24,12 @@ double RatingService::getAverageRating(int movieCode, int& count) {
         return 0;
 
     string line;
+
     while (getline(file, line)) {
+
+        if (line.empty())
+            continue;
+
         stringstream ss(line);
         string codeStr, movieName, email, ratingStr, dt;
 
@@ -34,9 +39,22 @@ double RatingService::getAverageRating(int movieCode, int& count) {
         getline(ss, ratingStr, '|');
         getline(ss, dt);
 
-        if (stoi(codeStr) == movieCode) {
-            total += stoi(ratingStr);
-            count++;
+        try {
+            // validate before converting
+            if (codeStr.empty() || ratingStr.empty())
+                continue;
+
+            int code = stoi(codeStr);
+            int rating = stoi(ratingStr);
+
+            if (code == movieCode) {
+                total += rating;
+                count++;
+            }
+        }
+        catch (...) {
+            // skip invalid/corrupted lines safely
+            continue;
         }
     }
 
@@ -65,6 +83,10 @@ void RatingService::giveOrUpdateRating(int movieCode, const User& user) {
     bool updated = false;
 
     while (getline(in, line)) {
+
+        if (line.empty())
+            continue;
+
         stringstream ss(line);
         string codeStr, name, email, rateStr, dt;
 
@@ -74,28 +96,47 @@ void RatingService::giveOrUpdateRating(int movieCode, const User& user) {
         getline(ss, rateStr, '|');
         getline(ss, dt);
 
-        if (stoi(codeStr) == movieCode && email == user.getEmail()) {
-            time_t now = time(nullptr);
-            string t = ctime(&now);
-            t.pop_back();
+        try {
+            // validate before stoi
+            if (codeStr.empty() || rateStr.empty())
+                throw invalid_argument("empty");
 
-            line = codeStr + "|" + name + "|" +
-                   email + "|" + to_string(rating) + "|" + t;
+            int code = stoi(codeStr);
 
-            updated = true;
+            if (code == movieCode && email == user.getEmail()) {
+
+                time_t now = time(nullptr);
+                string t = ctime(&now);
+                t.pop_back(); // remove newline
+
+                line = to_string(movieCode) + "|" + name + "|" +
+                       email + "|" + to_string(rating) + "|" + t;
+
+                updated = true;
+            }
+        }
+        catch (...) {
+            // skip corrupted lines safely
+            continue;
         }
 
         lines.push_back(line);
     }
+
     in.close();
 
+    // ===== ADD NEW RATING IF NOT UPDATED =====
     if (!updated) {
-        vector<Movie> movies = FileManager::loadMovies();
-        string movieName;
 
-        for (const Movie& m : movies)
-            if (m.getCode() == movieCode)
+        vector<Movie> movies = FileManager::loadMovies();
+        string movieName = "Unknown";
+
+        for (const Movie& m : movies) {
+            if (m.getCode() == movieCode) {
                 movieName = m.getTitle();
+                break;
+            }
+        }
 
         time_t now = time(nullptr);
         string t = ctime(&now);
@@ -113,5 +154,5 @@ void RatingService::giveOrUpdateRating(int movieCode, const User& user) {
     for (const string& l : lines)
         out << l << "\n";
 
-    cout << GREEN << "Rating saved.\n" << RESET;
+    cout << GREEN << "Rating saved successfully.\n" << RESET;
 }
