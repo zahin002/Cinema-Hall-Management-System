@@ -199,23 +199,26 @@ void AdminService::addShowtime() {
 
     cout << "\nAvailable Movies:\n";
     for (const Movie& m : movies)
-        cout << m.getCode() << " - " << m.getTitle() << endl;
+        cout << BOLD << YELLOW <<  m.getCode() << RESET << " - " << m.getTitle() << endl;
 
-    cout << "Enter movie code: ";
+    cout << BOLD << YELLOW << "Enter movie code: " << RESET;
     cin >> movieCode;
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
     bool found = false;
-    for (const Movie& m : movies)
-        if (m.getCode() == movieCode)
+    for (const Movie& m : movies) {
+        if (m.getCode() == movieCode) {
             found = true;
+            break;
+        }
+    }
 
     if (!found) {
         cout << RED << "Invalid movie code.\n" << RESET;
         return;
     }
 
-    cout << "Enter date (DD-MM-YYYY): ";
+    cout << BOLD <<  BLUE << "Enter date (DD-MM-YYYY): " << RESET;
     getline(cin, date);
 
     if (!isValidFutureDate(date)) {
@@ -227,7 +230,7 @@ void AdminService::addShowtime() {
     for (size_t i = 0; i < TIME_SLOTS.size(); i++)
         cout << i + 1 << ". " << TIME_SLOTS[i] << endl;
 
-    cout << "Enter option: ";
+    cout << BOLD << YELLOW << "Enter option: " << RESET;
     cin >> slotChoice;
 
     if (slotChoice < 1 || slotChoice > (int)TIME_SLOTS.size()) {
@@ -235,7 +238,7 @@ void AdminService::addShowtime() {
         return;
     }
 
-    cout << "Enter hall number (1-3): ";
+    cout << BOLD <<  GREEN << "Enter hall number (1-3): " << RESET;
     cin >> hallNo;
 
     if (hallNo < 1 || hallNo > 3) {
@@ -243,8 +246,68 @@ void AdminService::addShowtime() {
         return;
     }
 
+    string selectedSlot = TIME_SLOTS[slotChoice - 1];
+
+    // ===== LOAD EXISTING SHOWTIMES =====
+    vector<Showtime> shows = FileManager::loadShowtimes();
+
+    // ===== HELPER: Convert time to minutes =====
+    auto toMinutes = [](const string& timeStr) {
+        int h, m;
+        char colon;
+        string ampm;
+        stringstream ss(timeStr);
+
+        ss >> h >> colon >> m >> ampm;
+
+        if (ampm == "PM" && h != 12) h += 12;
+        if (ampm == "AM" && h == 12) h = 0;
+
+        return h * 60 + m;
+    };
+
+    // ===== SPLIT SLOT INTO START + END =====
+    auto splitSlot = [](const string& slot) {
+        size_t dash = slot.find('-');
+        string start = slot.substr(0, dash - 1);
+        string end   = slot.substr(dash + 2);
+        return pair<string, string>(start, end);
+    };
+
+    pair<string, string> newSlot = splitSlot(selectedSlot);
+    string newStartStr = newSlot.first;
+    string newEndStr   = newSlot.second;
+
+
+    int newStart = toMinutes(newStartStr);
+    int newEnd   = toMinutes(newEndStr);
+
+    // ===== CONFLICT CHECK =====
+    for (const Showtime& s : shows) {
+
+        if (s.getHallNo() != hallNo)
+            continue;
+
+        if (s.getDate() != date)
+            continue;
+
+        pair<string, string> oldSlot = splitSlot(s.getTime());
+        string oldStartStr = oldSlot.first;
+        string oldEndStr   = oldSlot.second;
+
+        int oldStart = toMinutes(oldStartStr);
+        int oldEnd   = toMinutes(oldEndStr);
+
+        // Overlap condition
+        if (newStart < oldEnd && oldStart < newEnd) {
+            cout << RED << "Time conflict! Hall already booked.\n" << RESET;
+            return;
+        }
+    }
+
+    // ===== SAVE =====
     FileManager::saveShowtime(
-        Showtime(movieCode, date, TIME_SLOTS[slotChoice - 1], hallNo)
+        Showtime(movieCode, date, selectedSlot, hallNo)
     );
 
     cout << GREEN << "Showtime added successfully!\n" << RESET;
@@ -269,7 +332,7 @@ void AdminService::viewShowtimes() {
             if (m.getCode() == shows[i].getMovieCode())
                 title = m.getTitle();
 
-        cout << i + 1 << ". "
+        cout << BOLD << YELLOW <<  i + 1 << ". " << RESET
              << title << " | "
              << shows[i].getDate() << " | "
              << shows[i].getTime() << " | Hall "
@@ -282,7 +345,7 @@ void AdminService::deleteShowtime() {
     if (shows.empty()) return;
 
     int choice;
-    cout << "Enter showtime number to delete: ";
+    cout << BOLD << YELLOW << "Enter showtime number to delete: " << RESET;
     cin >> choice;
 
     if (choice < 1 || choice > (int)shows.size()) {
@@ -312,7 +375,7 @@ void AdminService::viewSeatMap() {
     if (shows.empty()) return;
 
     int choice;
-    cout << "Select showtime: ";
+    cout << BOLD << YELLOW << "Select showtime: " << RESET;
     cin >> choice;
 
     if (choice < 1 || choice > (int)shows.size()) return;
