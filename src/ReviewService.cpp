@@ -24,7 +24,7 @@ void ReviewService::showReviews(int movieCode) {
     }
 
     struct Review {
-        string email;
+        string fullName;
         string text;
         string dt;
     };
@@ -33,21 +33,24 @@ void ReviewService::showReviews(int movieCode) {
     string line;
 
     while (getline(file, line)) {
+
+        if (line.empty())
+            continue;
+
         stringstream ss(line);
-        string codeStr, movieName, email, text, dt;
+        string codeStr, movieName, fullName, text, dt;
 
         getline(ss, codeStr, '|');
         getline(ss, movieName, '|');
-        getline(ss, email, '|');
+        getline(ss, fullName, '|');
         getline(ss, text, '|');
-        getline(ss, dt);
+        getline(ss, dt);   // last field has no delimiter
 
         try {
             if (stoi(codeStr) == movieCode)
-                reviews.push_back({ email, text, dt });
-        } catch (...) {
-            continue;
+                reviews.push_back({ fullName, text, dt });
         }
+        catch (...) {}
     }
 
     if (reviews.empty()) {
@@ -55,30 +58,25 @@ void ReviewService::showReviews(int movieCode) {
         return;
     }
 
-    // Load users once
-    vector<User> users = FileManager::loadUsers();
-
-    sort(reviews.begin(), reviews.end(),
-         [](const Review& a, const Review& b) {
-             return a.dt > b.dt;
-         });
-
     cout << "\n" << BOLD << CYAN << "REVIEWS\n" << RESET;
 
     for (const auto& r : reviews) {
 
-        string displayName = r.email; // fallback
+        cout << BOLD << GREEN
+             << "==================================================\n"
+             << RESET;
 
-        for (const User& u : users) {
-            if (u.getEmail() == r.email) {
-                displayName = u.getFullName();
-                break;
-            }
-        }
+        cout << BOLD << BLUE
+             << "User   : " << r.fullName
+             << RESET << "\n";
 
-        cout << "[" << r.dt << "] "
-             << BOLD << GREEN << displayName << RESET << "\n"
-             << r.text << "\n\n";
+        cout << "Date   : " << r.dt << "\n\n";
+
+        cout << BOLD << YELLOW << "\"" << r.text << "\"" << RESET << "\n";
+
+        cout << BOLD << GREEN
+             << "==================================================\n"
+             << RESET << "\n";
     }
 }
 
@@ -112,23 +110,30 @@ void ReviewService::addOrUpdateReview(int movieCode, const User& user) {
 
     char dateStr[20];
     strftime(dateStr, sizeof(dateStr), "%b %d %Y", local);
-
     string dt = dateStr;
 
     while (getline(in, line)) {
+
         stringstream ss(line);
-        string codeStr, mName, email, text, oldDt;
+        string codeStr, mName, fullName, text, oldDt;
 
         getline(ss, codeStr, '|');
         getline(ss, mName, '|');
-        getline(ss, email, '|');
+        getline(ss, fullName, '|');
         getline(ss, text, '|');
         getline(ss, oldDt);
 
         try {
-            if (stoi(codeStr) == movieCode && email == user.getEmail()) {
-                line = codeStr + "|" + movieName + "|" +
-                       user.getEmail() + "|" + review + "|" + dt;
+            if (stoi(codeStr) == movieCode &&
+                fullName == user.getFullName()) {
+
+                // Update existing review
+                line = codeStr + "|" +
+                       movieName + "|" +
+                       user.getFullName() + "|" +
+                       review + "|" +
+                       dt;
+
                 updated = true;
             }
         } catch (...) {}
@@ -136,12 +141,15 @@ void ReviewService::addOrUpdateReview(int movieCode, const User& user) {
         lines.push_back(line);
     }
 
+    // If user has not reviewed before
     if (!updated) {
+
         lines.push_back(
             to_string(movieCode) + "|" +
             movieName + "|" +
-            user.getEmail() + "|" +
-            review + "|" + dt
+            user.getFullName() + "|" +
+            review + "|" +
+            dt
         );
     }
 
@@ -149,7 +157,7 @@ void ReviewService::addOrUpdateReview(int movieCode, const User& user) {
     for (const auto& l : lines)
         out << l << "\n";
 
-    cout << GREEN << "Review saved.\n" << RESET;
+    cout << GREEN << "Review saved successfully.\n" << RESET;
 }
 
 /* ================= DELETE OWN REVIEW ================= */
@@ -157,24 +165,41 @@ void ReviewService::addOrUpdateReview(int movieCode, const User& user) {
 void ReviewService::deleteOwnReview(int movieCode, const User& user) {
 
     ifstream in("../data/reviews.txt");
+    if (!in.is_open()) {
+        cout << YELLOW << "No reviews file found.\n" << RESET;
+        return;
+    }
+
     vector<string> lines;
     string line;
     bool deleted = false;
 
     while (getline(in, line)) {
+
+        if (line.empty())
+            continue;
+
         stringstream ss(line);
-        string codeStr, name, email, text, dt;
+        string codeStr, mName, fullName, text, dt;
 
         getline(ss, codeStr, '|');
-        getline(ss, name, '|');
-        getline(ss, email, '|');
+        getline(ss, mName, '|');
+        getline(ss, fullName, '|');
         getline(ss, text, '|');
         getline(ss, dt);
 
-        if (stoi(codeStr) == movieCode && email == user.getEmail()) {
-            deleted = true;
-            continue;
+        try {
+            if (stoi(codeStr) == movieCode &&
+                fullName == user.getFullName()) {
+
+                deleted = true;
+                continue; // skip this line (delete)
+            }
         }
+        catch (...) {
+            // skip corrupted lines safely
+        }
+
         lines.push_back(line);
     }
 
@@ -187,7 +212,7 @@ void ReviewService::deleteOwnReview(int movieCode, const User& user) {
     for (const auto& l : lines)
         out << l << "\n";
 
-    cout << GREEN << "Review deleted.\n" << RESET;
+    cout << GREEN << "Review deleted successfully.\n" << RESET;
 }
 
 /* ================= DELETE ANY REVIEW (ADMIN) ================= */
@@ -195,21 +220,36 @@ void ReviewService::deleteOwnReview(int movieCode, const User& user) {
 void ReviewService::deleteAnyReview(int movieCode) {
 
     ifstream in("../data/reviews.txt");
-    vector<string> lines, candidates;
+    if (!in.is_open()) {
+        cout << YELLOW << "No reviews file found.\n" << RESET;
+        return;
+    }
+
+    vector<string> lines;
+    vector<string> candidates;
     string line;
 
     while (getline(in, line)) {
+
+        if (line.empty())
+            continue;
+
         stringstream ss(line);
-        string codeStr, name, email, text, dt;
+        string codeStr, movieName, fullName, text, dt;
 
         getline(ss, codeStr, '|');
-        getline(ss, name, '|');
-        getline(ss, email, '|');
+        getline(ss, movieName, '|');
+        getline(ss, fullName, '|');
         getline(ss, text, '|');
         getline(ss, dt);
 
-        if (stoi(codeStr) == movieCode)
-            candidates.push_back(line);
+        try {
+            if (stoi(codeStr) == movieCode)
+                candidates.push_back(line);
+        }
+        catch (...) {
+            continue; // skip corrupted line safely
+        }
 
         lines.push_back(line);
     }
@@ -220,10 +260,13 @@ void ReviewService::deleteAnyReview(int movieCode) {
     }
 
     cout << RED << "Select review to delete:\n" << RESET;
-    for (size_t i = 0; i < candidates.size(); i++)
+
+    for (size_t i = 0; i < candidates.size(); i++) {
         cout << i + 1 << ". " << candidates[i] << "\n";
+    }
 
     int choice;
+    cout << YELLOW << "Enter choice: " << RESET;
     cin >> choice;
 
     if (choice < 1 || choice > (int)candidates.size()) {
@@ -243,9 +286,11 @@ void ReviewService::deleteAnyReview(int movieCode) {
     string target = candidates[choice - 1];
 
     ofstream out("../data/reviews.txt");
-    for (const auto& l : lines)
+
+    for (const auto& l : lines) {
         if (l != target)
             out << l << "\n";
+    }
 
-    cout << GREEN << "Review deleted.\n" << RESET;
+    cout << GREEN << "Review deleted successfully.\n" << RESET;
 }
