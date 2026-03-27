@@ -82,21 +82,6 @@ void ReviewService::showReviews(int movieCode) {
     }
 }
 
-string ReviewService::getStarVisual(int rating) {
-
-    string stars;
-
-    for (int i = 1; i <= 5; i++) {
-        if (i <= rating)
-            stars += "★ ";
-        else
-            stars += "☆ ";
-    }
-
-    return stars;
-}
-
-
 /* ================= ADD / UPDATE REVIEW ================= */
 
 void ReviewService::addOrUpdateReview(int movieCode, const User& user) {

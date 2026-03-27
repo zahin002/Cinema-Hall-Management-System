@@ -1,5 +1,42 @@
+# Executables
 *.exe
-*.o
 *.out
+*.app
+
+# Object files
+*.o
+*.obj
+
+# Static / dynamic libraries
+*.a
+*.lib
+*.so
+*.dll
+*.dylib
+
+# Build folders
+build/
+bin/
+Debug/
+Release/
+
+# CMake
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# VS Code
 .vscode/
-.idea/
+
+# Visual Studio
+.vs/
+*.sln
+*.vcxproj*
+*.user
+
+# Temporary files
+*.log
+*.tmp
+*.swp
+*.swo

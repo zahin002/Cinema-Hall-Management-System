@@ -16,6 +16,7 @@ public:
 
     // Admin: delete any review
     static void deleteAnyReview(int movieCode);
+
 };
 
 #endif
