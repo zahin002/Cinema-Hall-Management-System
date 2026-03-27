@@ -58,7 +58,7 @@ void TicketService::printTicket(
 ) {
     cout << "\n";
     cout << BOLD << CYAN << "===============================================\n" << RESET;
-    cout << BOLD << YELLOW << "               🎟  CINE++ TICKET\n" << RESET;
+    cout << BOLD << YELLOW << "             CINE++ TICKET\n" << RESET;
     cout << BOLD << CYAN << "===============================================\n" << RESET;
 
     cout << left;
@@ -84,7 +84,7 @@ void TicketService::printTicket(
          << finalPrice << " Tk\n" << RESET;
 
     cout << BOLD << CYAN << "===============================================\n" << RESET;
-    cout << GREEN << " 🎬  Enjoy Your Movie at CINE++  🎬\n" << RESET;
+    cout << GREEN << "   Enjoy Your Movie at CINE++  \n" << RESET;
     cout << BOLD << CYAN << "===============================================\n" << RESET;
 }
 
@@ -109,14 +109,22 @@ void TicketService::saveTicket(
            << showTime << "|"
            << hallNo << "|";
 
-    for (auto& s : selectedSeats)
-        record << char('A' + s.first) << s.second + 1 << ",";
+    // ===== SEAT LIST (NO TRAILING COMMA) =====
+    for (size_t i = 0; i < selectedSeats.size(); i++) {
+
+        char row = 'A' + selectedSeats[i].first;
+        int col  = selectedSeats[i].second + 1;
+
+        record << row << col;
+
+        if (i != selectedSeats.size() - 1)
+            record << ",";
+    }
 
     record << "|" << finalPrice;
 
     FileManager::saveTicketToFile(record.str());
 }
-
 /* ================= REFUND CALC ================= */
 
 int TicketService::calculateRefundPercent(
@@ -200,7 +208,7 @@ void TicketService::cancelTicket(const string& ticketId) {
         int refundPercent = calculateRefundPercent(showDate, showTime);
         if (refundPercent == -1) {
             cout << BOLD << RED
-                 << "❌ Cancellation not allowed (show started or <30 min).\n"
+                 << "Cancellation not allowed (show started or <30 min).\n"
                  << RESET;
             return;
         }
@@ -247,7 +255,7 @@ void TicketService::printCancelledTicket(
 ) {
     cout << "\n";
     cout << BOLD << RED << "=====================================\n" << RESET;
-    cout << BOLD << YELLOW << "     ❌ CINE++ CANCELLED TICKET\n" << RESET;
+    cout << BOLD << YELLOW << "    CINE++ CANCELLED TICKET\n" << RESET;
     cout << BOLD << RED << "=====================================\n" << RESET;
 
     cout << " Ticket ID   : " << ticketId << endl;
