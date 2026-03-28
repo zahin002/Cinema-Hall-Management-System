@@ -62,6 +62,7 @@ Run the program:
 `./cine`
 
 ## 🚀 Core Features
+
 👤 User System
 Signup & Login system
 File-based credential storage
@@ -69,7 +70,9 @@ Role-based access (Admin / User / Guest)
 Guest tracking system Menu-driven Console Application
 
 ---
+
 ## 🎬 Movie & Showtime Management
+
 Add, remove, and view movies
 Manage:
 Genre
@@ -79,8 +82,8 @@ Assign showtimes
 Filter shows dynamically
 
 ---
-##
-🪑 Seat Management System
+##🪑 Seat Management System
+
 2D seat grid (hall-based)
 Real-time seat updates
 File-based seat storage per show
@@ -88,8 +91,8 @@ Smart seat allocation logic
 Group seat handling
 
 ---
-##
-🎟️ Ticket Booking System
+##🎟️ Ticket Booking System
+
 Multi-seat booking
 Ticket generation with:
 Unique Ticket ID
@@ -98,8 +101,8 @@ Persistent ticket storage
 Invoice-style output
 
 ---
-##
-💰 Advanced Pricing Engine
+##💰 Advanced Pricing Engine
+
 Dynamic pricing rules:
 Time-based (morning / weekend)
 Group discounts
@@ -107,15 +110,15 @@ Automatic bill calculation
 Discount application logic
 
 ---
-##
-🔁 Refund System
+##🔁 Refund System
+
 Ticket cancellation
 Automatic seat release
 Refund record storage
 
 ---
-###
-⭐ Review & Rating System
+##⭐ Review & Rating System
+
 Users can:
 Rate movies
 Submit reviews
@@ -124,23 +127,23 @@ Used for system insights
 
 ---
 
-###
-🍿 Snack Shop Module
+##🍿 Snack Shop Module
+
 Additional purchase system
 Integrated with ticket flow
 
 ---
 
-###
-🛠️ Admin Functionalities
+##🛠️ Admin Functionalities
+
 Manage movies & showtimes
 Control seat data
 View system data (users, bookings, etc.)
 Monitor performance indirectly via stored data
 
 ---
-##
-⚙️ System Highlights
+##⚙️ System Highlights
+
 Fully file-based (no database)
 Modular architecture (service-based design)
 Clean separation of logic:
