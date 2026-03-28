@@ -1,84 +1,55 @@
 # 🎬 CINE++
 ### Cinema Hall Management System
 
-CINE++ is a **console-based cinema hall management system** developed in **C++** using **Object-Oriented Programming (OOP)** and **file-based persistence**.  
-The project is built incrementally as part of the **Software Project**, following a weekly development approach.
+A Feature-Rich File-Based Cinema Hall Management System
+
+CINE++ is a console-based cinema hall management system developed in C++, built using Object-Oriented Programming (OOP) and file-based persistence.
+
+It simulates a real-world cinema ticketing system including booking, pricing, seat management, reviews, and refunds — all without using a database or GUI.
 
 ---
 
 ## 📂 Project Structure
 
 ```
-Cinema-Hall-Management-System/
+CINE++/
 │
 ├── data/
 │   ├── movies.txt
 │   ├── showtimes.txt
 │   ├── users.txt
+│   ├── tickets.txt
+│   ├── ratings.txt
+│   ├── reviews.txt
+│   ├── refunds.txt
+│   ├── guest_counter.txt
 │   └── seats/
 │       ├── show_1.txt
 │       ├── show_2.txt
-│       └── show_3.txt
+│       └── ...
 │
 ├── src/
 │   ├── main.cpp
-│   ├── CinemaSystem.cpp
-│   ├── CinemaSystem.h
-│   ├── AdminPanel.cpp
-│   ├── AdminPanel.h
-│   ├── UserPanel.cpp
-│   ├── UserPanel.h
-│   ├── Movie.cpp
-│   ├── Movie.h
-│   ├── Showtime.cpp
-│   ├── Showtime.h
-│   ├── SeatMap.cpp
-│   ├── SeatMap.h
-│   ├── FileManager.cpp
-│   └── FileManager.h
+│   ├── CinemaSystem.cpp / .h
+│   ├── AdminService.cpp / .h
+│   ├── UserService.cpp / .h
+│   ├── MenuService.cpp / .h
+│   ├── Movie.cpp / .h
+│   ├── Showtime.cpp / .h
+│   ├── SeatMap.cpp / .h
+│   ├── TicketService.cpp / .h
+│   ├── PricingEngine.cpp / .h
+│   ├── ReviewService.cpp / .h
+│   ├── RatingService.cpp / .h
+│   ├── SnackShop.cpp / .h
+│   ├── FileManager.cpp / .h
+│   ├── User.cpp / .h
+│   └── TerminalColors.h
 │
+├── cine (compiled executable)
 ├── README.md
 └── .gitignore
 ```
-
-## 🧠 Technologies & Concepts Used
-- C++
-- Object-Oriented Programming (OOP)
-- File Handling (`fstream`)
-- Modular Design
-- Input Validation
-- Menu-driven Console Application
-
----
-
-## ✅ Implemented Features
-
-## ⚙️ Core Functionalities
-
-### 👨‍💼 Admin Functionalities
-- Add new movies
-- Remove existing movies
-- View all available movies
-- Manage showtimes
-- Control seat availability data
-
----
-
-### 👤 User Functionalities
-- View available movies and showtimes
-- Select seats for booking
-- Book tickets
-- Apply **discount-based ticket pricing**
-- Generate and view **ticket invoices**
-
----
-
-### 💰 Ticket Pricing & Invoice
-- Supports **discount-based ticket pricing**
-- Automatically calculates final ticket price after applying discounts
-- Generates a **ticket invoice** 
-
----
 
 ## ▶️ How to Compile & Run
 
@@ -90,4 +61,94 @@ Run the program:
 
 `./cine`
 
+## 🚀 Core Features
+👤 User System
+Signup & Login system
+File-based credential storage
+Role-based access (Admin / User / Guest)
+Guest tracking system Menu-driven Console Application
+
+---
+## 🎬 Movie & Showtime Management
+Add, remove, and view movies
+Manage:
+Genre
+Duration
+Language
+Assign showtimes
+Filter shows dynamically
+
+---
+##
+🪑 Seat Management System
+2D seat grid (hall-based)
+Real-time seat updates
+File-based seat storage per show
+Smart seat allocation logic
+Group seat handling
+
+---
+##
+🎟️ Ticket Booking System
+Multi-seat booking
+Ticket generation with:
+Unique Ticket ID
+Booking details
+Persistent ticket storage
+Invoice-style output
+
+---
+##
+💰 Advanced Pricing Engine
+Dynamic pricing rules:
+Time-based (morning / weekend)
+Group discounts
+Automatic bill calculation
+Discount application logic
+
+---
+##
+🔁 Refund System
+Ticket cancellation
+Automatic seat release
+Refund record storage
+
+---
+###
+⭐ Review & Rating System
+Users can:
+Rate movies
+Submit reviews
+Stored in files
+Used for system insights
+
+---
+
+###
+🍿 Snack Shop Module
+Additional purchase system
+Integrated with ticket flow
+
+---
+
+###
+🛠️ Admin Functionalities
+Manage movies & showtimes
+Control seat data
+View system data (users, bookings, etc.)
+Monitor performance indirectly via stored data
+
+---
+##
+⚙️ System Highlights
+Fully file-based (no database)
+Modular architecture (service-based design)
+Clean separation of logic:
+PricingEngine
+TicketService
+ReviewService
+FileManager
+Scalable and extendable
+
+---
 
