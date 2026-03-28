@@ -58,7 +58,7 @@ void TicketService::printTicket(
 ) {
     cout << "\n";
     cout << BOLD << CYAN << "===============================================\n" << RESET;
-    cout << BOLD << YELLOW << "           CINE++ TICKET\n" << RESET;
+    cout << BOLD << YELLOW << "             CINE++ TICKET\n" << RESET;
     cout << BOLD << CYAN << "===============================================\n" << RESET;
 
     cout << left;
@@ -84,7 +84,7 @@ void TicketService::printTicket(
          << finalPrice << " Tk\n" << RESET;
 
     cout << BOLD << CYAN << "===============================================\n" << RESET;
-    cout << GREEN << "            Enjoy Your Movie at CINE++\n" << RESET;
+    cout <<        GREEN << "        Enjoy Your Movie at CINE++\n" << RESET;
     cout << BOLD << CYAN << "===============================================\n" << RESET;
 }
 
