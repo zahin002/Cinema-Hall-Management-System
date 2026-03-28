@@ -82,7 +82,8 @@ Assign showtimes
 Filter shows dynamically
 
 ---
-##🪑 Seat Management System
+
+##🪑 **Seat Management System**
 
 2D seat grid (hall-based)
 Real-time seat updates
