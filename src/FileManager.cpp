@@ -7,8 +7,19 @@
 #include <vector>
 #include <string>
 #include <iomanip>
+#include <cstdlib> 
 
 using namespace std;
+
+void ensureSeatDirectoryExists() {
+
+#ifdef _WIN32
+    system("if not exist ..\\data\\seats mkdir ..\\data\\seats");
+#else
+    system("mkdir -p ../data/seats");
+#endif
+
+}
 
 /* ================= USERS ================= */
 
@@ -219,14 +230,21 @@ string FileManager::getSeatMapFilename(
         const string& date,
         const string& time) {
 
+    string d = date;
     string t = time;
+
+    // sanitize date
+    for (char& c : d)
+        if (c == '-') c = '_';
+
+    // sanitize time
     for (char& c : t)
         if (c == ' ' || c == ':' || c == '-')
             c = '_';
 
     return "../data/seats/hall_" +
            to_string(hallNo) + "_" +
-           date + "_" + t + ".txt";
+           d + "_" + t + ".txt";
 }
 
 SeatMap FileManager::loadOrCreateSeatMap(
@@ -237,10 +255,12 @@ SeatMap FileManager::loadOrCreateSeatMap(
     string filename = getSeatMapFilename(hallNo, date, time);
     ifstream file(filename);
 
-    // Create new map if not exists
     if (!file.is_open()) {
+
         SeatMap map = SeatMap::createForHall(hallNo);
+
         saveSeatMap(filename, map);
+
         return map;
     }
 
@@ -261,40 +281,35 @@ SeatMap FileManager::loadOrCreateSeatMap(
 void FileManager::saveSeatMap(
         const string& filename,
         const SeatMap& map) {
+            
+    ensureSeatDirectoryExists();
 
     ofstream file(filename);
+
+    if (!file.is_open()) {
+        cout << RED << "Error saving seat map!\n" << RESET;
+        return;
+    }
+
     file << map.getRows() << " " << map.getCols() << endl;
 
-    for (auto& row : map.getSeats()) {
+    for (const auto& row : map.getSeats()) {
         for (char seat : row)
             file << seat << " ";
         file << endl;
     }
 }
-
 void FileManager::deleteSeatMapFile(
     int hallNo,
     const string& date,
     const string& time
 ) {
     string filename = getSeatMapFilename(hallNo, date, time);
-    remove(filename.c_str());
-}
 
-void FileManager::saveGlobalDiscount(int percent, const string& message) {
-    ofstream file("../data/global_discount.txt");
-    file << percent << endl;
-    file << message << endl;
-}
-
-bool FileManager::loadGlobalDiscount(int& percent, string& message) {
-    ifstream file("../data/global_discount.txt");
-    if (!file.is_open()) return false;
-
-    file >> percent;
-    file.ignore();
-    getline(file, message);
-    return true;
+    if (remove(filename.c_str()) == 0)
+        cout << GREEN << "Seat map deleted.\n" << RESET;
+    else
+        cout << YELLOW << "Seat map not found.\n" << RESET;
 }
 
 /* Save Ticket */
