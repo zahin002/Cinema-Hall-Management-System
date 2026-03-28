@@ -301,35 +301,22 @@ bool FileManager::loadGlobalDiscount(int& percent, string& message) {
 
 void FileManager::saveTicketToFile(const string& record) {
 
-    ofstream out("data/tickets.txt", ios::app);
+    ofstream out("../data/tickets.txt", ios::app);  
 
     if (!out.is_open()) {
-        cout << "Error saving ticket.\n";
+        cout << RED << "Error saving ticket.\n" << RESET;
         return;
     }
 
-    out << record << "\n";
-    out.close();
+    out << record << endl;
 }
 
-
-/* Load All Tickets */
-
 vector<string> FileManager::loadAllTickets() {
-
     vector<string> records;
-    ifstream in("data/tickets.txt");
-
-    if (!in.is_open()) {
-        // file may not exist yet → not an error
-        return records;
-    }
-
+    ifstream in("../data/tickets.txt");
     string line;
+
     while (getline(in, line)) {
-
-        if (line.empty()) continue;   // skip garbage lines
-
         records.push_back(line);
     }
 
@@ -337,20 +324,12 @@ vector<string> FileManager::loadAllTickets() {
     return records;
 }
 
-
-/* Overwrite Tickets */
-
 void FileManager::overwriteAllTickets(const vector<string>& records) {
-
-    ofstream out("data/tickets.txt");  // overwrite mode
-
-    if (!out.is_open()) {
-        cout << "Error writing tickets.\n";
-        return;
-    }
+    // no ios::app here
+    ofstream out("../data/tickets.txt");
 
     for (const string& r : records) {
-        out << r << "\n";
+        out << r << endl;
     }
 
     out.close();

@@ -58,7 +58,7 @@ void TicketService::printTicket(
 ) {
     cout << "\n";
     cout << BOLD << CYAN << "===============================================\n" << RESET;
-    cout << BOLD << YELLOW << "             CINE++ TICKET\n" << RESET;
+    cout << BOLD << YELLOW << "           CINE++ TICKET\n" << RESET;
     cout << BOLD << CYAN << "===============================================\n" << RESET;
 
     cout << left;
@@ -84,7 +84,7 @@ void TicketService::printTicket(
          << finalPrice << " Tk\n" << RESET;
 
     cout << BOLD << CYAN << "===============================================\n" << RESET;
-    cout << GREEN << "   Enjoy Your Movie at CINE++  \n" << RESET;
+    cout << GREEN << "            Enjoy Your Movie at CINE++\n" << RESET;
     cout << BOLD << CYAN << "===============================================\n" << RESET;
 }
 
@@ -109,22 +109,22 @@ void TicketService::saveTicket(
            << showTime << "|"
            << hallNo << "|";
 
-    // ===== SEAT LIST (NO TRAILING COMMA) =====
     for (size_t i = 0; i < selectedSeats.size(); i++) {
 
-        char row = 'A' + selectedSeats[i].first;
-        int col  = selectedSeats[i].second + 1;
+    char row = 'A' + selectedSeats[i].first;
+    int col  = selectedSeats[i].second + 1;
 
-        record << row << col;
+    record << row << col;
 
-        if (i != selectedSeats.size() - 1)
-            record << ",";
-    }
+    if (i != selectedSeats.size() - 1)
+        record << ",";
+}
 
     record << "|" << finalPrice;
 
     FileManager::saveTicketToFile(record.str());
 }
+
 /* ================= REFUND CALC ================= */
 
 int TicketService::calculateRefundPercent(

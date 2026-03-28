@@ -112,15 +112,11 @@ void UserService::showMovieDetails(int movieCode, const User& user) {
         double avg = RatingService::getAverageRating(movieCode, ratingCount);
 
         cout << "\n";
-        if (ratingCount > 0 && avg >= 0) {
+        if (ratingCount > 0) {
             cout << GREEN << "Average Rating: "
-                 << fixed << setprecision(2) << avg
+                 << fixed << setprecision(1) << avg
                  << " / 5 (" << ratingCount << " ratings)\n"
                  << RESET;
-
-            cout.unsetf(ios::fixed);
-            cout << setprecision(6);
-
         } else {
             cout << YELLOW << "No ratings yet\n" << RESET;
         }
@@ -524,20 +520,25 @@ void UserService::bookSeat(const User& user) {
     vector<Movie> movies = FileManager::loadMovies();
 
     if (shows.empty()) {
-        cout << "No showtimes available.\n";
+        cout << RED << "No showtimes available.\n" << RESET;
         return;
     }
 
     string customerName = user.getFullName();
 
-    cout << "\n--- AVAILABLE SHOWTIMES ---\n";
+    cout << "\n" << BOLD << CYAN
+         << "========== AVAILABLE SHOWTIMES ==========\n"
+         << RESET;
+
     for (size_t i = 0; i < shows.size(); i++) {
+
         string title = "Unknown";
+
         for (const Movie& m : movies)
             if (m.getCode() == shows[i].getMovieCode())
                 title = m.getTitle();
 
-        cout << i + 1 << ". "
+        cout << YELLOW << i + 1 << ". " << RESET
              << title << " | "
              << shows[i].getDate() << " | "
              << shows[i].getTime() << " | Hall "
@@ -545,12 +546,19 @@ void UserService::bookSeat(const User& user) {
     }
 
     int choice;
-    cout << "Select showtime: ";
-    cin >> choice;
-    cin.ignore();
+    cout << YELLOW << "Select showtime: " << RESET;
 
-    if (choice < 1 || choice > shows.size()) {
-        cout << "Invalid selection.\n";
+    if (!(cin >> choice)) {
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << RED << "Invalid input.\n" << RESET;
+        return;
+    }
+
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+    if (choice < 1 || choice > (int)shows.size()) {
+        cout << RED << "Invalid selection.\n" << RESET;
         return;
     }
 
@@ -561,9 +569,12 @@ void UserService::bookSeat(const User& user) {
         selectedShow.getDate(),
         selectedShow.getTime()
     );
+
+    cout << "\n" << CYAN << "Current Seat Map:\n" << RESET;
     map.display();
 
-    cout << "Enter seats (A1 A2 B5 or A1,B5): ";
+    cout << YELLOW << "Enter seats (A1 A2 or A1,B5): " << RESET;
+
     string input;
     getline(cin, input);
 
@@ -575,19 +586,39 @@ void UserService::bookSeat(const User& user) {
     vector<pair<int,int>> selectedSeats;
 
     string seat;
+
     while (ss >> seat) {
+
         seat[0] = toupper(seat[0]);
-        if (used.count(seat)) return;
+
+        if (used.count(seat)) {
+            cout << RED << "Duplicate seat: " << seat << "\n" << RESET;
+            return;
+        }
+
         used.insert(seat);
 
-        int r = seat[0] - 'A';
-        int c = stoi(seat.substr(1)) - 1;
+        try {
+            int r = seat[0] - 'A';
+            int c = stoi(seat.substr(1)) - 1;
 
-        if (!map.isSeatAvailable(r, c)) return;
-        selectedSeats.push_back({r, c});
+            if (!map.isSeatAvailable(r, c)) {
+                cout << RED << "Seat not available: " << seat << "\n" << RESET;
+                return;
+            }
+
+            selectedSeats.push_back({r, c});
+
+        } catch (...) {
+            cout << RED << "Invalid seat format: " << seat << "\n" << RESET;
+            return;
+        }
     }
 
-    if (selectedSeats.empty()) return;
+    if (selectedSeats.empty()) {
+        cout << RED << "No seats selected.\n" << RESET;
+        return;
+    }
 
     int basePrice = selectedSeats.size() * 500;
     int finalPrice = basePrice;
@@ -595,17 +626,27 @@ void UserService::bookSeat(const User& user) {
     string discountLabel = "None";
 
     if (PricingEngine::hasGlobalDiscount()) {
+
         int p = PricingEngine::getGlobalDiscountPercent();
         finalPrice -= basePrice * p / 100;
         discountTk = basePrice - finalPrice;
         discountLabel = "Global Discount";
+
     } else {
+
         int p = PricingEngine::getGroupDiscountPercent(selectedSeats.size());
+
         if (p > 0) {
-            char ch;
-            cout << "Apply group discount? (y/n): ";
+
+            int ch;
+            cout << YELLOW
+                 << "Apply group discount?\n1. Yes\n2. No\nChoice: "
+                 << RESET;
+
             cin >> ch;
-            if (ch == 'y' || ch == 'Y') {
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+            if (ch == 1) {
                 finalPrice -= basePrice * p / 100;
                 discountTk = basePrice - finalPrice;
                 discountLabel = "Group Discount";
@@ -613,6 +654,7 @@ void UserService::bookSeat(const User& user) {
         }
     }
 
+    // ===== BOOK SEATS =====
     for (auto& s : selectedSeats)
         map.bookSeat(s.first, s.second);
 
@@ -626,12 +668,14 @@ void UserService::bookSeat(const User& user) {
     );
 
     string movieName = "Unknown";
+
     for (const Movie& m : movies)
         if (m.getCode() == selectedShow.getMovieCode())
             movieName = m.getTitle();
 
     string ticketId = TicketService::generateTicketId();
 
+    // ===== PRINT =====
     TicketService::printTicket(
         ticketId,
         customerName,
@@ -646,6 +690,7 @@ void UserService::bookSeat(const User& user) {
         finalPrice
     );
 
+    // ===== SAVE (FIXED PATH INSIDE SERVICE) =====
     TicketService::saveTicket(
         ticketId,
         customerName,
@@ -657,34 +702,33 @@ void UserService::bookSeat(const User& user) {
         finalPrice
     );
 
+    // ===== SNACK =====
     int snackChoice;
 
-    cout << "\nWould you like to order snacks?\n";
-    cout << "Press 1 for Yes\n";
-    cout << "Press 2 for No\n";
-    cout << "Your choice: ";
+    cout << "\n" << CYAN << "Would you like to order snacks?\n" << RESET;
+    cout << YELLOW << "1. Yes\n2. No\nChoice: " << RESET;
 
     while (true) {
-        cin >> snackChoice;
 
-        if (cin.fail()) {
+        if (!(cin >> snackChoice)) {
             cin.clear();
-            cin.ignore(1000, '\n');
-            cout << "Invalid input. Please enter 1 or 2: ";
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << RED << "Enter 1 or 2: " << RESET;
+            continue;
         }
-        else if (snackChoice == 1) {
+
+        if (snackChoice == 1) {
             SnackShop::start();
             break;
         }
         else if (snackChoice == 2) {
-            cout << "Skipping snack order.\n";
+            cout << CYAN << "Skipping snacks.\n" << RESET;
             break;
         }
         else {
-            cout << "Please press 1 (Yes) or 2 (No): ";
+            cout << YELLOW << "Enter 1 or 2: " << RESET;
         }
     }
-
 }
 
 /* ================= SEAT RECOMMENDATION ================= */

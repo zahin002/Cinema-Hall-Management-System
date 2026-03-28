@@ -111,7 +111,7 @@ void SnackShop::start() {
 
         total += price;
 
-        cout << GREEN << "✔ Added: " << price << " Tk\n" << RESET;
+        cout << GREEN << "Added: " << price << " Tk\n" << RESET;
     }
 
     if (total == 0) {
