@@ -95,7 +95,7 @@ void AdminService::adminMenu(const User& admin) {
                 cout << RED << "Invalid choice.\n" << RESET;
         }
 
-    } while (choice != 8);
+    } while (choice != 9);
 }
 
 /* ================= MOVIE MANAGEMENT ================= */

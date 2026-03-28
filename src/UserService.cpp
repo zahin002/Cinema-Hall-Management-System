@@ -417,7 +417,7 @@ void UserService::searchMovieByName() {
         for (const Showtime& s : shows) {
             if (s.getMovieCode() == m.getCode()) {
                 if (!hasShow) {
-                    cout << "   ▶ Showtimes:\n";
+                    cout << "   Showtimes:\n";
                     hasShow = true;
                 }
                 cout << "     - " << s.getDate()
@@ -733,32 +733,23 @@ void UserService::bookSeat(const User& user) {
 
     if (PricingEngine::hasGlobalDiscount()) {
 
-        int p = PricingEngine::getGlobalDiscountPercent();
-        finalPrice -= basePrice * p / 100;
-        discountTk = basePrice - finalPrice;
-        discountLabel = "Global Discount";
+    int p = PricingEngine::getGlobalDiscountPercent();
+    string msg = PricingEngine::getGlobalDiscountMessage();
 
-    } else {
+    finalPrice -= basePrice * p / 100;
+    discountTk = basePrice - finalPrice;
+    discountLabel = "Global Discount";
 
-        int p = PricingEngine::getGroupDiscountPercent(selectedSeats.size());
 
-        if (p > 0) {
+    cout << GREEN
+         << "Global Discount Applied: "
+         << p << "%";
 
-            int ch;
-            cout << YELLOW
-                 << "Apply group discount?\n1. Yes\n2. No\nChoice: "
-                 << RESET;
+    if (!msg.empty())
+        cout << " (" << msg << ")";
 
-            cin >> ch;
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
-            if (ch == 1) {
-                finalPrice -= basePrice * p / 100;
-                discountTk = basePrice - finalPrice;
-                discountLabel = "Group Discount";
-            }
-        }
-    }
+    cout << "\n" << RESET;
+}
 
     // ===== BOOK SEATS =====
     for (auto& s : selectedSeats)
