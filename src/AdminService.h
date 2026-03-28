@@ -21,6 +21,8 @@ private:
     // Seat map viewing 
     void viewSeatMap();
 
+    static void manageGlobalDiscount();
+
     // Date validation helper
     bool isValidFutureDate(const std::string& dateStr);
 };

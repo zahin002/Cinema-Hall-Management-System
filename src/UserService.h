@@ -21,7 +21,7 @@ public:
     void viewShowtimes();
     void bookSeat(const User& user);
     void recommendSeat();
-    static void cancelTicket();
+    static void cancelTicket(const User& user);
 private:
     double getAverageRating(int movieCode, int& count);
     void showReviews(int movieCode);

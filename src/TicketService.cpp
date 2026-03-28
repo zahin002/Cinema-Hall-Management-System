@@ -26,20 +26,28 @@ string TicketService::generateTicketId() {
 /* ================= EXISTENCE OF TICKET ID ================= */
 
 bool TicketService::ticketExists(const string& ticketId) {
-    ifstream file("tickets.txt"); 
+
+    ifstream in("../data/tickets.txt");  
     string line;
 
-    while (getline(file, line)) {
-        if (line.find(ticketId) != string::npos) {
-            file.close();
+    while (getline(in, line)) {
+
+        if (line.empty()) continue;
+
+        stringstream ss(line);
+        string id;
+
+        getline(ss, id, '|');
+
+        // trim
+        id.erase(id.find_last_not_of(" \n\r\t") + 1);
+
+        if (id == ticketId)
             return true;
-        }
     }
 
-    file.close();
     return false;
 }
-
 
 /* ================= PRINT TICKET ================= */
 
@@ -131,28 +139,42 @@ int TicketService::calculateRefundPercent(
     const string& showDate,
     const string& showTime
 ) {
-    int year, month, day, hour, minute;
-    char c;
+    int day, month, year;
+    char dash;
 
-    stringstream(showDate) >> year >> c >> month >> c >> day;
-    stringstream(showTime) >> hour >> c >> minute;
+    stringstream(showDate) >> day >> dash >> month >> dash >> year;
+
+    int hour, minute;
+    char colon;
+    string ampm;
+
+    // extract ONLY start time (before '-')
+    string startTime = showTime.substr(0, showTime.find('-'));
+
+    stringstream ss(startTime);
+    ss >> hour >> colon >> minute >> ampm;
+
+    // convert to 24-hour format
+    if (ampm == "PM" && hour != 12) hour += 12;
+    if (ampm == "AM" && hour == 12) hour = 0;
 
     tm showTM{};
     showTM.tm_year = year - 1900;
-    showTM.tm_mon = month - 1;
+    showTM.tm_mon  = month - 1;
     showTM.tm_mday = day;
     showTM.tm_hour = hour;
-    showTM.tm_min = minute;
+    showTM.tm_min  = minute;
 
     time_t showEpoch = mktime(&showTM);
-    time_t nowEpoch = ::time(nullptr);
+    time_t nowEpoch  = time(nullptr);
 
     double diffMin = difftime(showEpoch, nowEpoch) / 60.0;
 
-    if (diffMin <= 0) return -1;
+    if (diffMin <= 30) return -1;
     if (diffMin >= 360) return 80;
     if (diffMin >= 120) return 50;
-    if (diffMin >= 30) return 20;
+    if (diffMin >= 30)  return 20;
+
     return -1;
 }
 
@@ -163,6 +185,8 @@ void TicketService::cancelTicket(const string& ticketId) {
     vector<string> tickets = FileManager::loadAllTickets();
 
     for (string& record : tickets) {
+
+        if (record.empty()) continue;
 
         stringstream ss(record);
         vector<string> parts;
@@ -188,15 +212,29 @@ void TicketService::cancelTicket(const string& ticketId) {
         string seatStr = parts[6];
         double paid = stod(parts[7]);
 
+        // ===== CHECK FIRST (IMPORTANT) =====
+        int refundPercent = calculateRefundPercent(showDate, showTime);
+
+        if (refundPercent == -1) {
+            cout << BOLD << RED
+                 << "Cancellation not allowed (show started or <30 min).\n"
+                 << RESET;
+            return;
+        }
+
+        // ===== PARSE SEATS =====
         vector<pair<int,int>> seats;
         stringstream ss2(seatStr);
         string s;
+
         while (getline(ss2, s, ',')) {
             if (s.empty()) continue;
             seats.push_back({s[0] - 'A', stoi(s.substr(1)) - 1});
         }
 
+        // ===== RELEASE SEATS =====
         SeatMap map = FileManager::loadOrCreateSeatMap(hallNo, showDate, showTime);
+
         for (auto& p : seats)
             map.releaseSeat(p.first, p.second);
 
@@ -205,18 +243,25 @@ void TicketService::cancelTicket(const string& ticketId) {
             map
         );
 
-        int refundPercent = calculateRefundPercent(showDate, showTime);
-        if (refundPercent == -1) {
-            cout << BOLD << RED
-                 << "Cancellation not allowed (show started or <30 min).\n"
-                 << RESET;
-            return;
+        double refundAmt = paid * refundPercent / 100.0;
+
+        // ===== UPDATE RECORD SAFELY =====
+        if (parts.size() >= 9)
+            parts[8] = "CANCELLED";
+        else
+            parts.push_back("CANCELLED");
+
+        stringstream updated;
+        for (size_t i = 0; i < parts.size(); i++) {
+            updated << parts[i];
+            if (i != parts.size() - 1)
+                updated << "|";
         }
 
-        double refundAmt = paid * refundPercent / 100.0;
-        record += "|CANCELLED";
+        record = updated.str();
 
-        time_t now = ::time(nullptr);
+        // ===== LOG REFUND =====
+        time_t now = time(nullptr);
         string refundTime = ctime(&now);
         refundTime.pop_back();
 

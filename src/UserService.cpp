@@ -439,46 +439,152 @@ void UserService::searchMovieByName() {
 /* ================= TICKET CANCELLATION ================= */
 
 
-void UserService::cancelTicket() {
-    string ticketId;
-    int choice;
+void UserService::cancelTicket(const User& user) {
 
-    // Take ticket ID
-    cout << "Enter Ticket ID: ";
-    cin >> ticketId;
+    vector<string> tickets = FileManager::loadAllTickets();
 
-    // Validate ticket existence
-    if (!TicketService::ticketExists(ticketId)) {
-        cout << "Invalid Ticket ID. Cancellation failed.\n";
+    vector<string> userTickets;
+    vector<vector<string>> parsed;
+
+    // ===== FILTER USER TICKETS =====
+    for (const string& record : tickets) {
+
+        if (record.empty()) continue;
+
+        stringstream ss(record);
+        vector<string> parts;
+        string temp;
+
+        while (getline(ss, temp, '|'))
+            parts.push_back(temp);
+
+        if (parts.size() < 7) continue;
+
+        // Skip cancelled tickets
+        if (parts.size() >= 9 && parts[8] == "CANCELLED")
+            continue;
+
+        if (parts[1] == user.getFullName()) {
+            userTickets.push_back(record);
+            parsed.push_back(parts);
+        }
+    }
+
+    // ===== NO TICKETS =====
+    if (userTickets.empty()) {
+        cout << YELLOW << "You have no active tickets.\n" << RESET;
         return;
     }
 
-    // Confirmation prompt
-    cout << "\n⚠ This action cannot be undone.\n";
-    cout << "Press 1 to confirm cancellation\n";
-    cout << "Press 2 to abort\n";
-    cout << "Your choice: ";
+    // ===== SHOW LIST (WITH SEATS) =====
+    cout << "\n" << BOLD << CYAN
+         << "======= YOUR TICKETS =======\n"
+         << RESET;
 
-    // Input validation loop
+    for (size_t i = 0; i < parsed.size(); i++) {
+
+        auto& p = parsed[i];
+
+        cout << GREEN << i + 1 << ". " << RESET
+             << p[0] << " | "
+             << p[2] << " | "
+             << p[3] << " | "
+             << p[4] << " | Hall "
+             << p[5] << " | Seats: "
+             << CYAN << p[6] << RESET << "\n";
+    }
+
+    // ===== SELECT =====
+    cout << YELLOW << "\nSelect ticket number: " << RESET;
+
+    int selection;
+
+    if (!(cin >> selection)) {
+        cin.clear();
+        cin.ignore(1000, '\n');
+        cout << RED << "Invalid input.\n" << RESET;
+        return;
+    }
+
+    if (selection < 1 || selection > (int)userTickets.size()) {
+        cout << RED << "Invalid selection.\n" << RESET;
+        return;
+    }
+
+    auto& selectedParts = parsed[selection - 1];
+
+    string ticketId = selectedParts[0];
+    string movie    = selectedParts[2];
+    string date     = selectedParts[3];
+    string time     = selectedParts[4];
+    string hall     = selectedParts[5];
+    string seats    = selectedParts[6];
+
+    // ===== VALIDATE =====
+    if (!TicketService::ticketExists(ticketId)) {
+        cout << RED << "Invalid Ticket ID. Cancellation failed.\n" << RESET;
+        return;
+    }
+
+    // ===== SHOW WHAT WILL BE RELEASED =====
+    cout << "\n" << BOLD << CYAN
+         << "===== CANCELLATION DETAILS =====\n"
+         << RESET;
+
+    cout << "Ticket ID : " << ticketId << "\n";
+    cout << "Movie     : " << movie << "\n";
+    cout << "Showtime  : " << date << " | " << time << "\n";
+    cout << "Hall      : " << hall << "\n";
+
+    cout << "Seats to be released: "
+         << GREEN << seats << RESET << "\n";
+
+    cout << BOLD << CYAN
+         << "=================================\n"
+         << RESET;
+
+    // ===== CONFIRMATION =====
+    cout << RED << "\nThis action cannot be undone.\n" << RESET;
+
+    cout << YELLOW
+         << "Press 1 to confirm cancellation\n"
+         << "Press 2 to abort\n"
+         << "Your choice: "
+         << RESET;
+
+    int choice;
+
     while (true) {
+
         cin >> choice;
 
         if (cin.fail()) {
             cin.clear();
             cin.ignore(1000, '\n');
-            cout << "Invalid input. Please enter 1 or 2: ";
+            cout << RED << "Invalid input. Enter 1 or 2: " << RESET;
         }
         else if (choice == 1) {
+
             TicketService::cancelTicket(ticketId);
-            cout << "Ticket cancelled successfully.\n";
+
+            cout << GREEN
+                 << "\nSeats released successfully: "
+                 << seats << "\n"
+                 << "Ticket cancelled successfully.\n"
+                 << RESET;
+
             break;
         }
         else if (choice == 2) {
-            cout << "Ticket cancellation aborted.\n";
+
+            cout << CYAN
+                 << "Ticket cancellation aborted.\n"
+                 << RESET;
+
             break;
         }
         else {
-            cout << "Please press 1 (Yes) or 2 (No): ";
+            cout << YELLOW << "Press 1 or 2: " << RESET;
         }
     }
 }

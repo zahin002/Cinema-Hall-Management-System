@@ -63,7 +63,7 @@ void MenuService::showUserMenu(const User& user) {
                 break;
 
             case 5:
-                userService.cancelTicket();
+                UserService::cancelTicket(user);
                 break;
 
             case 6:

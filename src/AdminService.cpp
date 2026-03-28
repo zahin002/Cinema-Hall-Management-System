@@ -3,6 +3,7 @@
 #include "Movie.h"
 #include "SeatMap.h"
 #include "MenuService.h"
+#include "PricingEngine.h"
 #include "TerminalColors.h"
 
 #include <fstream>
@@ -36,7 +37,8 @@ void AdminService::adminMenu(const User& admin) {
         cout << "5. View Showtimes\n";
         cout << "6. Delete Showtime\n";
         cout << "7. View Seat Map\n";
-        cout << "8. Logout\n";
+        cout << "8. Manage Global Discount\n"; 
+        cout << "9. Logout\n";
         cout << YELLOW << "Enter choice: " << RESET;
 
         cin >> choice;
@@ -83,6 +85,9 @@ void AdminService::adminMenu(const User& admin) {
                 break;
 
             case 8:
+                manageGlobalDiscount();
+                break;
+            case 9:
                 cout << GREEN << "Logged out.\n" << RESET;
                 break;
 
@@ -386,4 +391,73 @@ void AdminService::viewSeatMap() {
         s.getHallNo(), s.getDate(), s.getTime()
     );
     map.display();
+}
+
+/* ================= MANAGE GLOBAL DISCOUNT ================= */
+
+void AdminService::manageGlobalDiscount() {
+
+    cout << "\n" << BOLD << CYAN
+         << "===== GLOBAL DISCOUNT SETTINGS =====\n"
+         << RESET;
+
+    // Show current status
+    if (PricingEngine::hasGlobalDiscount()) {
+        cout << GREEN << "Active: "
+             << PricingEngine::getGlobalDiscountPercent()
+             << "% (" << PricingEngine::getGlobalDiscountMessage() << ")\n"
+             << RESET;
+    } else {
+        cout << YELLOW << "No global discount active.\n" << RESET;
+    }
+
+    cout << "\n";
+    cout << "1. Set Global Discount\n";
+    cout << "2. Remove Global Discount\n";
+    cout << "0. Back\n";
+
+    cout << YELLOW << "Enter choice: " << RESET;
+
+    int ch;
+    cin >> ch;
+
+    if (cin.fail()) {
+        cin.clear();
+        cin.ignore(1000, '\n');
+        cout << RED << "Invalid input.\n" << RESET;
+        return;
+    }
+
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+    if (ch == 1) {
+
+        int percent;
+        string msg;
+
+        cout << YELLOW << "Enter discount % (0-100): " << RESET;
+        cin >> percent;
+
+        if (cin.fail() || percent < 0 || percent > 100) {
+            cin.clear();
+            cin.ignore(1000, '\n');
+            cout << RED << "Invalid percentage.\n" << RESET;
+            return;
+        }
+
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        cout << YELLOW << "Enter message: " << RESET;
+        getline(cin, msg);
+
+        PricingEngine::setGlobalDiscount(percent, msg);
+
+        cout << GREEN << "Global discount set successfully.\n" << RESET;
+    }
+    else if (ch == 2) {
+
+        PricingEngine::removeGlobalDiscount();
+
+        cout << GREEN << "Global discount removed.\n" << RESET;
+    }
 }
