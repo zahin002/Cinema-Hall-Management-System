@@ -111,48 +111,45 @@ Run the program:
 - Discount application logic  
 
 ---
-##🔁 Refund System
-
-Ticket cancellation
-Automatic seat release
-Refund record storage
-
----
-##⭐ Review & Rating System
-
-Users can:
-Rate movies
-Submit reviews
-Stored in files
-Used for system insights
+### 🔁 Refund System
+- Ticket cancellation functionality  
+- Automatic seat release after cancellation  
+- Refund record storage  
 
 ---
 
-##🍿 Snack Shop Module
+### ⭐ Review & Rating System
+- Users can:
+  - Rate movies  
+  - Submit reviews  
+- Stored in file-based system  
+- Used for system insights and improvements  
 
-Additional purchase system
-Integrated with ticket flow
+---
+
+### 🍿 Snack Shop Module
+- Additional purchase system  
+- Integrated with ticket booking flow  
 
 ---
 
-##🛠️ Admin Functionalities
-
-Manage movies & showtimes
-Control seat data
-View system data (users, bookings, etc.)
-Monitor performance indirectly via stored data
+### 🛠️ Admin Functionalities
+- Manage movies and showtimes  
+- Control seat data  
+- View system data (users, bookings, etc.)  
+- Monitor performance using stored data  
 
 ---
-##⚙️ System Highlights
 
-Fully file-based (no database)
-Modular architecture (service-based design)
-Clean separation of logic:
-PricingEngine
-TicketService
-ReviewService
-FileManager
-Scalable and extendable
+### ⚙️ System Highlights
+- Fully file-based system (no database)  
+- Modular architecture (service-based design)  
+- Clean separation of logic:
+  - PricingEngine  
+  - TicketService  
+  - ReviewService  
+  - FileManager  
+- Scalable and extendable system  
 
 ---
 
