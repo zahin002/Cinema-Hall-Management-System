@@ -726,29 +726,46 @@ void UserService::bookSeat(const User& user) {
         return;
     }
 
-    int basePrice = selectedSeats.size() * 500;
-    int finalPrice = basePrice;
-    int discountTk = 0;
-    string discountLabel = "None";
+    int seatCount = selectedSeats.size();
+    int basePrice = seatCount * 500;
+    int finalPrice;
+    int discountTk;
+    string discountLabel;
 
     if (PricingEngine::hasGlobalDiscount()) {
 
-    int p = PricingEngine::getGlobalDiscountPercent();
-    string msg = PricingEngine::getGlobalDiscountMessage();
+        int p = PricingEngine::getGlobalDiscountPercent();
+        string msg = PricingEngine::getGlobalDiscountMessage();
 
-    finalPrice -= basePrice * p / 100;
-    discountTk = basePrice - finalPrice;
-    discountLabel = "Global Discount";
+        finalPrice = basePrice - (basePrice * p / 100);
+        discountTk = basePrice - finalPrice;
+        discountLabel = "Global Discount";
 
+        cout << GREEN
+             << "Global Discount Applied: "
+             << p << "%";
 
-    cout << GREEN
-         << "Global Discount Applied: "
-         << p << "%";
+        if (!msg.empty())
+            cout << " (" << msg << ")";
 
-    if (!msg.empty())
-        cout << " (" << msg << ")";
+        cout << "\n" << RESET;
 
-    cout << "\n" << RESET;
+    } else {
+
+        int p = PricingEngine::getGroupDiscountPercent(seatCount);
+
+        finalPrice = basePrice - (basePrice * p / 100);
+        discountTk = basePrice - finalPrice;
+
+        if (p > 0) {
+            discountLabel = "Group Discount";
+            cout << GREEN
+                 << "Group Discount Applied: "
+                 << p << "%\n"
+                 << RESET;
+        } else {
+            discountLabel = "No Discount";
+    }
 }
 
     // ===== BOOK SEATS =====

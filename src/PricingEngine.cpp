@@ -2,9 +2,8 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
-#include <algorithm>   // for min()
+#include <algorithm>   // for min(), max()
 #include <cstdio>      // for remove()
-
 
 using namespace std;
 
@@ -21,21 +20,35 @@ int PricingEngine::getGroupDiscountPercent(int seatCount) {
     return 0;
 }
 
+/* ================= FINAL PRICE ================= */
+
 int PricingEngine::calculateFinalPrice(int seatCount) {
 
     int base = seatCount * BASE_PRICE;
-    int percent = getGroupDiscountPercent(seatCount);
 
-    return base - (base * percent / 100);
+    // GLOBAL DISCOUNT OVERRIDES GROUP DISCOUNT
+    if (hasGlobalDiscount()) {
+        int globalPercent = getGlobalDiscountPercent();
+
+        // Safety clamp (0%–100%)
+        globalPercent = max(0, min(globalPercent, 100));
+
+        return base - (base * globalPercent / 100);
+    }
+
+    // Otherwise apply group discount
+    int groupPercent = getGroupDiscountPercent(seatCount);
+    return base - (base * groupPercent / 100);
 }
 
 /* ================= GLOBAL DISCOUNT ================= */
 
-// Check if global discount file exists
+// Check if global discount file exists AND not empty
 bool PricingEngine::hasGlobalDiscount() {
 
     ifstream file("../data/global_discount.txt");
-    return file.good();
+
+    return file.is_open() && file.peek() != EOF;
 }
 
 // Get discount percent from file
@@ -92,6 +105,9 @@ void PricingEngine::setGlobalDiscount(int percent, const string& msg) {
         cout << "Error saving global discount.\n";
         return;
     }
+
+    // Safety clamp before saving
+    percent = max(0, min(percent, 100));
 
     file << percent << "|" << msg;
     file.close();
