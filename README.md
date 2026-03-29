@@ -63,52 +63,52 @@ Run the program:
 
 ## 🚀 Core Features
 
-👤 User System
-Signup & Login system
-File-based credential storage
-Role-based access (Admin / User / Guest)
-Guest tracking system Menu-driven Console Application
+### 👤 User System
+- Signup & Login system  
+- File-based credential storage  
+- Role-based access (Admin / User / Guest)  
+- Guest tracking system  
+- Menu-driven console interface  
 
 ---
 
-## 🎬 Movie & Showtime Management
+### 🎬 Movie & Showtime Management
+- Add, remove, and view movies  
+- Manage movie details:
+  - Genre
+  - Duration
+  - Language  
+- Assign showtimes to movies  
+- Dynamic show filtering  
 
-Add, remove, and view movies
-Manage:
-Genre
-Duration
-Language
-Assign showtimes
-Filter shows dynamically
+---
+
+### 🪑 Seat Management System
+- 2D seat grid (hall-based)  
+- Real-time seat updates  
+- File-based seat storage per show  
+- Smart seat allocation logic  
+- Group seat handling  
 
 ---
 
-##🪑 **Seat Management System**
-
-2D seat grid (hall-based)
-Real-time seat updates
-File-based seat storage per show
-Smart seat allocation logic
-Group seat handling
-
----
-##🎟️ Ticket Booking System
-
-Multi-seat booking
-Ticket generation with:
-Unique Ticket ID
-Booking details
-Persistent ticket storage
-Invoice-style output
+### 🎟️ Ticket Booking System
+- Multi-seat booking  
+- Ticket generation with:
+  - Unique Ticket ID  
+  - Booking details  
+- Persistent ticket storage  
+- Invoice-style output  
 
 ---
-##💰 Advanced Pricing Engine
 
-Dynamic pricing rules:
-Time-based (morning / weekend)
-Group discounts
-Automatic bill calculation
-Discount application logic
+### 💰 Advanced Pricing Engine
+- Dynamic pricing rules:
+  - Time-based pricing (morning / weekend)  
+  - Group discounts  
+  - Global discount override system  
+- Automatic bill calculation  
+- Discount application logic  
 
 ---
 ##🔁 Refund System
