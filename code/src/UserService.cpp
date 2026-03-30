@@ -49,6 +49,49 @@ string capitalizeFirstLetter(const string& s) {
     return result;
 }
 
+bool isBookingClosed(const string& date, const string& time) {
+
+    int day, month, year;
+    sscanf(date.c_str(), "%d-%d-%d", &day, &month, &year);
+
+    int hour, minute;
+    char ampm[3];
+    sscanf(time.c_str(), "%d:%d %s", &hour, &minute, ampm);
+
+    // Convert to 24-hour format
+    string ampmStr = ampm;
+    if (ampmStr == "PM" && hour != 12) hour += 12;
+    if (ampmStr == "AM" && hour == 12) hour = 0;
+
+    // Create showtime struct
+    tm show = {};
+    show.tm_mday = day;
+    show.tm_mon = month - 1;
+    show.tm_year = year - 1900;
+    show.tm_hour = hour;
+    show.tm_min = minute;
+    show.tm_sec = 0;
+
+    time_t showTime = mktime(&show);
+
+    // Current time
+    time_t now = time(0);
+
+    double diff = difftime(showTime, now); // seconds until show
+
+    // BLOCK CONDITIONS
+    if (diff <= 0) {
+        // already started or passed
+        return true;
+    }
+
+    if (diff <= 600) {
+        // within 10 minutes (600 seconds)
+        return true;
+    }
+
+    return false;
+}
 /* ================= MOVIES ================= */
 
 void UserService::viewMovies() {
@@ -669,6 +712,15 @@ void UserService::bookSeat(const User& user) {
     }
 
     Showtime selectedShow = shows[choice - 1];
+
+    if (isBookingClosed(selectedShow.getDate(), selectedShow.getTime())) {
+
+    cout << RED
+         << "Booking closed. Cannot book within 10 minutes or after showtime.\n"
+         << RESET;
+
+    return;
+}
 
     SeatMap map = FileManager::loadOrCreateSeatMap(
         selectedShow.getHallNo(),
