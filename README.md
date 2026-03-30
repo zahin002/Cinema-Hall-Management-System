@@ -143,12 +143,7 @@ Run the program:
 
 ### ⚙️ System Highlights
 - Fully file-based system (no database)  
-- Modular architecture (service-based design)  
-- Clean separation of logic:
-  - PricingEngine  
-  - TicketService  
-  - ReviewService  
-  - FileManager  
+- Modular architecture (service-based design)   
 - Scalable and extendable system  
 
 ---
